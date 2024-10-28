@@ -5,5 +5,6 @@ export interface admin extends Document{
     password: string,
     name: string,
     email: string,
-    adminId: string
+    adminId: string,
+    image: Blob
 }
