@@ -1,6 +1,6 @@
 import { Document } from "mongoose";
 
-export interface courses extends Document{
+export interface course extends Document{
     courseId:string;
     courseName:string;
     startingDate:Date;

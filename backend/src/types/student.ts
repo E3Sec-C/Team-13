@@ -1,12 +1,11 @@
 import { Document, ObjectId } from "mongoose";
-import { courses } from "./courses";
 
 export interface subject{
     subName:string;
     grade:string;
 }
 
-export interface Sem_Records{
+export interface semRecord{
     sem:number;
     sgpa:number;
     cgpa:number;
@@ -23,7 +22,7 @@ export interface student extends Document{
     bloodGroup:string;
     address:string;
     image:Blob;
-    courses:courses[];
-    marks:Sem_Records[];
+    courses:ObjectId[];
+    marks:semRecord[];
     attendance:number;
 }
