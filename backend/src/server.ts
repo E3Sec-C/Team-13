@@ -1,10 +1,14 @@
-import dotenv from 'dotenv';
-import app from './app';
+import express,{Application} from 'express';
+import {PORT} from './config/ServerConfig';
+import { connectDatabase } from './config/DatabaseConfig';
+const app:Application=express()
 
-dotenv.config();
+app.get('/test',(req,res) => {
+  res.status(201).json({message:"Working fine"});
+});
 
-const PORT = process.env.PORT || 6000;
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.listen(PORT, async() => {
+  console.log(`Server is running at http://localhost:${PORT}`);
+  connectDatabase();
 });
