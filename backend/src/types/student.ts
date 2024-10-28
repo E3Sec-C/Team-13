@@ -15,6 +15,14 @@ export interface Sem_Records{
 
 export interface student extends Document{
     studentId:string;
+    section:string;
+    year:string;
+    sem:number;
+    email:string;
+    mobile:string;
+    bloodGroup:string;
+    address:string;
+    image:Blob;
     courses:courses[];
     marks:Sem_Records[];
     attendance:number;
