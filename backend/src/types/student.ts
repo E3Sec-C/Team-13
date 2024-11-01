@@ -21,7 +21,7 @@ export interface student extends Document{
     mobile:string;
     bloodGroup:string;
     address:string;
-    image:Blob;
+    image:Buffer;
     courses:ObjectId[];
     marks:semRecord[];
     attendance:number;

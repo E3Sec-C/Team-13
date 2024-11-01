@@ -7,4 +7,4 @@ dotenv.config({
 
 export const PORT:string = process.env.PORT || '6000';
 
-export const MONGO_URI:string=process.env.MONGO_URI || 'http://localhost:27017/';
+export const MONGO_URI:string=process.env.MONGO_URI || 'mongodb://localhost:27017/UDIS';

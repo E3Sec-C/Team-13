@@ -1,6 +1,6 @@
 import FacultyModel from "../models/FacultyModel";
 import { faculty } from "../types/faculty";
-import CrudRepository from "./crudRepo";
+import CrudRepository from "./CrudRepository";
 
 class FacultyRepository extends CrudRepository<faculty>{
     constructor(){

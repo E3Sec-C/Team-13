@@ -24,7 +24,7 @@ const FacultySchema = new Schema<faculty>({
         required: true
     },
     assignedClasses: [String],
-    image:Blob,
+    image:Buffer,
     education: String
 });
 
