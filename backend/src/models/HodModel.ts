@@ -26,7 +26,7 @@ const HODSchema = new Schema<hod>({
     },
     funds: [Schema.Types.ObjectId],
     complaints: [Schema.Types.ObjectId],
-    image: Blob,
+    image: Buffer,
     education: String
 });
 

@@ -8,6 +8,6 @@ export interface hod extends Document{
     hodId: string,
     funds: ObjectId[],
     complaints: ObjectId[],
-    image: Blob,
+    image: Buffer,
     education: string
 }

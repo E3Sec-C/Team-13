@@ -22,7 +22,7 @@ const AdminSchema = new Schema<admin>({
         type: String,
         required: true
     },
-    image: Blob
+    image: {type: Buffer}
 });
 
 export default model<admin>("admin",AdminSchema);

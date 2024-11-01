@@ -10,7 +10,7 @@ const StudentModelSchema: Schema<student> = new mongoose.Schema({
   mobile: { type: String },
   bloodGroup: { type: String },
   address: { type: String },
-  image: Blob,
+  image: Buffer,
   courses: {type:[Schema.Types.ObjectId]},
   marks: [
     {

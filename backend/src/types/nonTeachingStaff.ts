@@ -4,7 +4,7 @@ export interface nonTeachingStaff extends Document{
     ID: string;
     mobile:string;
     email:string;
-    image:Blob;
+    image:Buffer;
     infrastructureDetails: ObjectId[];
     researchPublications: ObjectId[];
 }

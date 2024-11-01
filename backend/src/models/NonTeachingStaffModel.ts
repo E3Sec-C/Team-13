@@ -5,7 +5,7 @@ const NonTeachingStaffModelSchema:Schema<nonTeachingStaff> = new mongoose.Schema
     ID: {type:String},
     mobile:{type:String},
     email:{type:String},
-    image:{type:Blob},
+    image:{type:Buffer},
     infrastructureDetails:{type:[Schema.Types.ObjectId]},
     researchPublications:{type:[Schema.Types.ObjectId]},
 })

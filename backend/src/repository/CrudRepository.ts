@@ -1,4 +1,5 @@
 import mongoose, { Document, FilterQuery, Model } from "mongoose";
+import { ValidationError } from "../exceptions/CustomExceptions";
 
 class CrudRepository<T extends Document>{
     protected model:Model<T>;
@@ -30,6 +31,9 @@ class CrudRepository<T extends Document>{
     }
     
     async getById(id:string):Promise<T|null>{
+        if(!mongoose.Types.ObjectId.isValid(id)){
+            throw new ValidationError("Invalid ID format");
+        }
         try{
             const response = await this.model.findById(id);
             return response;
@@ -54,6 +58,9 @@ class CrudRepository<T extends Document>{
         }
     }
     async updateById(id:string, data:Partial<T>):Promise<T|null>{
+        if(!mongoose.Types.ObjectId.isValid(id)){
+            throw new ValidationError("Invalid ID format");
+        }
         try{
             const response = await this.model.findByIdAndUpdate(id,data,{new:true});
             //{new:true}=> return the updated document instead of old document
