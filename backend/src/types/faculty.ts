@@ -1,13 +1,12 @@
 import { Document, ObjectId } from "mongoose";
 
 export interface faculty extends Document{
-    userId: string,
+    ID: string,
     password: string,
     name: string,
     email: string,
-    mobile: string
-    facultyId: string,
+    mobile: string,
     assignedClasses: string[],
-    image:Blob,
+    image:Buffer,
     education: string
 }

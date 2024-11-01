@@ -5,9 +5,9 @@ import mongoose from "mongoose";
 
 class AdminService{
     async create(adminData: Partial<admin>):Promise<admin|null>{
-        const {userId,email,adminId} = adminData;
+        const {ID} = adminData;
         console.log(adminData);
-        const result = await adminRepository.getByData({userId:userId,email:email,adminId:adminId});
+        const result = await adminRepository.getByData({ID:ID});
         if(result){
             throw new ConflictError("Already existed user with similar data");
         }
