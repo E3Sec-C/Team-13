@@ -18,10 +18,6 @@ const AdminSchema = new Schema<admin>({
         type: String,
         required: true
     },
-    adminId:{
-        type: String,
-        required: true
-    },
     image: {type: Buffer}
 });
 

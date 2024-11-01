@@ -20,10 +20,6 @@ const HODSchema = new Schema<hod>({
         type: String,
         required: true
     },
-    hodId:{
-        type: String,
-        required: true
-    },
     funds: [Schema.Types.ObjectId],
     complaints: [Schema.Types.ObjectId],
     image: Buffer,

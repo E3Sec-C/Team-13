@@ -1,9 +1,11 @@
 import express,{ Request,Response } from "express";
-import adminRoutes from "./adminRoutes";
+import AdminRoutes from "./AdminRoutes";
+import StudentRoutes from "./StudentRoutes";
 
 const router=express.Router()
    
-router.use("/admin",adminRoutes);
+router.use("/admin",AdminRoutes);
+router.use('/student',StudentRoutes)
 
 router.get("/home",(req,res)=>{
     res.status(201).json({

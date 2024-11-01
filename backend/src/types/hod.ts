@@ -5,7 +5,6 @@ export interface hod extends Document{
     password: string,
     name: string,
     email: string,
-    hodId: string,
     funds: ObjectId[],
     complaints: ObjectId[],
     image: Buffer,

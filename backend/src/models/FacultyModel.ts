@@ -19,10 +19,6 @@ const FacultySchema = new Schema<faculty>({
         required: true
     },
     mobile:String,
-    facultyId:{
-        type: String,
-        required: true
-    },
     assignedClasses: [String],
     image:Buffer,
     education: String

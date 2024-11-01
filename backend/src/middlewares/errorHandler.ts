@@ -10,7 +10,7 @@ const errorHandler = (err: Error, req: Request, res: Response, next: NextFunctio
     }else if(err instanceof NotFoundError){
         return res.status(404).json({ message: err.message });
     }else{
-        return res.status(500).json({ message: 'An internal error occurred' });
+        return res.status(500).json({ message: 'An internal server error occurred' });
     }
 };
 

@@ -5,8 +5,7 @@ export interface faculty extends Document{
     password: string,
     name: string,
     email: string,
-    mobile: string
-    facultyId: string,
+    mobile: string,
     assignedClasses: string[],
     image:Blob,
     education: string
