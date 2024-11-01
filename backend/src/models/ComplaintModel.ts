@@ -2,7 +2,7 @@ import mongoose, { model, Schema } from "mongoose"
 import { complaint } from "../types/complaints"
 
 const ComplaintSchema = new Schema<complaint>({
-    userId:{
+    ID:{
         type: String,
         required: true
     },

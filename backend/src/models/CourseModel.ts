@@ -2,7 +2,7 @@ import mongoose,{mongo, Schema} from "mongoose"
 import { course } from "../types/courses"
 
 const CourseModelSchema:Schema<course>=new mongoose.Schema({
-    courseId:{type:String},
+    ID:{type:String},
     courseName:{type:String},
     startingDate:{type:Date},
     completionDate:{type:Date},

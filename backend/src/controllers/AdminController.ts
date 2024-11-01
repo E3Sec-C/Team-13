@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import adminService from "../services/AdminService";
+import {AdminService} from "../services/index";
 
 class AdminController{
     async createAdmin(req: Request, res: Response, next: NextFunction){
         const adminData = req.body;
         try{
-            const newAdmin = await adminService.create(adminData);
+            const newAdmin = await AdminService.create(adminData);
             res.status(200).json(newAdmin);
         }catch(error){
             next(error);
@@ -13,7 +13,7 @@ class AdminController{
     }
     async getAdminById(req: Request, res: Response, next: NextFunction){
         try{
-            const adminReponse = await adminService.getById(req.params.id);
+            const adminReponse = await AdminService.getById(req.params.ID);
             res.status(200).json(adminReponse);
         }catch(error){
             next(error);
@@ -22,7 +22,7 @@ class AdminController{
     async updateAdminById(req: Request, res: Response, next: NextFunction){
         const adminData = req.body;
         try{
-            const adminReponse = await adminService.updateById(req.params.id,adminData);
+            const adminReponse = await AdminService.updateById(req.params.ID,adminData);
             res.status(200).json(adminReponse);
         }catch(error){
             next(error);
@@ -30,7 +30,7 @@ class AdminController{
     }
     async deleteAdminById(req: Request, res: Response, next: NextFunction){
         try{
-            const adminReponse = await adminService.deleteById(req.params.id);
+            const adminReponse = await AdminService.deleteById(req.params.ID);
             res.status(200).json(adminReponse);
         }catch(error){
             next(error);

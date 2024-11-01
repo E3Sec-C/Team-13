@@ -2,7 +2,7 @@ import mongoose, { Schema,model } from "mongoose";
 import { admin } from "../types/admin";
 
 const AdminSchema = new Schema<admin>({
-    userId:{
+    ID:{
         type: String,
         required:true
     },
@@ -15,10 +15,6 @@ const AdminSchema = new Schema<admin>({
         required: true
     },
     email: {
-        type: String,
-        required: true
-    },
-    adminId:{
         type: String,
         required: true
     },

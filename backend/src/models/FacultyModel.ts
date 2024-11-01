@@ -2,7 +2,7 @@ import mongoose, { model, Schema } from "mongoose";
 import { faculty } from "../types/faculty";
 
 const FacultySchema = new Schema<faculty>({
-    userId:{
+    ID:{
         type: String,
         required:true
     },
@@ -19,10 +19,6 @@ const FacultySchema = new Schema<faculty>({
         required: true
     },
     mobile:String,
-    facultyId:{
-        type: String,
-        required: true
-    },
     assignedClasses: [String],
     image:Buffer,
     education: String
