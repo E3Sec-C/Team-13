@@ -1,7 +1,7 @@
 import { Document, ObjectId } from "mongoose";
 
 export interface hod extends Document{
-    userId: string,
+    ID: string,
     password: string,
     name: string,
     email: string,

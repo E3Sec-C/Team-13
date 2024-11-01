@@ -1,6 +1,6 @@
 import AdminModel from "../models/AdminModel";
 import { admin } from "../types/admin";
-import CrudRepository from "./crudRepo";
+import CrudRepository from "./CrudRepository";
 
 class AdminRepository extends CrudRepository<admin>{
     constructor(){

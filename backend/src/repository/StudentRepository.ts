@@ -1,11 +1,11 @@
 import StudentModel from "../models/StudentModel";
 import { student } from "../types/student";
-import CrudRepository from "./crudRepo";
+import CrudRepository from "./CrudRepository";
 
-class StudentRepository extends CrudRepository<student>{
-    constructor(){
-        super(StudentModel);
-    }
+class StudentRepository extends CrudRepository<student> {
+  constructor() {
+    super(StudentModel);
+  }
 }
 
 export default new StudentRepository();

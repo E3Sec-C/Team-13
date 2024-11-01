@@ -1,7 +1,7 @@
 import { Document, ObjectId } from "mongoose";
 
 export interface nonTeachingStaff extends Document{
-    staffId: string;
+    ID: string;
     mobile:string;
     email:string;
     image:Blob;

@@ -1,7 +1,7 @@
 import mongoose, { Document, FilterQuery, Model } from "mongoose";
 
 class CrudRepository<T extends Document>{
-    private model:Model<T>;
+    protected model:Model<T>;
 
     constructor(model:Model<T>){
         this.model = model;
@@ -28,6 +28,7 @@ class CrudRepository<T extends Document>{
             throw new Error("Failed to delete document ${error.message}");
         }
     }
+    
     async getById(id:string):Promise<T|null>{
         try{
             const response = await this.model.findById(id);
@@ -61,6 +62,15 @@ class CrudRepository<T extends Document>{
             throw new Error("Failed in updating the document with given id");
         }
     }
+    async updateByData(data:Partial<T>):Promise<T | null>{
+        const {id,...updatedData}=data;
+        try{
+            const response = await this.model.findOneAndUpdate(id, data, {new:true});
+            return response;
+        }catch(error){
+            throw error;
+        }
+    }   
 }
 
 export default CrudRepository;

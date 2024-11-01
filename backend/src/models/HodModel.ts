@@ -4,7 +4,7 @@ import FundsModel from "./FundsModel";
 import { fund } from "../types/funds";
 
 const HODSchema = new Schema<hod>({
-    userId:{
+    ID:{
         type: String,
         required:true
     },
