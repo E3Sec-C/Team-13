@@ -1,6 +1,6 @@
 import FundsModel from "../models/FundsModel";
 import { fund } from "../types/funds";
-import CrudRepository from "./crudRepo";
+import CrudRepository from "./CrudRepository";
 
 class FundsRepository extends CrudRepository<fund>{
     constructor(){
