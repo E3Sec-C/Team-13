@@ -13,7 +13,11 @@ export interface semRecord{
 }
 
 export interface student extends Document{
+<<<<<<< HEAD
+    ID: string;
+=======
     ID:string;
+>>>>>>> 14af5bebb5be61a08cb222a236fb206a560cc5e4
     section:string;
     year:string;
     sem:number;

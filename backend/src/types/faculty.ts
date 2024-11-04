@@ -7,6 +7,6 @@ export interface faculty extends Document{
     email: string,
     mobile: string,
     assignedClasses: string[],
-    image:Blob,
+    image:Buffer,
     education: string
 }
