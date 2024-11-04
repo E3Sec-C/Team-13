@@ -1,35 +1,46 @@
 import { admin } from "../types/admin";
-import adminRepository from "../repository/AdminRepository";
+import AdminRepository from "../repository/AdminRepository";
 import { ConflictError, NotFoundError } from "../exceptions/CustomExceptions";
-import mongoose from "mongoose";
 
 class AdminService{
     async create(adminData: Partial<admin>):Promise<admin|null>{
-        const {ID} = adminData;
-        console.log(adminData);
-        const result = await adminRepository.getByData({ID:ID});
+
+        const {ID,email} = adminData;
+        
+        const result = await AdminRepository.getByData({ID:ID,email:email});
         if(result){
             throw new ConflictError("Already existed user with similar data");
         }
-        const response = await adminRepository.create(adminData);
+        const response = await AdminRepository.create(adminData);
         return response;
     }
-    async getById(id: string):Promise<admin|null>{
-        return await adminRepository.getById(id);
+
+    async getById(ID: string):Promise<admin|null>{
+
+        return await AdminRepository.getById(ID);
     }
-    async updateById(id: string, adminData: Partial<admin>): Promise<admin|null>{
-        const response = await adminRepository.updateById(id,adminData);
+
+    async updateById(ID: string, adminData: Partial<admin>): Promise<admin|null>{
+
+        const response = await AdminRepository.updateById(ID,adminData);
         if(!response){
             throw new NotFoundError("Admin with given ID not found");
         }
         return response;
     }
-    async deleteById(id: string): Promise<admin>{
-        const response = await adminRepository.deleteById(id);
+
+    async deleteById(ID: string): Promise<admin>{
+
+        const response = await AdminRepository.deleteById(ID);
         if(!response){
             throw new NotFoundError("Admin with given ID not found");
         }
         return response;
+    }
+
+    async getAll():Promise<admin[] | null>{
+        
+        return await AdminRepository.getAll();
     }
 }
 

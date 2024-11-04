@@ -9,6 +9,7 @@ class CrudRepository<T extends Document>{
     }
 
     async create(data: Partial<T>):Promise<T>{
+
         try{
             const result = await this.model.create(data);
             return result;
@@ -17,30 +18,28 @@ class CrudRepository<T extends Document>{
         }
     }
 
-    async deleteById(id: string):Promise<T|null>{
-        //checking whether the given id is valid or not
-        if(!mongoose.Types.ObjectId.isValid(id)){
-            throw new Error("Invalid id format");
-        }
+    async deleteById(ID: string):Promise<T|null>{
+        
         try{
-            const response = await this.model.findByIdAndDelete(id);
+            const response = await this.model.findOneAndDelete({ID});
             return response;
         }catch(error){
             throw new Error("Failed to delete document ${error.message}");
         }
     }
-    async getById(id:string):Promise<T|null>{
-        if(!mongoose.Types.ObjectId.isValid(id)){
-            throw new ValidationError("Invalid ID format");
-        }
+    
+    async getById(ID:string):Promise<T|null>{
+
         try{
-            const response = await this.model.findById(id);
+            const response = await this.model.findOne({ID});
             return response;
         }catch(error){
             throw new Error("Failed in getting the document with given id");
         }
+
     }
     async getByData(data: FilterQuery<T>):Promise<T|null>{
+        
         try{
             const response = this.model.findOne(data);
             return response;
@@ -56,18 +55,25 @@ class CrudRepository<T extends Document>{
             throw new Error("Failed in getting all documents");
         }
     }
-    async updateById(id:string, data:Partial<T>):Promise<T|null>{
-        if(!mongoose.Types.ObjectId.isValid(id)){
-            throw new ValidationError("Invalid ID format");
-        }
+    async updateById(ID:string, data:Partial<T>):Promise<T|null>{
+        
         try{
-            const response = await this.model.findByIdAndUpdate(id,data,{new:true});
-            //{new:true}=> return the updated document instead of old document
+            const response = await this.model.findOneAndUpdate({ID},data,{new:true});
             return response;
+
         }catch(error){
             throw new Error("Failed in updating the document with given id");
         }
     }
+    // async updateByData(data:Partial<T>):Promise<T | null>{
+    //     const {id,...updatedData}=data;
+    //     try{
+    //         const response = await this.model.findOneAndUpdate(id, data, {new:true});
+    //         return response;
+    //     }catch(error){
+    //         throw error;
+    //     }
+    // }   
 }
 
 export default CrudRepository;
