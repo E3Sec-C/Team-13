@@ -3,12 +3,13 @@ import Sidebar from "./Sidebar";
 import "./../styles/dashboard.css";
 
 // Main Layout Component
-const Layout = ({ children }) => {
+const Layout = ({isSidebarCollapsed}) => {
+  
   return (
     <div className="layout-container">
-      <Sidebar />
+      <Sidebar isCollapsed = {isSidebarCollapsed} />
       <div className="page-container">
-        {children}
+          <h1>This is a Heading</h1>
       </div>
     </div>
   );
