@@ -1,0 +1,206 @@
+/* Global layout settings */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Layout container */
+.layout-container {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+}
+
+/* Navbar Styles */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #34495e;
+  padding: 10px 20px;
+  color: white;
+  height: 60px;
+  width: 100%;
+  position: fixed; /* Fixed at top */
+  top: 0;
+  left: 0;
+  z-index: 10; /* Ensure Navbar is above Sidebar */
+}
+
+.navbar-title {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.navbar-title h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  width: 250px;
+  background-color: #2c3e50;
+  color: white;
+  padding: 20px;
+  transition: width 0.3s ease;
+  overflow-x: hidden;
+  position: fixed;
+  top: 60px; /* Offset Sidebar below the Navbar */
+  left: 0;
+  height: calc(100vh - 60px); /* Make Sidebar fill rest of the screen height */
+}
+
+.sidebar.collapsed {
+  width: 60px; /* Reduced width in collapsed state */
+}
+
+.sidebar .nav-item {
+  list-style: none;
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column; /* Make sure items are stacked vertically */
+}
+
+.sidebar .nav-link {
+  display: flex;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: padding 0.3s ease;
+  width: 100%;
+}
+
+.sidebar.collapsed .nav-link {
+  justify-content: center;
+  padding: 10px;
+}
+
+.sidebar .nav-link:hover {
+  background-color: #34495e;
+}
+
+.sidebar .sub-nav {
+  margin-left: 20px;
+  padding-left: 20px;
+}
+
+.sidebar .sub-nav-item {
+  list-style: none;
+}
+
+.sidebar .sub-nav-link {
+  display: flex;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  padding: 5px;
+}
+
+.sidebar .header {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 20px;
+  color: #ecf0f1;
+}
+
+.sidebar .divider {
+  border-top: 1px solid #7f8c8d;
+  margin: 10px 0;
+}
+
+/* Dropdown toggle styles */
+.dropdown-toggle {
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+/* Make the clickable area of the nav link span the entire width */
+.sidebar .nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Content styling */
+.content {
+  margin-left: 250px;
+  padding: 20px;
+  flex-grow: 1;
+  transition: margin-left 0.3s ease;
+}
+
+.sidebar.collapsed ~ .content {
+  margin-left: 60px;
+}
+
+/* Hide titles in collapsed state */
+.sidebar.collapsed .header,
+.sidebar.collapsed .nav-link span {
+  display: none;
+}
+
+/* Ensure Users section has icon and title inline */
+.sidebar .nav-item .nav-link {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+}
+
+/* Center icons in collapsed state */
+.sidebar.collapsed .nav-link .icon,
+.sidebar.collapsed .sub-nav .icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Indent sub-nav items */
+.sub-nav {
+  margin-left: 20px; /* Adjust the indentation here */
+}
+
+/* Ensure icons are aligned properly in the expanded state */
+.sub-nav-item .icon {
+  margin-right: 10px; /* To add space between icon and text */
+}
+
+/* Styling for the dropdown toggle */
+.dropdown-toggle {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* To align the toggle icon to the right */
+  padding-right: 10px;
+}
+
+.sub-nav-item .nav-link {
+  display: flex;
+  align-items: center;
+}
+
+.sub-nav-link {
+  display: flex;
+  align-items: center;
+}
+
+/* In the collapsed state, hide the arrow icon */
+.sidebar.collapsed .dropdown-toggle {
+  display: none;
+}
+
+/* Make sure clicking the Users text in collapsed state expands everything */
+.sidebar.collapsed .nav-link.active {
+  background-color: #34495e;
+}
