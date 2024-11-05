@@ -1,27 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
-import Navbar from './components/navbar/Navbar';
-import Carousel from './components/carousel/Carousel';
-import React, { useState } from "react";
-import Sidebar from "./components/Sidebar";
-import Navbar from "./components/Navbar";
-import "./styles/dashboard.css"; // Import the updated styles
-
-const App = () => {
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-
-  const toggleSidebar = () => {
-    setIsSidebarCollapsed(prevState => !prevState);
-  };
-
-
 
 function App() {
   return (
-
-    // <Navbar/>
-    //   <Carousel/>
-
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
@@ -39,6 +20,6 @@ function App() {
       </header>
     </div>
   );
-};
+}
 
 export default App;
