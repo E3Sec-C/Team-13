@@ -7,7 +7,7 @@ import CourseController from "./CourseController";
 import NonTeachingStaffController from "./NonTeachingStaffController";
 import InfrastructureController from "./InfrastructureController";
 import ResearchPublicationsController from "./ResearchPublicationsController";
-
+import UserController from "./UserController";
 export {
     AdminController,
     StudentController,
@@ -18,4 +18,5 @@ export {
     NonTeachingStaffController,
     InfrastructureController,
     ResearchPublicationsController,
+    UserController,
 }

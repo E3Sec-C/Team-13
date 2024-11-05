@@ -8,6 +8,7 @@ import CourseRoutes from "./CourseRoutes";
 import InfrastructureRoutes from "./InfrastructureRoutes";
 import NonTeachingStaffRoutes from "./NonTeachingStaffRoutes";
 import ResearchpublicationsRoutes from "./ResearchPublicationsRoutes";
+import UserRoutes from "./UserRoutes";
 
 const router=express.Router()
    
@@ -20,6 +21,7 @@ router.use("/course",CourseRoutes);
 router.use("/infrastructure",InfrastructureRoutes);
 router.use("/nonteachingstaff",NonTeachingStaffRoutes);
 router.use("/researchpublications",ResearchpublicationsRoutes);
+router.use("/user",UserRoutes);
 
 
 router.get("/home",(req,res)=>{
