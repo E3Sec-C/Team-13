@@ -8,6 +8,7 @@ import InfrastructureRepository from "./InfrastructureRepository";
 import NonTeachingStaffRepository from "./NonTeachingStaffRepository";
 import ResearchPublicationsRepository from "./ResearchPublicationsRepository";
 import StudentRepository from "./StudentRepository";
+import UserRepository from "./UserRepository";
 export {
     AdminRepository,
     ComplaintRepository,
@@ -19,4 +20,5 @@ export {
     NonTeachingStaffRepository,
     ResearchPublicationsRepository,
     StudentRepository,
+    UserRepository,
 }

@@ -1,0 +1,26 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserController = exports.ResearchPublicationsController = exports.InfrastructureController = exports.NonTeachingStaffController = exports.CourseController = exports.ComplaintController = exports.HodController = exports.FacultyController = exports.StudentController = exports.AdminController = void 0;
+const AdminController_1 = __importDefault(require("./AdminController"));
+exports.AdminController = AdminController_1.default;
+const Studentcontroller_1 = __importDefault(require("./Studentcontroller"));
+exports.StudentController = Studentcontroller_1.default;
+const FacultyController_1 = __importDefault(require("./FacultyController"));
+exports.FacultyController = FacultyController_1.default;
+const HodController_1 = __importDefault(require("./HodController"));
+exports.HodController = HodController_1.default;
+const ComplaintController_1 = __importDefault(require("./ComplaintController"));
+exports.ComplaintController = ComplaintController_1.default;
+const CourseController_1 = __importDefault(require("./CourseController"));
+exports.CourseController = CourseController_1.default;
+const NonTeachingStaffController_1 = __importDefault(require("./NonTeachingStaffController"));
+exports.NonTeachingStaffController = NonTeachingStaffController_1.default;
+const InfrastructureController_1 = __importDefault(require("./InfrastructureController"));
+exports.InfrastructureController = InfrastructureController_1.default;
+const ResearchPublicationsController_1 = __importDefault(require("./ResearchPublicationsController"));
+exports.ResearchPublicationsController = ResearchPublicationsController_1.default;
+const UserController_1 = __importDefault(require("./UserController"));
+exports.UserController = UserController_1.default;

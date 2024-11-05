@@ -6,10 +6,6 @@ const AdminSchema = new Schema<admin>({
         type: String,
         required:true
     },
-    password:{
-        type:String,
-        required: true
-    },
     name:{
         type: String,
         required: true
