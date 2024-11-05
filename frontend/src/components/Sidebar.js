@@ -9,12 +9,11 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import "../styles/dashboard.css";
 
-// Sidebar component
-const Sidebar = ({ isCollapsed, toggleSidebar }) => {
-  const [isUsersExpanded, setIsUsersExpanded] = useState(false); // State for Users dropdown
-  const [isSidebarExpanded, setIsSidebarExpanded] = useState(true); // To track sidebar expansion
+const Sidebar = ({ isCollapsed }) => {
+  const [isUsersExpanded, setIsUsersExpanded] = useState(false);
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(true); // State for Sidebar expansion
 
-  // Navigation structure
+
   const NAVIGATION = [
     {
       kind: 'header',
@@ -42,26 +41,10 @@ const Sidebar = ({ isCollapsed, toggleSidebar }) => {
       title: 'Users',
       icon: <GroupIcon />,
       children: [
-        {
-          segment: 'students',
-          title: 'Students',
-          icon: <PersonIcon />,
-        },
-        {
-          segment: 'faculty',
-          title: 'Faculty',
-          icon: <PersonIcon />,
-        },
-        {
-          segment: 'nonteachingstaff',
-          title: 'Non-Teaching staff',
-          icon: <PersonIcon />,
-        },
-        {
-          segment: 'hod',
-          title: 'HOD',
-          icon: <PersonIcon />,
-        },
+        { segment: 'students', title: 'Students', icon: <PersonIcon /> },
+        { segment: 'faculty', title: 'Faculty', icon: <PersonIcon /> },
+        { segment: 'nonteachingstaff', title: 'Non-Teaching staff', icon: <PersonIcon /> },
+        { segment: 'hod', title: 'HOD', icon: <PersonIcon /> },
       ],
     },
     {
@@ -71,51 +54,53 @@ const Sidebar = ({ isCollapsed, toggleSidebar }) => {
     },
   ];
 
-  // Handle toggle for expanding/collapsing Users dropdown
-  const handleToggleUsersDropdown = () => {
-    setIsUsersExpanded(!isUsersExpanded);
-  };
+  const handleToggleUsersDropdown = () => setIsUsersExpanded(!isUsersExpanded);
 
-  // Handle sidebar expansion when clicking the Users icon in the collapsed state
   const handleUsersClick = (event) => {
-    event.preventDefault(); // Prevent the default link behavior
+    event.preventDefault();
     if (isCollapsed) {
-      setIsSidebarExpanded(true); // Expand the sidebar
+      setIsSidebarExpanded(true);
     }
     handleToggleUsersDropdown();
   };
 
   return (
-    <div className={`sidebar ${isCollapsed ? "collapsed" : ""} ${isSidebarExpanded ? "" : "expanded"}`}>
-      <ul>
+    <div className={`sidebar ${isCollapsed ? "collapsed" : ""}`}>
+      <ul className="nav-list">
         {NAVIGATION.map((item, index) => (
           item.kind === 'header' ? (
-            <li key={index} className="header">{!isCollapsed && item.title}</li> // Hide header titles in collapsed state
+            <li key={index} className="header">
+              {!isCollapsed && <span className="header-text">{item.title}</span>}
+            </li>
           ) : item.kind === 'divider' ? (
-            <li key={index} className="divider"></li>
+            <li key={index} className="divider" />
           ) : (
             <li key={index} className="nav-item">
-              <NavLink 
-                to={`/${item.segment}`} 
-                className={`nav-link ${item.segment === 'users' && isUsersExpanded ? 'active' : ''}`} 
-              >
-                <div className="icon">{item.icon}</div>
-                {!isCollapsed && item.title} {/* Show title only in expanded state */}
-              </NavLink>
+              <div className="nav-item-wrapper">
+                <NavLink
+                  to={`/${item.segment}`}
+                  className={`nav-link ${item.segment === 'users' && isUsersExpanded ? 'active' : ''}`}
+                  onClick={item.segment === 'users' ? handleUsersClick : undefined}
+                >
+                  <div className="nav-content">
+                    <div className="icon-wrapper">{item.icon}</div>
+                    {!isCollapsed && <span className="nav-title">{item.title}</span>}
+                  </div>
+                  {item.segment === 'users' && !isCollapsed && (
+                    <div className="dropdown-toggle">
+                      {isUsersExpanded ? <ArrowDropUpIcon size={20} /> : <ArrowDropDownIcon size={20} />}
+                    </div>
+                  )}
+                </NavLink>
+              </div>
 
-              {item.segment === 'users' && (
-                <div className="dropdown-toggle" onClick={handleUsersClick}>
-                  {item.segment === 'users' && (isUsersExpanded ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />)}
-                </div>
-              )}
-
-              {item.children && isUsersExpanded && (
+              {item.children && isUsersExpanded && !isCollapsed && (
                 <ul className="sub-nav">
                   {item.children.map((child, childIndex) => (
                     <li key={childIndex} className="sub-nav-item">
                       <NavLink to={`/${child.segment}`} className="sub-nav-link">
-                        <div className="icon">{child.icon}</div>
-                        {!isCollapsed && child.title} {/* Show title only in expanded state */}
+                        <div className="icon-wrapper">{child.icon}</div>
+                        <span className="nav-title">{child.title}</span>
                       </NavLink>
                     </li>
                   ))}
