@@ -8,10 +8,6 @@ const HODSchema = new Schema<hod>({
         type: String,
         required:true
     },
-    password:{
-        type:String,
-        required: true
-    },
     name:{
         type: String,
         required: true

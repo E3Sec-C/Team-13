@@ -5,11 +5,7 @@ const FacultySchema = new Schema<faculty>({
     ID:{
         type: String,
         required:true
-    },
-    password:{
-        type:String,
-        required: true
-    },
+    },        
     name:{
         type: String,
         required: true

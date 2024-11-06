@@ -7,6 +7,7 @@ import CourseService from "./CourseService";
 import InfrastructureService from "./InfrastructureService";
 import NonTeachingStaffService from "./NonTeachingStaffService";
 import ResearchPublicationsService from "./ResearchPublicationsService";
+import UserService from "./UserService";
 export{
     AdminService,
     StudentService,
@@ -17,4 +18,5 @@ export{
     InfrastructureService,
     NonTeachingStaffService,
     ResearchPublicationsService,
+    UserService,
 }
