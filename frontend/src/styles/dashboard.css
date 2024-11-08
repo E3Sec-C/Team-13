@@ -13,12 +13,13 @@ body {
   height: 100vh;
 }
 .page-container{
-  display:flex;
-  margin-left:10;
-  justify-content: space-evenly;
-  align-items: flex-start;
-  margin-top: 100px;
-  margin-left: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+  width: 100vw; /* Full viewport width */
+  margin: 0; /* Remove any margin to keep it centered */
 }
 
 /* Navbar Styles */
