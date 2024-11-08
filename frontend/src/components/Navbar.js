@@ -7,7 +7,7 @@ const Navbar = ({ onSidebarToggle }) => {
   // Update time every second
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setTime(`${new Date().toLocaleTimeString()}  ${new Date().getHours()>=12?'P.M':'A.M'}`);
+      setTime(`${new Date().toLocaleTimeString()}`);
     }, 1000);
 
     // Clean up the interval when the component is unmounted

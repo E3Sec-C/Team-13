@@ -1,26 +1,31 @@
 import React from 'react';
 import './App.css';
-import Navbar from './components/homePage/Navbar'
-import Carousel from './components/homePage/Carousel';
-import Footer from './components/homePage/Footer';
-import AboutUs from './components/homePage/AboutUs';
+import { Routes, Route } from 'react-router-dom';
 import "./styles/dashboard.css";
 import Dashboard from "./components/Dashboard";
+import HomePage from './components/homePage/HomePage';
+import SignIn from './components/signIn/SignIn';
 
 
 
 const App = () => {
   
   return (
-    <div>
-      
-      <Navbar/>
-      <Carousel/>
-      <AboutUs/>
-      <Footer/>
-      {/* <Dashboard /> */}
 
-    </div>
+    
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path = "/dashboard" element={<Dashboard />} />
+      </Routes>
+    
+
+    // <div>
+      
+    //   <HomePage/>
+    //   <Dashboard />
+
+    // </div>
 
   );
 }
