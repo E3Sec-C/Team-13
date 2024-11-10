@@ -17,7 +17,11 @@ class CourseService{
 
     async getById(ID: string):Promise<course|null>{
 
-        return await CourseRepository.getById(ID);
+        const res = await CourseRepository.getById(ID);
+        if(!res){
+            throw new NotFoundError("Course with given ID not found");
+        }
+        return res;
     }
 
     async updateById(ID: string, courseData: Partial<course>): Promise<course|null>{

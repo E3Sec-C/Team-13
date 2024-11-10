@@ -17,7 +17,11 @@ class FacultyService {
 
     async getById(ID: string):Promise<faculty|null>{
 
-        return await FacultyRepository.getById(ID);
+        const res = await FacultyRepository.getById(ID);
+        if(!res){
+            throw new NotFoundError("Faculty with given ID not found");
+        }
+        return res;
     } 
 
     async updateById(ID: string, facultyData: Partial<faculty>): Promise<faculty|null>{

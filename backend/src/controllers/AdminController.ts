@@ -1,60 +1,36 @@
 import { NextFunction, Request, Response } from "express";
 import {AdminService} from "../services/index";
+import { asyncHandler } from "../middlewares/asyncHandler";
 
 class AdminController{
 
-    async createAdmin(req: Request, res: Response, next: NextFunction){
-
+    createAdmin = asyncHandler(async (req: Request, res: Response, next: NextFunction)=>{
         const adminData = req.body;
-        try{
-            const newAdmin = await AdminService.create(adminData);
-            res.status(200).json(newAdmin);
-        }catch(error){
-            next(error);
-        }
-    }
+        const newAdmin = await AdminService.create(adminData);
+        res.status(200).json(newAdmin);
+    });
 
-    async getAdminById(req: Request, res: Response, next: NextFunction){
+    getAdminById = asyncHandler(async(req: Request,res: Response,next:NextFunction)=>{
+        console.log(req.params.ID);
+        const adminResponse = await AdminService.getById(req.params.ID);
+        res.status(200).json(adminResponse);
+    });
 
-        try{
-            const adminReponse = await AdminService.getById(req.params.ID);
-            res.status(200).json(adminReponse);
-        }catch(error){
-            next(error);
-        }
-    }
+    updateAdminById = asyncHandler(async(req: Request, res: Response, next: NextFunction)=>{
+        const adminReponse = await AdminService.updateById(req.params.ID,req.body);
+        res.status(200).json(adminReponse);
+    });
 
-    async updateAdminById(req: Request, res: Response, next: NextFunction){
+    deleteAdminById = asyncHandler(async(req: Request, res: Response, next: NextFunction)=>{
+        const adminReponse = await AdminService.deleteById(req.params.ID);
+        res.status(200).json(adminReponse);
+    });
 
-        const adminData = req.body;
-        try{
-            const adminReponse = await AdminService.updateById(req.params.ID,adminData);
-            res.status(200).json(adminReponse);
-        }catch(error){
-            next(error);
-        }
-    }
-
-    async deleteAdminById(req: Request, res: Response, next: NextFunction){
-
-        try{
-            const adminReponse = await AdminService.deleteById(req.params.ID);
-            res.status(200).json(adminReponse);
-        }catch(error){
-            next(error);
-        }
-    }
-
-    async getAll(req: Request, res: Response, next: NextFunction){
-
-        try{
-            const response = await AdminService.getAll();
-            res.status(200).json(response);
-        }catch(error){
-            next(error);
-        }
-    }
-
+    getAll = asyncHandler(async(req: Request, res: Response, next: NextFunction)=>{
+        const response = await AdminService.getAll();
+        res.status(200).json(response);
+    });
+    
 }
 
 export default new AdminController();

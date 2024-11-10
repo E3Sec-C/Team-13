@@ -17,7 +17,12 @@ class InfrastructureService{
 
     async getByAssetName(assetName: string):Promise<infrastructure|null>{
 
-        return await InfrastructureRepository.getByAssetName(assetName);
+        const res = await InfrastructureRepository.getByAssetName(assetName);
+        if(!res){
+            throw new NotFoundError("Asset with given name not found");
+        }
+        return res;
+        
     }
 
     async updateByAssetName(assetName: string, infrastructureData: Partial<infrastructure>): Promise<infrastructure|null>{
