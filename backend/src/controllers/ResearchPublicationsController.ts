@@ -1,58 +1,35 @@
 import { Request,Response,NextFunction } from "express";
 import { ResearchPublicationsService } from "../services/index";
+import { asyncHandler } from "../middlewares/asyncHandler";
 class ResearchPublicationscontroller{
     
-    async createResearchPublications(req: Request, res: Response, next: NextFunction){
+    createResearchPublications = asyncHandler( async (req: Request, res: Response, next: NextFunction)=>{
+        const newResearchPublications = await ResearchPublicationsService.create(req.body);
+        res.status(200).json(newResearchPublications);
+    });
 
-        const researchPublicationsData = req.body;
-        try{
-            const newResearchPublications = await ResearchPublicationsService.create(researchPublicationsData);
-            res.status(200).json(newResearchPublications);
-        }catch(error){
-            next(error);
-        }
-    }
+    getResearchPublicationsById = asyncHandler(async (req: Request, res: Response, next: NextFunction)=>{
+        const researchPublications = await ResearchPublicationsService.getById(req.params.ID);
+        res.status(200).json(researchPublications);
+    });
 
-    async getResearchPublicationsById(req: Request, res: Response, next: NextFunction){
+    
+    updateResearchPublicationsById = asyncHandler(async (req: Request, res: Response, next: NextFunction)=>{
+        const updatedResearchPublications = await ResearchPublicationsService.updateById(req.params.ID,req.body);
+        res.status(200).json(updatedResearchPublications);
+    });
 
-        try{
-            const researchPublications = await ResearchPublicationsService.getById(req.params.ID);
-            res.status(200).json(researchPublications);
-        }catch(error){
-            next(error);
-        }
-    }
 
-    async updateResearchPublicationsById(req: Request, res: Response, next: NextFunction){
-        
-        const researchPublicationsData = req.body;
-        try{
-            const updatedResearchPublications = await ResearchPublicationsService.updateById(req.params.ID,researchPublicationsData);
-            res.status(200).json(updatedResearchPublications);
-        }catch(error){
-            next(error);
-        }
-    }
+    deleteResearchPublicationsById = asyncHandler(async (req: Request, res: Response, next: NextFunction)=>{
+        const response = await ResearchPublicationsService.deleteById(req.params.ID);
+        res.status(200).json(response);
+    });
 
-    async deleteResearchPublicationsById(req: Request, res: Response, next: NextFunction){
-        
-        try{
-            const response = await ResearchPublicationsService.deleteById(req.params.ID);
-            res.status(200).json(response);
-        }catch(error){
-            next(error);
-        }
-    }
+    getAll = asyncHandler(async(req: Request, res: Response, next: NextFunction)=>{
+        const response = await ResearchPublicationsService.getAll();
+        res.status(200).json(response);
+    });
 
-    async getAll(req: Request, res: Response, next: NextFunction){
-
-        try{
-            const response = await ResearchPublicationsService.getAll();
-            res.status(200).json(response);
-        }catch(error){
-            next(error);
-        }
-    }
 }
 
 export default new ResearchPublicationscontroller();

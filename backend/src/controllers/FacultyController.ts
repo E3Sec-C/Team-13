@@ -1,59 +1,33 @@
+import { asyncHandler } from "../middlewares/asyncHandler";
 import { FacultyService } from "../services/index";
 import { Request,Response,NextFunction } from "express";
 
 class FacultyController{
 
-    async createFaculty(req: Request, res: Response, next: NextFunction){
+    createFaculty = asyncHandler(async(req: Request, res: Response, next: NextFunction)=>{
+        const newFaculty = await FacultyService.create(req.body);
+        res.status(200).json(newFaculty);
+    });
 
-        const facultyData = req.body;
-        try{
-            const newFaculty = await FacultyService.create(facultyData);
-            res.status(200).json(newFaculty);
-        }catch(error){
-            next(error);
-        }
-    }
+    getFacultyById = asyncHandler(async(req: Request, res: Response, next: NextFunction)=>{
+        const faculty = await FacultyService.getById(req.params.ID);
+        res.status(200).json(faculty);
+    });
 
-    async getfacultyById(req: Request, res: Response, next: NextFunction){
+    updateFacultyById = asyncHandler(async(req: Request, res: Response, next: NextFunction)=>{
+        const updatedFaculty = await FacultyService.updateById(req.params.ID,req.body);
+        res.status(200).json(updatedFaculty);
+    });
 
-        try{
-            const faculty = await FacultyService.getById(req.params.ID);
-            res.status(200).json(faculty);
-        }catch(error){
-            next(error);
-        }
-    }
-
-    async updateFacultyById(req: Request, res: Response, next: NextFunction){
-
-        const facultyData = req.body;
-        try{
-            const updatedFaculty = await FacultyService.updateById(req.params.ID,facultyData);
-            res.status(200).json(updatedFaculty);
-        }catch(error){
-            next(error);
-        }
-    }
+    deleteFacultyById = asyncHandler(async(req: Request, res: Response, next: NextFunction)=>{
+        const response = await FacultyService.deleteById(req.params.ID);
+        res.status(200).json(response);
+    });
     
-    async deletefacultyById(req: Request, res: Response, next: NextFunction){
-
-        try{
-            const response = await FacultyService.deleteById(req.params.ID);
-            res.status(200).json(response);
-        }catch(error){
-            next(error);
-        }
-    }
-
-    async getAll(req: Request, res: Response, next: NextFunction){
-
-        try{
-            const response = await FacultyService.getAll();
-            res.status(200).json(response);
-        }catch(error){
-            next(error);
-        }
-    }
+    getAll = asyncHandler(async(req: Request, res: Response, next: NextFunction)=>{
+        const response = await FacultyService.getAll();
+        res.status(200).json(response);
+    });
 
 }
 
