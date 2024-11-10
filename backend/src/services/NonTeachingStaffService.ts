@@ -17,7 +17,11 @@ class NonTeachingStaffService{
 
     async getById(ID: string):Promise<nonTeachingStaff|null>{
 
-        return await NonTeachingStaffRepository.getById(ID);
+        const res = await NonTeachingStaffRepository.getById(ID);
+        if(!res){
+            throw new NotFoundError("NonTeacingStaff with given ID not found");
+        }
+        return res;
     }
 
     async updateById(ID: string, nonTeachingStaffData: Partial<nonTeachingStaff>): Promise<nonTeachingStaff|null>{

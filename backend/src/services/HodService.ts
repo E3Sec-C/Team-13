@@ -17,7 +17,11 @@ class HodService{
 
     async getById(ID: string):Promise<hod|null>{
 
-        return await HodRepository.getById(ID);
+        const res = await HodRepository.getById(ID);
+        if(!res){
+            throw new NotFoundError("Hod with given ID not found");
+        }
+        return res;
     }
 
     async updateById(ID: string, hodData: Partial<hod>): Promise<hod|null>{

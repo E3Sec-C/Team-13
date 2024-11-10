@@ -17,7 +17,11 @@ class ResearchPublicationsService{
 
     async getById(ID: string):Promise<researchPublications|null>{
 
-        return await ResearchPublicationsRepository.getById(ID);
+        const res = await ResearchPublicationsRepository.getById(ID);
+        if(!res){
+            throw new NotFoundError("Research or Publication with given ID not found");
+        }
+        return res;
     }
 
     async updateById(ID: string, researchPublicationsData: Partial<researchPublications>): Promise<researchPublications|null>{

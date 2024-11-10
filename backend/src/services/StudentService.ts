@@ -17,7 +17,11 @@ class StudentService{
 
     async getById(ID: string):Promise<student|null>{
 
-        return await StudentRepository.getById(ID);
+        const res = await StudentRepository.getById(ID);
+        if(!res){
+            throw new NotFoundError("Student with given ID not found");
+        }
+        return res;
     }
 
     async updateById(ID: string, studentData: Partial<student>): Promise<student|null>{

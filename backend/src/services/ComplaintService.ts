@@ -17,7 +17,11 @@ class ComplaintService{
 
     async getById(ID: string):Promise<complaint|null>{
 
-        return await ComplaintRepository.getById(ID);
+        const res = await ComplaintRepository.getById(ID);
+        if(!res){
+            throw new NotFoundError("Compaint with given ID not found");
+        }
+        return res;
     }
 
     async updateById(ID: string, complaintData: Partial<complaint>): Promise<complaint|null>{
