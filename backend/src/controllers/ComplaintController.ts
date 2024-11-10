@@ -1,58 +1,32 @@
 import { Request,Response,NextFunction } from "express";
 import { ComplaintService } from "../services/index";
+import { asyncHandler } from "../middlewares/asyncHandler";
 class Complaintcontroller{
     
-    async createComplaint(req: Request, res: Response, next: NextFunction){
+    createComplaint = asyncHandler(async(req: Request, res: Response, next: NextFunction)=>{
+        const newComplaint = await ComplaintService.create(req.body);
+        res.status(200).json(newComplaint);
+    });
 
-        const complaintData = req.body;
-        try{
-            const newComplaint = await ComplaintService.create(complaintData);
-            res.status(200).json(newComplaint);
-        }catch(error){
-            next(error);
-        }
-    }
+    getComplaintById = asyncHandler(async(req: Request, res: Response, next: NextFunction)=>{
+        const complaint = await ComplaintService.getById(req.params.ID);
+        res.status(200).json(complaint);
+    });
 
-    async getComplaintById(req: Request, res: Response, next: NextFunction){
+    updateComplaintById = asyncHandler(async(req: Request, res: Response, next: NextFunction)=>{
+        const updatedComplaint = await ComplaintService.updateById(req.params.ID,req.body);
+        res.status(200).json(updatedComplaint);
+    });
 
-        try{
-            const complaint = await ComplaintService.getById(req.params.ID);
-            res.status(200).json(complaint);
-        }catch(error){
-            next(error);
-        }
-    }
-
-    async updateComplaintById(req: Request, res: Response, next: NextFunction){
-        
-        const complaintData = req.body;
-        try{
-            const updatedComplaint = await ComplaintService.updateById(req.params.ID,complaintData);
-            res.status(200).json(updatedComplaint);
-        }catch(error){
-            next(error);
-        }
-    }
-
-    async deleteComplaintById(req: Request, res: Response, next: NextFunction){
-        
-        try{
-            const response = await ComplaintService.deleteById(req.params.ID);
+    deleteComplaintById = asyncHandler(async(req: Request, res: Response, next: NextFunction)=>{
+        const response = await ComplaintService.deleteById(req.params.ID);
             res.status(200).json(response);
-        }catch(error){
-            next(error);
-        }
-    }
+    });
 
-    async getAll(req: Request, res: Response, next: NextFunction){
-
-        try{
-            const response = await ComplaintService.getAll();
-            res.status(200).json(response);
-        }catch(error){
-            next(error);
-        }
-    }
+    getAll = asyncHandler(async(req: Request, res: Response, next: NextFunction)=>{
+        const response = await ComplaintService.getAll();
+        res.status(200).json(response);
+    });
 
 }
 

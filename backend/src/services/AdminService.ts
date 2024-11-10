@@ -17,7 +17,11 @@ class AdminService{
 
     async getById(ID: string):Promise<admin|null>{
 
-        return await AdminRepository.getById(ID);
+        const response =  await AdminRepository.getById(ID);
+        if(!response){
+            throw new NotFoundError("Admin with given ID not found");
+        }
+        return response;
     }
 
     async updateById(ID: string, adminData: Partial<admin>): Promise<admin|null>{
