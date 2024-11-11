@@ -3,10 +3,11 @@ import {PORT} from './config/ServerConfig';
 import { connectDatabase } from './config/DatabaseConfig';
 import errorHandler from './middlewares/errorHandler';
 import router from './routes';
-
+const cors = require("cors");
 const app:Application=express()
 
 app.use(express.json());
+app.use(cors({origin:"http://localhost:3000"}));
 
 app.get('/test',(req,res) => {
   res.status(201).json({message:"Working fine"});

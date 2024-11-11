@@ -1,17 +1,17 @@
 import React from 'react'
 import Navbar from './Navbar'
-import Carousel from './Carousel';
+// import Carousel from './Carousel';
 import Footer from './Footer';
 import AboutUs from './AboutUs';
-import Highlights from '../Highlights';
+// import Highlights from '../Highlights';
 
 function HomePage() {
   return (
     <div>
       <Navbar/>
-      <Carousel/>
+      {/* <Carousel/> */}
       <AboutUs/>
-      <Highlights/>
+      {/* <Highlights/> */}
       <Footer/>
     </div>
   )

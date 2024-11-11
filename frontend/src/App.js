@@ -1,9 +1,8 @@
 import React from 'react';
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
-import "./styles/dashboard.css";
 import Dashboard from "./components/Dashboard";
-import HomePage from './components/homePage/HomePage';
+import HomePage from './components/homePage/index';
 import SignIn from './components/signIn/SignIn';
 
 
@@ -19,14 +18,6 @@ const App = () => {
         <Route path = "/dashboard" element={<Dashboard />} />
       </Routes>
     
-
-    // <div>
-      
-    //   <HomePage/>
-    //   <Dashboard />
-
-    // </div>
-
   );
 }
 

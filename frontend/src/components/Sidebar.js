@@ -11,8 +11,6 @@ import "../styles/dashboard.css";
 
 const Sidebar = ({ isCollapsed }) => {
   const [isUsersExpanded, setIsUsersExpanded] = useState(false);
-  const [isSidebarExpanded, setIsSidebarExpanded] = useState(true); // State for Sidebar expansion
-
 
   const NAVIGATION = [
     {
@@ -54,15 +52,7 @@ const Sidebar = ({ isCollapsed }) => {
     },
   ];
 
-  const handleToggleUsersDropdown = () => setIsUsersExpanded(!isUsersExpanded);
-
-  const handleUsersClick = (event) => {
-    event.preventDefault();
-    if (isCollapsed) {
-      setIsSidebarExpanded(true);
-    }
-    handleToggleUsersDropdown();
-  };
+  const handleToggleUsersDropdown = () => setIsUsersExpanded(prev => !prev);
 
   return (
     <div className={`sidebar ${isCollapsed ? "collapsed" : ""}`}>
@@ -79,8 +69,8 @@ const Sidebar = ({ isCollapsed }) => {
               <div className="nav-item-wrapper">
                 <NavLink
                   to={`/${item.segment}`}
-                  className={`nav-link ${item.segment === 'users' && isUsersExpanded ? 'active' : ''}`}
-                  onClick={item.segment === 'users' ? handleUsersClick : undefined}
+                  className="nav-link"
+                  onClick={item.segment === 'users' ? handleToggleUsersDropdown : undefined}
                 >
                   <div className="nav-content">
                     <div className="icon-wrapper">{item.icon}</div>
@@ -88,7 +78,7 @@ const Sidebar = ({ isCollapsed }) => {
                   </div>
                   {item.segment === 'users' && !isCollapsed && (
                     <div className="dropdown-toggle">
-                      {isUsersExpanded ? <ArrowDropUpIcon size={20} /> : <ArrowDropDownIcon size={20} />}
+                      {isUsersExpanded ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
                     </div>
                   )}
                 </NavLink>
