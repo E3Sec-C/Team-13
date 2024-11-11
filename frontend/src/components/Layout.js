@@ -1,15 +1,17 @@
 import React from "react";
 import Sidebar from "./Sidebar";
 import "../styles/dashboard.css";
+import { Routes,Route } from "react-router-dom";
+import RegistrationForm from "./student/Registration";
 
 // Main Layout Component
 const Layout = ({ isSidebarCollapsed }) => {
   return (
     <div className={`layout-container ${isSidebarCollapsed ? 'collapsed' : ''}`}>
       <Sidebar isCollapsed={isSidebarCollapsed} />
-      <div className="page-container">
-        <p>There is a heading</p>
-      </div>
+      <Routes>
+        <Route path='/' element={<RegistrationForm/>} />
+      </Routes>
     </div>
   );
 };
