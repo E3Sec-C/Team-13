@@ -37,6 +37,8 @@ function SignIn() {
         console.log(response);
 
         if (response.data.success) {
+          // Save user ID in localStorage
+          localStorage.setItem('userID', response.data.userId); // Adjust based on actual response structure
           navigate('/dashboard'); // Redirect to dashboard if successful
         } else {
           setError(response.data.message); // Set the error message if the response is not successful

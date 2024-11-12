@@ -16,7 +16,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/v1/admin/R200591'); // Replace with actual API endpoint
+        const response = await axios.get(`http://localhost:5000/api/v1/admin/${localStorage.getItem('userID')}`);// Replace with actual API endpoint
         setProfileData(response.data);
         setEditedData(response.data);
       } catch (error) {
@@ -59,7 +59,7 @@ const Profile = () => {
     }
   
     try {
-      const response = await axios.put('http://localhost:5000/api/v1/admin/update/R200591', modifiedData); // Replace with actual API endpoint
+      const response = await axios.put(`http://localhost:5000/api/v1/admin/update/${localStorage.getItem('userID')}`, modifiedData); // Replace with actual API endpoint
       setProfileData((prevData) => ({ ...prevData, ...response.data })); // Update profileData with the server response
       alert('Profile updated successfully!');
       setIsEditing(false); // Close the edit popup
