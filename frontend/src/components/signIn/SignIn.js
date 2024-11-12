@@ -36,6 +36,8 @@ function SignIn() {
         const response = await axios.post(url, data);
 
         if (response.data.success) {
+          // Save user ID in localStorage
+          localStorage.setItem('userID', response.data.userId); // Adjust based on actual response structure
           if(role==='student'){
             navigate('/student'); 
           }else{
