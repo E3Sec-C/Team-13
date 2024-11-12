@@ -1,4 +1,6 @@
 import React from "react";
+import "react-responsive-carousel/lib/styles/carousel.css";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 
 const CarouselComponent = () => {
@@ -11,6 +13,9 @@ const CarouselComponent = () => {
     <Carousel
       showArrows={true}
       onChange={onChange}
+      infiniteLoop={true}
+      autoPlay={true}
+      interval={5000}
     >
       <div>
         <img src="/carousel1.jpg" />
