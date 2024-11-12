@@ -1,14 +1,15 @@
 import React from "react";
-import Sidebar from "./Sidebar";
-import "../styles/dashboard.css";
+import StudentSidebar from "./StudentSidebar";
+import "../../styles/dashboard.css";
+import { Outlet } from "react-router-dom";
 
 // Main Layout Component
 const Layout = ({ isSidebarCollapsed }) => {
   return (
     <div className={`layout-container ${isSidebarCollapsed ? 'collapsed' : ''}`}>
-      <Sidebar isCollapsed={isSidebarCollapsed} />
+      <StudentSidebar isCollapsed={isSidebarCollapsed} />
       <div className="page-container">
-        <p>There is a heading</p>
+        <Outlet />
       </div>
     </div>
   );

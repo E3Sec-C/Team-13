@@ -34,10 +34,13 @@ function SignIn() {
 
         const url = `http://localhost:5000/api/v1/user/signin`;
         const response = await axios.post(url, data);
-        console.log(response);
 
         if (response.data.success) {
-          navigate('/dashboard'); // Redirect to dashboard if successful
+          if(role==='student'){
+            navigate('/student'); 
+          }else{
+            navigate('/admin'); 
+          }
         } else {
           setError(response.data.message); // Set the error message if the response is not successful
         }
@@ -73,7 +76,7 @@ function SignIn() {
               name="password"
               value={formik.values.password}
               onChange={formik.handleChange}
-              placeholder="••••••••"
+              placeholder="********"
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
