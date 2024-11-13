@@ -4,6 +4,9 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import GroupIcon from '@mui/icons-material/Group';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import LogoutIcon from '@mui/icons-material/Logout';
+import PasswordIcon from '@mui/icons-material/Password';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import FeedbackIcon from '@mui/icons-material/Feedback';
 import "../../styles/dashboard.css";
 
 const Sidebar = ({ isCollapsed }) => {
@@ -16,12 +19,12 @@ const Sidebar = ({ isCollapsed }) => {
     {
       segment: 'profile',
       title: 'Profile',
-      icon: <DashboardIcon />,
+      icon: <AccountCircleIcon />,
     },
     {
       segment: 'generateUser',
       title: 'Generate User',
-      icon: <HowToRegIcon />,
+      icon: <PasswordIcon />,
     },
     {
         segment: 'registrations',
@@ -38,7 +41,7 @@ const Sidebar = ({ isCollapsed }) => {
     {
       segment: 'complaint',
       title: 'Complaint',
-      icon: <GroupIcon />,
+      icon: <FeedbackIcon />,
     },
     {
       segment: 'logout',

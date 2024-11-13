@@ -71,7 +71,7 @@ const AdminProfile = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-8 mt-20 border border-gray-300 rounded-lg bg-gray-100">
+    <div className="max-w-4xl mx-auto p-8 mt-20 border border-gray-300 rounded-lg bg-gray-100 bg-gradient-to-r from-gray-200 to-blue-300">
       <h2 className="text-center text-2xl font-bold text-gray-800 mb-6">User Profile</h2>
       <div className="flex flex-wrap gap-8">
         {/* <img
