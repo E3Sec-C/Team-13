@@ -19,8 +19,8 @@ router.use("/hod",HodRoutes);
 router.use("/complaint",ComplaintRoutes);
 router.use("/course",CourseRoutes);
 router.use("/infrastructure",InfrastructureRoutes);
-router.use("/nonteachingstaff",NonTeachingStaffRoutes);
-router.use("/researchpublications",ResearchpublicationsRoutes);
+router.use("/nonTeachingStaff",NonTeachingStaffRoutes);
+router.use("/researchPublications",ResearchpublicationsRoutes);
 router.use("/user",UserRoutes);
 
 

@@ -25,7 +25,7 @@ const Sidebar = ({ isCollapsed }) => {
     },
     {
         segment: 'registrations',
-        title: 'View Registrations',
+        title: 'User Registrations',
         icon: <HowToRegIcon />,
     },
     {

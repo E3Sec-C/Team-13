@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './RegistrationForm.css';
+import axios from 'axios';
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({});
@@ -27,23 +27,66 @@ const RegistrationForm = () => {
     setFormData({}); // Reset formData when role changes
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Registration successful!', formData);
-    alert(`Registration successful for ${role}!`);
+    
+    // Determine the endpoint based on the role
+    let url = '';
+    switch (role) {
+      case 'Admin':
+        url = 'http://localhost:5000/api/v1/admin';
+        break;
+      case 'Faculty':
+        url = 'http://localhost:5000/api/v1/faculty';
+        break;
+      case 'Student':
+        url = 'http://localhost:5000/api/v1/student';
+        break;
+      case 'NonTeachingStaff':
+        url = 'http://localhost:5000/api/v1/nonTeachingStaff';
+        break;
+      case 'HOD':
+        url = 'http://localhost:5000/api/v1/hod';
+        break;
+      default:
+        alert('Please select a valid role');
+        return;
+    }
+    try {
+      // Send the POST request with axios
+      const response = await axios.post(url, formData);
+  
+      if (response.status === 200) {
+        console.log('Registration successful!', formData);
+        alert(`Registration successful for ${role}!`);
+        // Reload the page to clear form data and reset state
+        window.location.reload();
+      } else {
+        console.error('Error registering user:', response.data);
+        alert('Failed to register. Please try again.');
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+      alert('An error occurred. Please try again.');
+    }
   };
+  
 
   return (
-    <div className="registration-container">
-      <h2 className='myHead'>User Registration</h2><br/>
-      <form onSubmit={handleSubmit}>
-        <div className="registration-form">
+    <div className="w-4/5 max-w-4xl mx-auto p-6 mt-20 sm:mt-24 lg:mt-32 border border-gray-300 rounded-lg bg-gray-50">
+      <h2 className="text-center text-2xl font-semibold text-gray-700 mb-6">User Registration</h2>
 
-        {/* Role Selection */}
-        <div className="role-select field">
-          <label>
-            Select Role:
-            <select value={role} onChange={handleRoleChange} required>
+      <form onSubmit={handleSubmit}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {/* Role Selection */}
+          <div className="w-full">
+            <label className="block font-semibold mb-2">Select Role:</label>
+            <select
+              value={role}
+              onChange={handleRoleChange}
+              required
+              className="w-full p-3 border border-gray-300 rounded-md"
+            >
               <option value="">Select Role</option>
               <option value="Admin">Admin</option>
               <option value="Faculty">Faculty</option>
@@ -51,271 +94,268 @@ const RegistrationForm = () => {
               <option value="NonTeachingStaff">Non-Teaching Staff</option>
               <option value="HOD">HOD</option>
             </select>
-          </label>
-        </div>
+          </div>
 
-        {/* Conditionally Render Fields Based on Role */}
-        {role && (
-          <>
-            {/* Image Upload Field */}
-            <div className="field">
-              <label>
-                Upload Image:
-                <input
-                  type="file"
-                  name="image"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                />
-              </label>
+          {/* Conditionally Render Fields Based on Role */}
+          {role && (
+            <div className="w-full">
+              <label className="block font-semibold mb-2">Upload Image:</label>
+              <input
+                type="file"
+                name="image"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="w-full p-3 border border-gray-300 rounded-md"
+              />
             </div>
-          </>
-        )}
+          )}
 
-        {role === "Admin" && (
-          <>
-            <div className="field">
-              <label>
-                ID:
+          {/* Fields based on role */}
+          {role === "Admin" && (
+            <>
+              <div className="w-full">
+                <label className="block font-semibold mb-2">ID:</label>
                 <input
                   type="text"
                   name="ID"
                   value={formData.ID || ""}
                   onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded-md"
                 />
-              </label>
-            </div>
-            <div className="field">
-              <label>
-                Name:
+              </div>
+              <div className="w-full">
+                <label className="block font-semibold mb-2">Name:</label>
                 <input
                   type="text"
                   name="name"
                   value={formData.name || ""}
                   onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded-md"
                 />
-              </label>
-            </div>
-            <div className="field">
-              <label>
-                Email:
+              </div>
+              <div className="w-full">
+                <label className="block font-semibold mb-2">Email:</label>
                 <input
                   type="email"
                   name="email"
                   value={formData.email || ""}
                   onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded-md"
                 />
-              </label>
-            </div>
-          </>
-        )}
+              </div>
+            </>
+          )}
 
-        {role === "Faculty" && (
-          <>
-            <div className="field">
-              <label>
-                ID:
+          {role === "Faculty" && (
+            <>
+              <div className="w-full">
+                <label className="block font-semibold mb-2">ID:</label>
                 <input
                   type="text"
                   name="ID"
                   value={formData.ID || ""}
                   onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded-md"
                 />
-              </label>
-            </div>
-            <div className="field">
-              <label>
-                Name:
+              </div>
+              <div className="w-full">
+                <label className="block font-semibold mb-2">Name:</label>
                 <input
                   type="text"
                   name="name"
                   value={formData.name || ""}
                   onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded-md"
                 />
-              </label>
-            </div>
-            <div className="field">
-              <label>
-                Email:
+              </div>
+              <div className="w-full">
+                <label className="block font-semibold mb-2">Email:</label>
                 <input
                   type="email"
                   name="email"
                   value={formData.email || ""}
                   onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded-md"
                 />
-              </label>
-            </div>
-            <div className="field">
-              <label>
-                Mobile:
+              </div>
+              <div className="w-full">
+                <label className="block font-semibold mb-2">Mobile:</label>
                 <input
                   type="tel"
                   name="mobile"
                   value={formData.mobile || ""}
                   onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded-md"
                 />
-              </label>
-            </div>
-            <div className="field">
-              <label>
-                Education:
+              </div>
+              <div className="w-full">
+                <label className="block font-semibold mb-2">Education:</label>
                 <input
                   type="text"
                   name="education"
                   value={formData.education || ""}
                   onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded-md"
                 />
-              </label>
-            </div>
-          </>
-        )}
+              </div>
+            </>
+          )}
 
-        {role === "HOD" && (
-          <>
-            <div className="field">
-              <label>
-                ID:
+          {role === "HOD" && (
+            <>
+              <div className="w-full">
+                <label className="block font-semibold mb-2">ID:</label>
                 <input
                   type="text"
                   name="ID"
                   value={formData.ID || ""}
                   onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded-md"
                 />
-              </label>
-            </div>
-            <div className="field">
-              <label>
-                Name:
+              </div>
+              <div className="w-full">
+                <label className="block font-semibold mb-2">Name:</label>
                 <input
                   type="text"
                   name="name"
                   value={formData.name || ""}
                   onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded-md"
                 />
-              </label>
-            </div>
-            <div className="field">
-              <label>
-                Email:
+              </div>
+              <div className="w-full">
+                <label className="block font-semibold mb-2">Email:</label>
                 <input
                   type="email"
                   name="email"
                   value={formData.email || ""}
                   onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded-md"
                 />
-              </label>
-            </div>
-            <div className="field">
-              <label>
-                Education:
+              </div>
+              <div className="w-full">
+                <label className="block font-semibold mb-2">Education:</label>
                 <input
                   type="text"
                   name="education"
                   value={formData.education || ""}
                   onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded-md"
                 />
-              </label>
-            </div>
-          </>
-        )}
+              </div>
+            </>
+          )}
 
-        {role === "NonTeachingStaff" && (
-          <>
-            <div className="field">
-              <label>
-                ID:
+          {role === "NonTeachingStaff" && (
+            <>
+              <div className="w-full">
+                <label className="block font-semibold mb-2">ID:</label>
                 <input
                   type="text"
                   name="ID"
                   value={formData.ID || ""}
                   onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded-md"
                 />
-              </label>
-            </div>
-            <div className="field">
-              <label>
-                Mobile:
+              </div>
+              <div className="w-full">
+                <label className="block font-semibold mb-2">Mobile:</label>
                 <input
                   type="tel"
                   name="mobile"
                   value={formData.mobile || ""}
                   onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded-md"
                 />
-              </label>
-            </div>
-            <div className="field">
-              <label>
-                Email:
+              </div>
+              <div className="w-full">
+                <label className="block font-semibold mb-2">Email:</label>
                 <input
                   type="email"
                   name="email"
                   value={formData.email || ""}
                   onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded-md"
                 />
-              </label>
-            </div>
-          </>
-        )}
+              </div>
+            </>
+          )}
 
-        {role === "Student" && (
-          <>
-            <div className="field">
-              <label>
-                ID:
+          {role === "Student" && (
+            <>
+              <div className="w-full">
+                <label className="block font-semibold mb-2">ID:</label>
                 <input
                   type="text"
                   name="ID"
                   value={formData.ID || ""}
                   onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded-md"
                 />
-              </label>
-            </div>
-            <div className="field">
-              <label>
-                Email:
+              </div>
+              <div className="w-full">
+                <label className="block font-semibold mb-2">Name:</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name || ""}
+                  onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="w-full">
+                <label className="block font-semibold mb-2">Email:</label>
                 <input
                   type="email"
                   name="email"
                   value={formData.email || ""}
                   onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded-md"
                 />
-              </label>
-            </div>
-            <div className="field">
-              <label>
-                Mobile:
+              </div>
+              <div className="w-full">
+                <label className="block font-semibold mb-2">Mobile:</label>
                 <input
-                  type="tel"
+                  type="text"
                   name="mobile"
                   value={formData.mobile || ""}
                   onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded-md"
                 />
-              </label>
-            </div>
-            <div className="field">
-              <label>
-                Blood Group:
+              </div>
+              <div className="w-full">
+                <label className="block font-semibold mb-2">BloodGroup:</label>
                 <input
                   type="text"
                   name="bloodGroup"
                   value={formData.bloodGroup || ""}
                   onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded-md"
                 />
-              </label>
-            </div>
-          </>
-        )}
+              </div>
+              <div className="w-full">
+                <label className="block font-semibold mb-2">Address:</label>
+                <input
+                  type="text"
+                  name="address"
+                  value={formData.address || ""}
+                  onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                />
+              </div>
+            </>
+          )}
         </div>
-        {role !== '' && (
-          <>
-            <div className="field" style={{ textAlign: "center", width: "100%" }}>
-              <button type="submit" className="register-button">
-                Register
-              </button>
-            </div>
-          </>
-        )}
-        
+
+        {/* Submit Button */}
+        <div className="w-full text-center">
+          <button
+            type="submit"
+            className="mt-6 px-8 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none"
+          >
+            Submit
+          </button>
+        </div>
       </form>
     </div>
   );
