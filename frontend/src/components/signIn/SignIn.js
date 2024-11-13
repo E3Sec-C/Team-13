@@ -37,6 +37,7 @@ function SignIn() {
 
         if (response.data.success) {
           // Save user ID in localStorage
+          localStorage.setItem('role',response.data.role);
           localStorage.setItem('userID', response.data.userId); // Adjust based on actual response structure
           if(role==='student'){
             navigate('/student'); 
