@@ -3,6 +3,7 @@ import { student } from "../types/student";
 
 const StudentModelSchema: Schema<student> = new mongoose.Schema({
   ID: { type: String },
+  name:{type:String},
   section: { type: String },
   year: { type: String },
   sem: { type: Number },

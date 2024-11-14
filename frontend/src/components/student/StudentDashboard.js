@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import StudentNavbar from "./StudentNavbar";
 import StudentLayout from "./StudentLayout";
-import { Outlet } from "react-router-dom";
 
 // Dashboard content
 const StudentDashboard = () => {
