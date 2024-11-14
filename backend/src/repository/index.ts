@@ -9,6 +9,7 @@ import NonTeachingStaffRepository from "./NonTeachingStaffRepository";
 import ResearchPublicationsRepository from "./ResearchPublicationsRepository";
 import StudentRepository from "./StudentRepository";
 import UserRepository from "./UserRepository";
+import ImageRepository from "./ImageRepository";
 export {
     AdminRepository,
     ComplaintRepository,
@@ -21,4 +22,5 @@ export {
     ResearchPublicationsRepository,
     StudentRepository,
     UserRepository,
+    ImageRepository,
 }

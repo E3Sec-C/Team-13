@@ -16,7 +16,11 @@ const ComplaintSchema = new Schema<complaint>({
     },
     date:{
         type:Date,
-        default: Date.now
+        default: Date.now()
+    },
+    status:{
+        type:String,
+        dedault:"filed",
     }
 });
 

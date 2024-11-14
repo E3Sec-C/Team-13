@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import StudentNavbar from "./StudentNavbar";
 import StudentLayout from "./StudentLayout";
-import { Outlet } from "react-router-dom";
 
 // Dashboard content
 const StudentDashboard = () => {
@@ -15,7 +14,6 @@ const StudentDashboard = () => {
     <div className="dashboard-content">
       <StudentNavbar onSidebarToggle={toggleSidebar} />
       <StudentLayout isSidebarCollapsed={isSidebarCollapsed} />
-      <Outlet />
     </div>
   );
 };

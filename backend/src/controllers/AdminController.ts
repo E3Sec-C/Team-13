@@ -13,7 +13,7 @@ class AdminController{
     getAdminById = asyncHandler(async(req: Request,res: Response,next:NextFunction)=>{
         console.log(req.params.ID);
         const adminResponse = await AdminService.getById(req.params.ID);
-        console.log(adminResponse);
+
         res.status(200).json(adminResponse);
     });
 

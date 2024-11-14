@@ -10,6 +10,8 @@ import NonTeachingStaffRoutes from "./NonTeachingStaffRoutes";
 import ResearchpublicationsRoutes from "./ResearchPublicationsRoutes";
 import UserRoutes from "./UserRoutes";
 
+
+
 const router=express.Router()
    
 router.use("/admin",AdminRoutes);
