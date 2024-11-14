@@ -88,11 +88,11 @@ const GenerateCredentials = () => {
               className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             >
               <option value="" disabled>Select a role</option>
-              <option value="Admin">Admin</option>
-              <option value="Faculty">Faculty</option>
-              <option value="Student">Student</option>
-              <option value="NonTeachingStaff">Non-Teaching Staff</option>
-              <option value="HOD">HOD</option>
+              <option value="admin">Admin</option>
+              <option value="faculty">Faculty</option>
+              <option value="student">Student</option>
+              <option value="nonTeachingStaff">Non-Teaching Staff</option>
+              <option value="hod">HOD</option>
             </select>
           </div>
   
