@@ -16,7 +16,8 @@ import HodDashboard from './components/hod/HodDashboard';
 import HodProfile from './components/hod/HodProfile';
 import ComplaintList from './components/hod/ComplaintList';
 import ViewUsers from "./components/hod/ViewUsers"
-
+import NonTeachingStaffDashboard from './components/nonTeachingStaff/NonTeachingStaffDashboard';
+import NonTeachingStaffProfile from './components/nonTeachingStaff/NonTeachingStaffProfile';
 const App = () => {
   
   return (
@@ -48,6 +49,13 @@ const App = () => {
           <Route path="logout" element={<Logout />} />
         </Route>
 
+
+        <Route path='/nonTeachingStaff' element={<NonTeachingStaffDashboard/>}>
+          <Route path='profile' element={<NonTeachingStaffProfile/>} />
+          {/* <Route path='registrations' element={<RegistrationForm/>} />
+          <Route path='generateUser' element={<GenerateCredentials/>} /> */}
+          <Route path='complaint' element={<ComplaintForm/>} />
+        </Route>
       </Routes>
     
   );
