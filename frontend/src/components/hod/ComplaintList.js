@@ -61,7 +61,7 @@ const ComplaintList = () => {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen flex flex-col items-center w-11/12 mx-auto mt-16">
-      <div className="w-full max-w-7xl mb-8">
+      <div className="w-full max-w-7xl mb-8 ">
         <h2 className="text-3xl font-semibold text-center text-indigo-700 mb-6">Complaint Management</h2>
 
         {/* Filter Section */}

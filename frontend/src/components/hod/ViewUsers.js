@@ -3,7 +3,7 @@ import axios from "axios";
 
 const ViewUsers = () => {
   const [users, setUsers] = useState([]);
-  const [roleFilter, setRoleFilter] = useState("Student"); // Default to "Student"
+  const [roleFilter, setRoleFilter] = useState("student"); // Default to "Student"
   const [isViewModalOpen, setViewModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
 
@@ -106,7 +106,7 @@ const ViewUsers = () => {
       {/* View Modal */}
       {isViewModalOpen && selectedUser && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="w-full max-w-lg bg-white rounded-xl p-6 shadow-lg relative">
+          <div className="w-full max-w-lg bg-white rounded-xl p-6 shadow-lg relative bg-gradient-to-l from-gray-200 to-gray-400">
             <button
               onClick={handleModalClose}
               className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
