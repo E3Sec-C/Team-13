@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import StudentNavbar from "./StudentNavbar";
-import StudentLayout from "./StudentLayout";
+import HodNavbar from "./HodNavbar.js";
+import HodLayout from "./HodLayout";
 
 // Dashboard content
-const StudentDashboard = () => {
+const HodDashboard = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
 
   const toggleSidebar = () => {
@@ -12,10 +12,10 @@ const StudentDashboard = () => {
 
   return (
     <div className="dashboard-content">
-      <StudentNavbar onSidebarToggle={toggleSidebar} />
-      <StudentLayout isSidebarCollapsed={isSidebarCollapsed} />
+      <HodNavbar onSidebarToggle={toggleSidebar} />
+      <HodLayout isSidebarCollapsed={isSidebarCollapsed} />
     </div>
   );
 };
 
-export default StudentDashboard;
+export default HodDashboard;

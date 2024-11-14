@@ -1,141 +1,218 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import "../../styles/profile.css";
 import axios from "axios";
 
-const StudentProfile = () => {
-  const [profile, setProfile] = useState(null);
+const Profile = () => {
+  const [profileData, setProfileData] = useState({
+    ID: "",
+    name: "",
+    year: "",
+    sem: "",
+    email: "",
+    mobile: "",
+  });
+  const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
+  const [editedData, setEditedData] = useState(profileData);
+  const [file, setFile] = useState(null);
 
-  const fetchProfile = async () => {
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/v1/student/${localStorage.getItem(
+            "userId"
+          )}`
+        );
+        setProfileData(response.data);
+        setEditedData(response.data);
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProfile();
+  }, []);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditedData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+
+    if (!selectedFile) {
+      return;
+    }
+
+    // Validate file type (must be JPG or JPEG)
+    if (!selectedFile.type.includes("jpeg")) {
+      alert("Please select a JPG file.");
+      event.target.value = ""; // Reset the file input
+      return;
+    }
+
+    // Validate file size (10MB = 10 * 1024 * 1024 bytes)
+    if (selectedFile.size > 10 * 1024 * 1024) {
+      alert("File size must be less than 10MB.");
+      event.target.value = ""; // Reset the file input
+      return;
+    }
+
+    setFile(selectedFile);
+  };
+
+  const handleSave = async () => {
+    // Construct an object to hold only the modified fields
+    const modifiedData = Object.keys(editedData).reduce((acc, key) => {
+      if (
+        editedData[key] !== profileData[key] &&
+        editedData[key] !== undefined
+      ) {
+        acc[key] = editedData[key];
+      }
+      return acc;
+    }, {});
+
     try {
-      const url = `http://localhost:5000/api/v1/student/R200083`;
-      const response = await axios.get(url);
-      setProfile(response.data);
-      console.log(response.data);
+      const response = await axios.put(
+        `http://localhost:5000/api/v1/student/update/${localStorage.getItem(
+          "userId"
+        )}`,
+        modifiedData
+      );
+
+      if (file) {
+        const formData = new FormData();
+        formData.append("student", file);
+
+        const params = {
+          ID: profileData.ID,
+          role: "student",
+        };
+        await axios.post(
+          `http://localhost:5000/api/v1/student/upload/image`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            params: params,
+          }
+        );
+      }
+
+      setProfileData((prevData) => ({ ...prevData, ...response.data })); // Update profileData with the server response
+      alert("Profile updated successfully!");
+      setIsEditing(false); // Close the edit popup
     } catch (error) {
-      console.error("Error fetching profile:", error);
+      console.error("Error updating profile data:", error);
+      alert("Failed to update profile.");
     }
   };
-  fetchProfile();
 
-  const handleEditClick = () => {
-    setIsEditing(!isEditing);
-  };
-
-  const handleSaveClick = () => {
-    // Save the updated profile data (you can call the backend to update the data here)
-    console.log("Saving updated profile data...");
-    setIsEditing(false);
-  };
-
-  if (!profile) return <div>Loading...</div>;
+  if (loading) {
+    return <p>Loading profile...</p>;
+  }
 
   return (
-    <div className="dark:bg-gray-100 dark:text-gray-900">
-      <div className="container grid grid-cols-12 mx-auto">
-        <div
-          className="flex flex-col justify-center col-span-12 align-middle dark:bg-gray-300 bg-no-repeat bg-cover lg:col-span-6 lg:h-auto"
-        >
-          <div className="flex flex-col items-center p-8 py-12 text-center dark:text-gray-800">
-            <span>12 June</span>
-            <h1 className="py-4 text-5xl font-bold">
-              Lorem, ipsum dolor sit amet consectetur adipisicing.
-            </h1>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              className="w-7 h-7"
-            >
-              <path
-                fillRule="evenodd"
-                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                clipRule="evenodd"
-              ></path>
-            </svg>
+    <div className="max-w-4xl mx-auto my-10 p-6 bg-white rounded-lg shadow-lg bg-gradient-to-r from-gray-200 to-gray-300">
+      <h2 className="text-2xl font-bold mb-4">User Profile</h2>
+      <div className="flex items-center">
+        <img
+          src={
+            `http://localhost:5000/api/v1/student/image/${localStorage.getItem(
+              "userId"
+            )}/${localStorage.getItem('role')}` || "http://via.placeholder.com/250x250"
+          }
+          alt="Profile"
+          className="w-32 h-32 rounded-full object-cover mr-6"
+        />
+        <div className="flex flex-col">
+          <div className="flex items-center mb-2">
+            <label className="font-semibold w-20">ID:</label>
+            <p>{profileData.ID}</p>
+          </div>
+          <div className="flex items-center mb-2">
+            <label className="font-semibold w-20">Email:</label>
+            <p>{profileData.email}</p>
+          </div>
+          <div className="flex items-center mb-2">
+            <label className="font-semibold w-20">Name:</label>
+            <p>{profileData.name}</p>
           </div>
         </div>
       </div>
+
+      <button
+        onClick={() => setIsEditing(true)}
+        className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+      >
+        Edit
+      </button>
+
+      {isEditing && (
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg w-full max-w-md">
+            <h2 className="text-xl font-bold text-center mb-6">Edit Profile</h2>
+            <div className="mb-4">
+              <label className="block font-semibold mb-2">Email:</label>
+              <input
+                type="email"
+                name="email"
+                value={editedData.email}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block font-semibold mb-2">Name:</label>
+              <input
+                type="text"
+                name="name"
+                value={editedData.name}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block font-semibold mb-2">Profile Image:</label>
+              <input
+                name="student"
+                type="file"
+                onChange={handleFileChange}
+                className="w-full text-sm text-gray-500 file:border file:border-gray-300 file:px-4 file:py-2 file:rounded-lg"
+                accept=".jpg"
+              />
+              <p className="text-xs pl-1">
+                only .jpg files less than 10MB allowed
+              </p>
+            </div>
+
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={handleSave}
+                className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+              >
+                Save Changes
+              </button>
+              <button
+                onClick={() => setIsEditing(false)}
+                className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-export default StudentProfile;
-
-// <div className="flex justify-center items-center h-screen bg-gray-100">
-//       <div className="bg-white rounded-lg shadow-lg w-11/12 md:w-3/4 lg:w-1/2 p-6 flex">
-//         {/* Left Side - Profile Image */}
-//         <div className="w-1/3 flex justify-center items-center">
-//           <img
-//             src={profile.imageUrl || "https://via.placeholder.com/150"}
-//             alt={profile.name}
-//             className="w-32 h-32 object-cover rounded-lg"
-//           />
-//         </div>
-
-//         {/* Right Side - Profile Info */}
-//         <div className="w-2/3 pl-6">
-//           <div className="text-xl font-semibold text-gray-800">
-//             {isEditing ? (
-//               <input
-//                 type="text"
-//                 value={profile.name}
-//                 onChange={(e) =>
-//                   setProfile({ ...profile, name: e.target.value })
-//                 }
-//                 className="text-2xl font-semibold text-gray-800 border-b border-gray-300 w-full mb-4 p-2"
-//               />
-//             ) : (
-//               <h2>{profile.name}</h2>
-//             )}
-//           </div>
-//           <div className="text-gray-600 mb-2">
-//             <strong>Gender: </strong>
-//             {isEditing ? (
-//               <input
-//                 type="text"
-//                 value={profile.gender}
-//                 onChange={(e) =>
-//                   setProfile({ ...profile, gender: e.target.value })
-//                 }
-//                 className="text-gray-600 w-full mb-4 p-2 border-b border-gray-300"
-//               />
-//             ) : (
-//               <span>{profile.gender}</span>
-//             )}
-//           </div>
-//           <div className="text-gray-600 mb-2">
-//             <strong>Phone: </strong>
-//             {isEditing ? (
-//               <input
-//                 type="tel"
-//                 value={profile.phone}
-//                 onChange={(e) =>
-//                   setProfile({ ...profile, phone: e.target.value })
-//                 }
-//                 className="text-gray-600 w-full mb-4 p-2 border-b border-gray-300"
-//               />
-//             ) : (
-//               <span>{profile.phone}</span>
-//             )}
-//           </div>
-
-//           {/* Add more fields as needed */}
-
-//           <button
-//             onClick={handleEditClick}
-//             className="mt-4 text-blue-500 font-medium hover:underline"
-//           >
-//             {isEditing ? "Cancel" : "Edit Profile"}
-//           </button>
-
-//           {isEditing && (
-//             <button
-//               onClick={handleSaveClick}
-//               className="ml-4 text-green-500 font-medium hover:underline"
-//             >
-//               Save
-//             </button>
-//           )}
-//         </div>
-//       </div>
-//     </div>
+export default Profile;

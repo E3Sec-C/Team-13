@@ -36,7 +36,8 @@ const ComplaintForm = () => {
   };
 
   return (
-      <div className="w-full max-w-xl bg-white rounded-xl shadow-lg shadow-indigo-500/40 p-8 md:p-10 lg:p-12 mt-16 bg-gradient-to-r from-gray-200 to-blue-300">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="w-full max-w-xl bg-white rounded-xl shadow-lg shadow-indigo-500/40 p-8 md:p-10 lg:p-12 bg-gradient-to-r from-gray-200 to-blue-300">
         <h2 className="text-3xl font-semibold text-center text-indigo-700 mb-6">Submit a Complaint</h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           
@@ -56,7 +57,7 @@ const ComplaintForm = () => {
               placeholder="Describe your complaint here..."
             />
           </div>
-
+  
           {/* Submit Button */}
           <button
             type="submit"
@@ -66,7 +67,9 @@ const ComplaintForm = () => {
           </button>
         </form>
       </div>
+    </div>
   );
+    
 };
 
 export default ComplaintForm;
