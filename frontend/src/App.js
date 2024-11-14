@@ -35,7 +35,8 @@ const App = () => {
         </Route>
 
         <Route path='/admin' element={<AdminDashboard/>}>
-          <Route path='profile' element={<AdminProfile/>} />
+          <Route index element={<AdminProfile />} />
+          <Route path='profile' element={<AdminProfile />} />
           <Route path='registrations' element={<RegistrationForm/>} />
           <Route path='generateUser' element={<GenerateCredentials/>} />
           <Route path='complaint' element={<ComplaintForm/>} />
@@ -43,6 +44,7 @@ const App = () => {
         </Route>
 
         <Route path="/hod" element={<HodDashboard/>}>
+          <Route index element={<HodProfile />} /> {/* Default to HOD Profile */}
           <Route path='profile' element={<HodProfile/>} />
           <Route path='viewUsers' element={<ViewUsers/>} />
           <Route path='viewComplaints' element={<ComplaintList/>} />

@@ -6,6 +6,7 @@ const HodProfile = () => {
     ID: '',
     name: '',
     email: '',
+    education: '',
     image: null,
   });
   const [loading, setLoading] = useState(true);
@@ -108,6 +109,10 @@ const HodProfile = () => {
                 <label className="block font-semibold mb-1 w-1/3">Name:</label>
                 <p className="text-gray-700 w-2/3">{profileData.name}</p>
             </div>
+            <div className="mb-4 flex items-center justify-between">
+                <label className="block font-semibold mb-1 w-1/3">Education:</label>
+                <p className="text-gray-700 w-2/3">{profileData.education}</p>
+            </div>
           <button
             onClick={() => setIsEditing(true)}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-200"
@@ -119,7 +124,7 @@ const HodProfile = () => {
 
       {isEditing && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg w-full max-w-md">
+          <div className="bg-white p-6 rounded-lg w-full max-w-md bg-gradient-to-l from-gray-200 to-gray-300">
             <h2 className="text-xl font-bold text-center mb-4">Edit Profile</h2>
             <div className="mb-4">
               <label className="block font-semibold mb-1">Email:</label>
@@ -137,6 +142,16 @@ const HodProfile = () => {
                 type="text"
                 name="name"
                 value={editedData.name}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block font-semibold mb-1">Education:</label>
+              <input
+                type="text"
+                name="education"
+                value={editedData.education}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded"
               />

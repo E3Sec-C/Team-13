@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import GroupIcon from '@mui/icons-material/Group';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
@@ -12,6 +12,8 @@ import PeopleIcon from '@mui/icons-material/People';
 import "../../styles/dashboard.css";
 
 const Sidebar = ({ isCollapsed }) => {
+  const location = useLocation();
+
   const NAVIGATION = [
     {
       kind: 'header',
@@ -61,8 +63,7 @@ const Sidebar = ({ isCollapsed }) => {
               <div className="nav-item-wrapper">
                 <NavLink
                   to={`/hod/${item.segment}`}
-                  className="nav-link"
-                  onClick={item.segment === 'users'}
+                  className={`nav-link ${location.pathname === `/hod/${item.segment}` || (item.segment === 'profile' && location.pathname === '/hod') ? "active" : ""}`}
                 >
                   <div className="nav-content">
                     <div className="icon-wrapper">{item.icon}</div>
