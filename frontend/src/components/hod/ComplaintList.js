@@ -1,7 +1,6 @@
-// ComplaintList.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Select, MenuItem, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, MenuItem, Select } from '@mui/material';
 
 const ComplaintList = () => {
   const [complaints, setComplaints] = useState([]);
@@ -34,6 +33,32 @@ const ComplaintList = () => {
     setFilteredComplaints(filtered);
   };
 
+  const upgradeStatus = async (id, currentStatus) => {
+    let updatedStatus = '';
+    if (currentStatus === 'filed') {
+      updatedStatus = 'pending';
+    } else if (currentStatus === 'pending') {
+      updatedStatus = 'completed';
+    }
+
+    try {
+      await axios.put(`http://localhost:5000/api/v1/complaint/update/${id}`, { status: updatedStatus });
+      // Update the complaint list after successful update
+      setComplaints(prevComplaints =>
+        prevComplaints.map(complaint =>
+          complaint.ID === id ? { ...complaint, status: updatedStatus } : complaint
+        )
+      );
+      setFilteredComplaints(prevFiltered =>
+        prevFiltered.map(complaint =>
+          complaint.ID === id ? { ...complaint, status: updatedStatus } : complaint
+        )
+      );
+    } catch (error) {
+      console.error("Error updating complaint status:", error);
+    }
+  };
+
   return (
     <div className="p-6 bg-gray-100 min-h-screen flex flex-col items-center w-11/12 mx-auto mt-16">
       <div className="w-full max-w-7xl mb-8">
@@ -49,9 +74,9 @@ const ComplaintList = () => {
             sx={{ minWidth: 200 }}
           >
             <MenuItem value=""><em>All Statuses</em></MenuItem>
-            <MenuItem value="Filed">Filed</MenuItem>
-            <MenuItem value="In Progress">In Progress</MenuItem>
-            <MenuItem value="Completed">Completed</MenuItem>
+            <MenuItem value="filed">Filed</MenuItem>
+            <MenuItem value="pending">In Progress</MenuItem>
+            <MenuItem value="completed">Completed</MenuItem>
           </Select>
 
           <Button
@@ -74,6 +99,7 @@ const ComplaintList = () => {
                 <TableCell className="text-white font-semibold">Role</TableCell>
                 <TableCell className="text-white font-semibold w-3/5">Description</TableCell>
                 <TableCell className="text-white font-semibold">Status</TableCell>
+                <TableCell className="text-white font-semibold">Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -89,19 +115,31 @@ const ComplaintList = () => {
                     <TableCell>
                       <span
                         className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          complaint.status === 'Completed' ? 'bg-green-100 text-green-800' :
-                          complaint.status === 'In Progress' ? 'bg-yellow-100 text-yellow-800' :
+                          complaint.status === 'completed' ? 'bg-green-100 text-green-800' :
+                          complaint.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
                           'bg-red-100 text-red-800'
                         }`}
                       >
                         {complaint.status}
                       </span>
                     </TableCell>
+                    <TableCell>
+                      {(complaint.status === 'filed' || complaint.status === 'pending') && (
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => upgradeStatus(complaint.ID, complaint.status)}
+                          className="bg-blue-500 hover:bg-blue-600 text-white text-[10px] px-1.5 py-0.5 rounded-sm"
+                        >
+                          {complaint.status === 'filed' ? 'Mark as Pending' : 'Mark as Completed'}
+                        </Button>
+                      )}
+                    </TableCell>
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center text-gray-500 py-6">
+                  <TableCell colSpan={6} className="text-center text-gray-500 py-6">
                     No complaints found.
                   </TableCell>
                 </TableRow>
