@@ -42,10 +42,14 @@ function SignIn() {
           // Save user ID in localStorage
           localStorage.setItem("userId", response.data.userId); // Adjust based on actual response structure
           localStorage.setItem("role", response.data.role);
-          if (role === "student") {
-            navigate("/student");
-          } else {
-            navigate("/admin");
+          if(role==='student'){
+            navigate('/student'); 
+          }else if(role==='hod'){
+            navigate('/hod');
+          }else if(role=='faculty'){
+            navigate('/faculty');
+          }else{
+            navigate('/admin'); 
           }
         } else {
           setError(response.data.message); // Set the error message if the response is not successful
