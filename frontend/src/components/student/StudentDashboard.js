@@ -15,7 +15,6 @@ const StudentDashboard = () => {
     <div className="dashboard-content">
       <StudentNavbar onSidebarToggle={toggleSidebar} />
       <StudentLayout isSidebarCollapsed={isSidebarCollapsed} />
-      <Outlet />
     </div>
   );
 };

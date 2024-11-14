@@ -3,7 +3,9 @@ import {PORT} from './config/ServerConfig';
 import { connectDatabase } from './config/DatabaseConfig';
 import errorHandler from './middlewares/errorHandler';
 import router from './routes';
+
 const cors = require("cors") ;
+
 const app:Application=express()
 
 app.use(express.json());

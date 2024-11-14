@@ -1,24 +1,26 @@
-import React, { useState } from 'react';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import { useFormik } from 'formik';
+import React, { useState } from "react";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+import { useFormik } from "formik";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom'; // Ensure you have react-router-dom installed
+import { useNavigate } from "react-router-dom"; // Ensure you have react-router-dom installed
 
 function SignIn() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const [role, setRole] = useState('student');
+  const [role, setRole] = useState("");
 
   const handleChange = (e) => {
     setRole(e.target.value); // Update the role when the Select input changes
   };
 
   const initialValues = {
-    userId: '',
-    password: '',
-    role: 'student', // Set a default role
+    userId: "",
+    password: "",
+    role: "student", // Set a default role
   };
 
   const formik = useFormik({
@@ -31,17 +33,19 @@ function SignIn() {
           password: values.password,
           role: role, // Directly use the state value
         };
+        console.log(data);
 
         const url = `http://localhost:5000/api/v1/user/signin`;
         const response = await axios.post(url, data);
 
         if (response.data.success) {
           // Save user ID in localStorage
-          localStorage.setItem('userID', response.data.userId); // Adjust based on actual response structure
-          if(role==='student'){
-            navigate('/student'); 
-          }else{
-            navigate('/admin'); 
+          localStorage.setItem("userId", response.data.userId); // Adjust based on actual response structure
+          localStorage.setItem("role", response.data.role);
+          if (role === "student") {
+            navigate("/student");
+          } else {
+            navigate("/admin");
           }
         } else {
           setError(response.data.message); // Set the error message if the response is not successful
@@ -53,6 +57,8 @@ function SignIn() {
     },
   });
 
+  const roles = ["student", "faculty", "nonTeachingStaff", "admin", "hod"];
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-100 to-white">
       <div className="bg-white shadow-lg rounded-xl p-8 max-w-md w-full">
@@ -61,7 +67,9 @@ function SignIn() {
         </div>
         <form className="space-y-4" onSubmit={formik.handleSubmit}>
           <div>
-            <label className="block text-sm font-medium text-gray-700">User Id</label>
+            <label className="block text-sm font-medium text-gray-700">
+              User Id
+            </label>
             <input
               type="text"
               name="userId"
@@ -69,10 +77,13 @@ function SignIn() {
               onChange={formik.handleChange}
               placeholder="Enter your Id"
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+              required
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
             <input
               type="password"
               name="password"
@@ -80,22 +91,27 @@ function SignIn() {
               onChange={formik.handleChange}
               placeholder="********"
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+              required
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Role</label>
-            <Select
-              id="role-select"
-              value={role}
-              onChange={handleChange}
-              className="mt-1 block w-full h-10 px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-            >
-              <MenuItem value="student">Student</MenuItem>
-              <MenuItem value="faculty">Faculty</MenuItem>
-              <MenuItem value="nonTeachingStaff">Non-Teaching Staff</MenuItem>
-              <MenuItem value="hod">HOD</MenuItem>
-              <MenuItem value="admin">Admin</MenuItem>
-            </Select>
+            <label className="block text-sm font-medium text-gray-700">
+              Role
+            </label>
+            <Autocomplete
+              disablePortal
+              options={roles}
+              sx={{ width: 385 }}
+              onChange={(event, newValue) => setRole(newValue)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="role"
+                  required
+                  className="mt-1 block w-full px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+              )}
+            />
           </div>
 
           <button

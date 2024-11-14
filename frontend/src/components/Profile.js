@@ -16,7 +16,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/v1/admin/${localStorage.getItem('userID')}`);// Replace with actual API endpoint
+        const response = await axios.get(`http://localhost:5000/api/v1/admin/${localStorage.getItem('userID')}`);
         setProfileData(response.data);
         setEditedData(response.data);
       } catch (error) {
