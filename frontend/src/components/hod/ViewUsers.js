@@ -1,31 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const ViewUsers = () => {
-  const [roleFilter, setRoleFilter] = useState("");
+  const [users, setUsers] = useState([]);
+  const [roleFilter, setRoleFilter] = useState("Student"); // Default to "Student"
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
 
-  const users = [
-    { id: 1, name: "John Doe", role: "Admin", email: "john@example.com", profileImage: "https://via.placeholder.com/100" },
-    { id: 2, name: "Jane Smith", role: "Student", email: "jane@example.com", profileImage: "https://via.placeholder.com/100" },
-    // More user data here...
-  ];
+  // Fetch users from the backend based on the selected role
+useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        // Set the API endpoint based on the selected role
+        const roleEndpoint = roleFilter.toLowerCase(); // Convert role to lowercase if needed
+        const response = await axios.get(`http://localhost:5000/api/v1/${roleEndpoint}/getall`);
+        setUsers(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+    
+    fetchUsers();
+  }, [roleFilter]); // Add roleFilter as a dependency to refetch when the role changes
+  
 
-  const filteredUsers = roleFilter ? users.filter((user) => user.role === roleFilter) : users;
+  // Filter users based on selected role, default is "Student"
+  const filteredUsers = users;
 
   const handleEdit = (user) => {
     setSelectedUser(user);
     setEditModalOpen(true);
   };
 
-  const handleDelete = (userId) => {
-    // Implement delete functionality
-    alert(`Deleted user with ID: ${userId}`);
+  const handleDelete = async (userId) => {
+    try {
+      await axios.delete(`/api/users/${userId}`);
+      setUsers(users.filter((user) => user.id !== userId));
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
   };
 
   const handleModalClose = () => {
     setSelectedUser(null);
     setEditModalOpen(false);
+  };
+
+  const handleUpdateUser = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(`/api/users/${selectedUser.id}`, selectedUser);
+      setUsers(users.map((user) => (user.id === selectedUser.id ? response.data : user)));
+      handleModalClose();
+    } catch (error) {
+      console.error("Error updating user:", error);
+    }
   };
 
   return (
@@ -40,12 +70,11 @@ const ViewUsers = () => {
           value={roleFilter}
           onChange={(e) => setRoleFilter(e.target.value)}
         >
-          <option value="">All Roles</option>
-          <option value="Admin">Admin</option>
-          <option value="Faculty">Faculty</option>
-          <option value="Student">Student</option>
-          <option value="NonTeachingStaff">Non-Teaching Staff</option>
-          <option value="HOD">HOD</option>
+          <option value="student">Student</option>
+          <option value="admin">Admin</option>
+          <option value="faculty">Faculty</option>
+          <option value="nonTeachingStaff">Non-Teaching Staff</option>
+          <option value="hod">HOD</option>
         </select>
       </div>
 
@@ -53,18 +82,18 @@ const ViewUsers = () => {
       <table className="w-full max-w-4xl bg-white rounded-xl shadow-lg overflow-hidden">
         <thead className="bg-indigo-500 text-white">
           <tr>
+            <th className="py-2 px-4">Id</th>
             <th className="py-2 px-4">Name</th>
             <th className="py-2 px-4">Email</th>
-            <th className="py-2 px-4">Role</th>
             <th className="py-2 px-4">Actions</th>
           </tr>
         </thead>
         <tbody>
           {filteredUsers.map((user) => (
             <tr key={user.id} className="border-t">
+              <td className="py-2 px-4">{user.ID}</td>
               <td className="py-2 px-4">{user.name}</td>
               <td className="py-2 px-4">{user.email}</td>
-              <td className="py-2 px-4">{user.role}</td>
               <td className="py-2 px-4 flex space-x-2">
                 <button
                   onClick={() => handleEdit(user)}
@@ -95,7 +124,7 @@ const ViewUsers = () => {
               &times;
             </button>
             <h3 className="text-xl font-semibold mb-4">Edit User</h3>
-            
+
             {/* Profile Image */}
             <div className="flex items-center justify-center mb-4">
               <img
@@ -105,7 +134,7 @@ const ViewUsers = () => {
               />
             </div>
 
-            <form>
+            <form onSubmit={handleUpdateUser}>
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700">Name</label>
                 <input
@@ -131,11 +160,11 @@ const ViewUsers = () => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
                   onChange={(e) => setSelectedUser({ ...selectedUser, role: e.target.value })}
                 >
-                  <option value="Admin">Admin</option>
-                  <option value="Faculty">Faculty</option>
-                  <option value="Student">Student</option>
-                  <option value="NonTeachingStaff">Non-Teaching Staff</option>
-                  <option value="HOD">HOD</option>
+                  <option value="admin">Admin</option>
+                  <option value="faculty">Faculty</option>
+                  <option value="student">Student</option>
+                  <option value="nonTeachingStaff">Non-Teaching Staff</option>
+                  <option value="hod">HOD</option>
                 </select>
               </div>
               <button
