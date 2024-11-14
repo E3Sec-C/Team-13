@@ -5,6 +5,7 @@ import GroupIcon from '@mui/icons-material/Group';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import LogoutIcon from '@mui/icons-material/Logout';
 import "../../styles/dashboard.css";
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 
 const Sidebar = ({ isCollapsed }) => {
 
@@ -21,7 +22,7 @@ const Sidebar = ({ isCollapsed }) => {
     {
       segment: 'attendance',
       title: 'Attendance',
-      icon: <HowToRegIcon />,
+      icon: <AppRegistrationIcon />,
     },
     {
         segment: 'results',

@@ -38,6 +38,7 @@ const GenerateCredentials = () => {
   };
 
   return (
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full mt-16 max-w-lg md:max-w-xl lg:max-w-2xl bg-white rounded-xl shadow-lg shadow-indigo-500/40 p-8 md:p-10 lg:p-12 bg-gradient-to-r from-gray-200 to-blue-300">
         <h2 className="text-3xl font-semibold text-center text-indigo-700 mb-6">Generate Credentials</h2>
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -88,11 +89,11 @@ const GenerateCredentials = () => {
               className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             >
               <option value="" disabled>Select a role</option>
-              <option value="Admin">Admin</option>
-              <option value="Faculty">Faculty</option>
-              <option value="Student">Student</option>
-              <option value="NonTeachingStaff">Non-Teaching Staff</option>
-              <option value="HOD">HOD</option>
+              <option value="admin">Admin</option>
+              <option value="faculty">Faculty</option>
+              <option value="student">Student</option>
+              <option value="nonTeachingStaff">Non-Teaching Staff</option>
+              <option value="hod">HOD</option>
             </select>
           </div>
   
@@ -105,6 +106,7 @@ const GenerateCredentials = () => {
           </button>
         </form>
       </div>
+    </div>
   );
   
 };

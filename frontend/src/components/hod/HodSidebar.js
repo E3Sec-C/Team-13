@@ -7,10 +7,11 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PasswordIcon from '@mui/icons-material/Password';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import FeedbackIcon from '@mui/icons-material/Feedback';
+import NotificationImportantIcon from '@mui/icons-material/NotificationImportant';
+import PeopleIcon from '@mui/icons-material/People';
 import "../../styles/dashboard.css";
 
 const Sidebar = ({ isCollapsed }) => {
-
   const NAVIGATION = [
     {
       kind: 'header',
@@ -22,14 +23,14 @@ const Sidebar = ({ isCollapsed }) => {
       icon: <AccountCircleIcon />,
     },
     {
-      segment: 'generateUser',
-      title: 'Generate User Credentials',
-      icon: <PasswordIcon />,
+      segment: 'viewUsers',
+      title: 'View Users',
+      icon: <PeopleIcon />,
     },
     {
-        segment: 'registrations',
-        title: 'Register users',
-        icon: <HowToRegIcon />,
+      segment: 'viewComplaints',
+      title: 'View Complaints',
+      icon: <NotificationImportantIcon />,
     },
     {
       kind: 'divider',
@@ -37,11 +38,6 @@ const Sidebar = ({ isCollapsed }) => {
     {
       kind: 'header',
       title: 'Analytics',
-    },
-    {
-      segment: 'complaint',
-      title: 'Complaint',
-      icon: <FeedbackIcon />,
     },
     {
       segment: 'logout',
@@ -64,7 +60,7 @@ const Sidebar = ({ isCollapsed }) => {
             <li key={index} className="nav-item">
               <div className="nav-item-wrapper">
                 <NavLink
-                  to={`/admin/${item.segment}`}
+                  to={`/hod/${item.segment}`}
                   className="nav-link"
                   onClick={item.segment === 'users'}
                 >

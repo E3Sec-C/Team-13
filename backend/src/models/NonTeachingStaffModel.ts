@@ -3,6 +3,7 @@ import { nonTeachingStaff } from "../types/nonTeachingStaff";
 
 const NonTeachingStaffModelSchema:Schema<nonTeachingStaff> = new mongoose.Schema({
     ID: {type:String},
+    name:{type:String},
     mobile:{type:String},
     email:{type:String},
     image:{type:Buffer},
