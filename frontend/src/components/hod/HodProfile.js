@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const AdminProfile = () => {
+const HodProfile = () => {
   const [profileData, setProfileData] = useState({
     ID: '',
     name: '',
@@ -15,7 +15,7 @@ const AdminProfile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/v1/admin/${localStorage.getItem('userId')}`);
+        const response = await axios.get(`http://localhost:5000/api/v1/hod/${localStorage.getItem('userId')}`);
         setProfileData(response.data);
         setEditedData(response.data);
       } catch (error) {
@@ -56,7 +56,7 @@ const AdminProfile = () => {
     }
 
     try {
-      const response = await axios.put(`http://localhost:5000/api/v1/admin/update/${localStorage.getItem('userId')}`, modifiedData);
+      const response = await axios.put(`http://localhost:5000/api/v1/hod/update/${localStorage.getItem('userId')}`, modifiedData);
       setProfileData((prevData) => ({ ...prevData, ...response.data }));
       alert('Profile updated successfully!');
       setIsEditing(false);
@@ -166,4 +166,4 @@ const AdminProfile = () => {
   );
 };
 
-export default AdminProfile;
+export default HodProfile;
