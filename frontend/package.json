@@ -54,5 +54,8 @@
   "description": "University Department Information System",
   "main": "index.js",
   "author": "Team Nexus Bytes",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+  }
 }

@@ -46,7 +46,7 @@ function SignIn() {
             navigate('/student'); 
           }else if(role==='hod'){
             navigate('/hod');
-          }else if(role=='faculty'){
+          }else if(role==='faculty'){
             navigate('/faculty');
           }
           else if(role==='nonTeachingStaff'){
