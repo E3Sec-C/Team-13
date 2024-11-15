@@ -5,7 +5,7 @@ import { Response } from 'express'; // Assuming you're using Express
 const ImageRepository = {
     async getImageById(ID: string,role:string) {
         // Construct the file path for the image
-        const filePath = path.join(__dirname, "../", "../", "images", `${role}`, `${ID}.jpg`);
+        const filePath = path.join(__dirname, "../", "../", "images/", `${role}/`, `${ID}.jpg`);
 
         try {
             // Check if file exists

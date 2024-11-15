@@ -22,7 +22,7 @@ router.post("/upload/image",upload.single("hod"), (req:any, res:any) => {
     res.json({
       message: 'Image uploaded successfully!',
       userId: ID,
-      imagePath: `/backend/images/${req.file.filename}`,  // Path where the image is stored
+      imagePath: `/backend/images/${role}/${req.file.filename}`,  // Path where the image is stored
     });
   });
 router.get("/getall",HodController.getAll);
