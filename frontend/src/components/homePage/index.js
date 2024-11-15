@@ -3,16 +3,28 @@ import Navbar from './Navbar'
 import Carousel from './Carousel';
 import Footer from './Footer';
 import AboutUs from './AboutUs';
+// import TimeLine from './TimeLine';
 // import Highlights from '../Highlights';
 
 function HomePage() {
   return (
     <div>
-      <Navbar/>
-      <Carousel/>
-      <AboutUs/>
+      <div id="navbar">
+        <Navbar/>
+      </div>
+      <div id="carousel">
+        <Carousel />
+      </div>
+      <div id="aboutus">
+        <AboutUs/>
+      </div>
       {/* <Highlights/> */}
-      <Footer/>
+      {/* <div id="timeline">
+        <TimeLine/>
+      </div> */}
+      <div id="contactus">
+        <Footer/>
+      </div>
     </div>
   )
 }

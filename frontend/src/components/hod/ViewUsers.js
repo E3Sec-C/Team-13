@@ -118,7 +118,8 @@ const ViewUsers = () => {
             {/* Profile Image */}
             <div className="flex items-center justify-center mb-4">
               <img
-                src={selectedUser.profileImage}
+                src={`http://localhost:5000/api/v1/${roleFilter}/image/${selectedUser.ID}/${roleFilter}` ||
+            "http://via.placeholder.com/250x250"}
                 alt="Profile"
                 className="w-24 h-24 rounded-full border border-gray-300"
               />

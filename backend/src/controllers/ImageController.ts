@@ -8,6 +8,7 @@ class ImageController {
         
       const ID:string = req.params.ID as string;
       const role:string = req.params.role as string;
+      
       //request getImageById function to get the image corresponds to given ID
       const response=await ImageServices.getImageById(ID,role);
       

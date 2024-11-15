@@ -6,7 +6,7 @@ const multer = require('multer');
 const storage = multer.diskStorage({
   destination: (req:any, file:any, cb:any) => {
 
-    const folderPath = file.fieldname==="student"?'images/student':file.fieldname==="faculty"?"images/faculty":file.fieldname==="admin"?"images/admin":file.fieldName === "hod"?"images/hod":"images/nonTeachingStaff";
+    const folderPath = file.fieldname==="student"?'images/student':file.fieldname==="faculty"?"images/faculty":file.fieldname==="admin"?"images/admin":file.fieldname === "hod"?"images/hod":"images/nonTeachingStaff";
 
     const uploadDir = path.join(__dirname,"../", folderPath);  // Define the folder path
 

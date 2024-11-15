@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { useFormik } from "formik";
@@ -8,7 +6,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom"; // Ensure you have react-router-dom installed
 
 function SignIn() {
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const [role, setRole] = useState("");
@@ -33,12 +30,11 @@ function SignIn() {
           password: values.password,
           role: role, // Directly use the state value
         };
-        console.log(data);
 
         const url = `http://localhost:5000/api/v1/user/signin`;
         const response = await axios.post(url, data);
 
-        if (response.data.success) {
+        if (response && response.data.success) {
           // Save user ID in localStorage
           localStorage.setItem("userId", response.data.userId); // Adjust based on actual response structure
           localStorage.setItem("role", response.data.role);
@@ -55,16 +51,15 @@ function SignIn() {
             navigate('/admin'); 
           }
         } else {
-          setError(response.data.message); // Set the error message if the response is not successful
+          console.log("An error has occured...!");
         }
       } catch (err) {
         console.error(err);
-        setError("Error Logging In");
       }
     },
   });
 
-  const roles = ["student", "faculty", "nonTeachingStaff", "admin", "hod"];
+  const roles = ["admin", "faculty", "student", "nonTeachingStaff", "hod"];
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-100 to-white">
@@ -129,13 +124,6 @@ function SignIn() {
           </button>
         </form>
 
-        {/* Popup for invalid credentials or errors */}
-        {error && (
-          <div className="popup">
-            <p>{error}</p>
-            <button onClick={() => setError(null)}> X </button>
-          </div>
-        )}
       </div>
     </div>
   );

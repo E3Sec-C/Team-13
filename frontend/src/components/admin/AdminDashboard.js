@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import AdminNavbar from './AdminNavbar'
 import AdminLayout from "./AdminLayout"
-import { Outlet } from "react-router-dom";
 
 // Dashboard content
 const AdminDashboard = () => {

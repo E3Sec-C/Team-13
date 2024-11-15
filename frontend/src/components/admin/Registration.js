@@ -4,7 +4,7 @@ import axios from 'axios';
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({});
   const [role, setRole] = useState(''); // State to manage selected role
-
+  const [file,setFile] = useState(null);
   // Handle changes in form fields
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -14,12 +14,28 @@ const RegistrationForm = () => {
     });
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setFormData({
-      ...formData,
-      image: file,
-    });
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+
+    if (!selectedFile) {
+      return;
+    }
+
+    // Validate file type (must be JPG or JPEG)
+    if (!selectedFile.type.includes("jpeg")) {
+      alert("Please select a JPG file.");
+      event.target.value = ""; // Reset the file input
+      return;
+    }
+
+    // Validate file size (10MB = 10 * 1024 * 1024 bytes)
+    if (selectedFile.size > 10 * 1024 * 1024) {
+      alert("File size must be less than 10MB.");
+      event.target.value = ""; // Reset the file input
+      return;
+    }
+
+    setFile(selectedFile);
   };
 
   const handleRoleChange = (e) => {
@@ -33,19 +49,19 @@ const RegistrationForm = () => {
     // Determine the endpoint based on the role
     let url = '';
     switch (role) {
-      case 'Admin':
+      case 'admin':
         url = 'http://localhost:5000/api/v1/admin';
         break;
-      case 'Faculty':
+      case 'faculty':
         url = 'http://localhost:5000/api/v1/faculty';
         break;
-      case 'Student':
+      case 'student':
         url = 'http://localhost:5000/api/v1/student';
         break;
-      case 'NonTeachingStaff':
+      case 'nonTeachingStaff':
         url = 'http://localhost:5000/api/v1/nonTeachingStaff';
         break;
-      case 'HOD':
+      case 'hod':
         url = 'http://localhost:5000/api/v1/hod';
         break;
       default:
@@ -54,7 +70,30 @@ const RegistrationForm = () => {
     }
     try {
       // Send the POST request with axios
+      console.log("started registration");
       const response = await axios.post(url, formData);
+
+      console.log("data uploaded successfully");
+
+      if (file) {
+        const imageFormData = new FormData();
+        imageFormData.append(role, file);
+
+        const params = {
+          ID: formData.ID,
+          role: role,
+        };
+        await axios.post(
+          `${url}/upload/image`,
+          imageFormData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            params: params,
+          }
+        );
+      }
   
       if (response.status === 200) {
         console.log('Registration successful!', formData);
@@ -88,11 +127,11 @@ const RegistrationForm = () => {
               className="w-full p-3 border border-gray-300 rounded-md"
             >
               <option value="">Select Role</option>
-              <option value="Admin">Admin</option>
-              <option value="Faculty">Faculty</option>
-              <option value="Student">Student</option>
-              <option value="NonTeachingStaff">Non-Teaching Staff</option>
-              <option value="HOD">HOD</option>
+              <option value="admin">Admin</option>
+              <option value="faculty">Faculty</option>
+              <option value="student">Student</option>
+              <option value="nonTeachingStaff">Non-Teaching Staff</option>
+              <option value="hod">HOD</option>
             </select>
           </div>
 
@@ -102,16 +141,18 @@ const RegistrationForm = () => {
               <label className="block font-semibold mb-2">Upload Image:</label>
               <input
                 type="file"
-                name="image"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="w-full p-3 border border-gray-300 rounded-md"
+                onChange={handleFileChange}
+                className="w-full text-sm text-gray-500 file:border file:border-gray-300 file:px-4 file:py-2 file:rounded-lg"
+                accept=".jpg"
               />
+              <p className="text-xs pl-1">
+                only .jpg files less than 10MB allowed
+              </p>
             </div>
           )}
 
           {/* Fields based on role */}
-          {role === "Admin" && (
+          {role === "admin" && (
             <>
               <div className="w-full">
                 <label className="block font-semibold mb-2">ID:</label>
@@ -146,7 +187,7 @@ const RegistrationForm = () => {
             </>
           )}
 
-          {role === "Faculty" && (
+          {role === "faculty" && (
             <>
               <div className="w-full">
                 <label className="block font-semibold mb-2">ID:</label>
@@ -201,7 +242,7 @@ const RegistrationForm = () => {
             </>
           )}
 
-          {role === "HOD" && (
+          {role === "hod" && (
             <>
               <div className="w-full">
                 <label className="block font-semibold mb-2">ID:</label>
@@ -246,7 +287,7 @@ const RegistrationForm = () => {
             </>
           )}
 
-          {role === "NonTeachingStaff" && (
+          {role === "nonTeachingStaff" && (
             <>
               <div className="w-full">
                 <label className="block font-semibold mb-2">ID:</label>
@@ -281,7 +322,7 @@ const RegistrationForm = () => {
             </>
           )}
 
-          {role === "Student" && (
+          {role === "student" && (
             <>
               <div className="w-full">
                 <label className="block font-semibold mb-2">ID:</label>
