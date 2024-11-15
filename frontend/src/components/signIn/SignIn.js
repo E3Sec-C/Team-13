@@ -5,14 +5,14 @@ import { useFormik } from "formik";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; // Ensure you have react-router-dom installed
 
+import { setSnackBar } from "../../store/features/snackbar/snackbar";
+import { useDispatch } from "react-redux";
+
 function SignIn() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [role, setRole] = useState("");
-
-  const handleChange = (e) => {
-    setRole(e.target.value); // Update the role when the Select input changes
-  };
 
   const initialValues = {
     userId: "",
@@ -42,7 +42,7 @@ function SignIn() {
             navigate('/student'); 
           }else if(role==='hod'){
             navigate('/hod');
-          }else if(role=='faculty'){
+          }else if(role==='faculty'){
             navigate('/faculty');
           }
           else if(role==='nonTeachingStaff'){
@@ -51,10 +51,20 @@ function SignIn() {
             navigate('/admin'); 
           }
         } else {
-          console.log("An error has occured...!");
+          dispatch(
+            setSnackBar({
+              message: "Invalid Credentials provided",
+              variant: "error",
+            })
+          );
         }
       } catch (err) {
-        console.error(err);
+        dispatch(
+          setSnackBar({
+            message: "Faied to LogIn",
+            variant: "error",
+          })
+        );
       }
     },
   });
