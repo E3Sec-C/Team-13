@@ -1,9 +1,9 @@
 import React from 'react';
 import './App.css';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom'; 
+
 import HomePage from './components/homePage/index';
 import SignIn from './components/signIn/SignIn';
-
 import StudentDashboard from './components/student/StudentDashboard';
 import StudentProfile from "./components/student/StudentProfile";
 import AdminDashboard from './components/admin/AdminDashboard';
@@ -21,7 +21,6 @@ import NonTeachingStaffProfile from './components/nonTeachingStaff/NonTeachingSt
 const App = () => {
   
   return (
-
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/signin" element={<SignIn />} />
@@ -59,7 +58,6 @@ const App = () => {
           <Route path='complaint' element={<ComplaintForm/>} />
         </Route>
       </Routes>
-    
   );
 }
 
