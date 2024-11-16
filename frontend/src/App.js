@@ -21,6 +21,7 @@ import ViewUsers from "./components/hod/ViewUsers";
 import NonTeachingStaffDashboard from "./components/nonTeachingStaff/NonTeachingStaffDashboard";
 import NonTeachingStaffProfile from "./components/nonTeachingStaff/NonTeachingStaffProfile";
 import NonTeachingStaffInfrastructure from "./components/nonTeachingStaff/Infrastructure";
+import ViewResults from "./components/student/ViewResults";
 const App = () => {
   return (
     <>
@@ -30,10 +31,10 @@ const App = () => {
         <Route path="/signin" element={<SignIn />} />
 
         <Route path="/student" element={<StudentDashboard />}>
+          <Route index element={<StudentProfile />} />
           <Route path="profile" element={<StudentProfile />} />
           <Route path="complaint" element={<ComplaintForm />} />
-          {/* <Route path="/registrations" element={<AdminProfile />} /> */}
-          {/* <Route path="/users" element={<AdminProfile />} /> */}
+          <Route path="results" element={<ViewResults />} />
           <Route path="logout" element={<Logout />} />
         </Route>
 

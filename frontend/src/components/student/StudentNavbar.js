@@ -2,12 +2,27 @@ import React, { useState, useEffect } from 'react';
 import { Menu } from 'lucide-react';
 
 const Navbar = ({ onSidebarToggle }) => {
-  const [time, setTime] = useState(new Date().toLocaleTimeString());
+  const [sessionTime, setSessionTime] = useState('00:00:00');
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setTime(new Date().toLocaleTimeString());
-    }, 1000);
+    const sessionStartTime = localStorage.getItem("sessionStartTime");
+
+    if (!sessionStartTime) return;
+
+    const calculateSessionTime = () => {
+      const now = new Date();
+      const startTime = new Date(sessionStartTime);
+      const diff = Math.max(0, now - startTime); // Difference in milliseconds
+
+      const hours = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, '0');
+      const minutes = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+      const seconds = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+
+      setSessionTime(`${hours}:${minutes}:${seconds}`);
+    };
+
+    calculateSessionTime(); // Initial calculation
+    const intervalId = setInterval(calculateSessionTime, 1000); // Update every second
 
     return () => clearInterval(intervalId); // Clean up interval on unmount
   }, []);
@@ -26,7 +41,7 @@ const Navbar = ({ onSidebarToggle }) => {
       </div>
 
       <div className="flex items-center space-x-4 ml-auto text-white">
-        <h2>{time}</h2>
+        <h2>Session Time: {sessionTime}</h2>
       </div>
     </nav>
   );

@@ -1,18 +1,27 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+import {useDispatch} from 'react-redux';
+import {setSnackBar} from '../store/features/snackbar/snackbar';
+
 const ComplaintForm = () => {
+  const dispatch = useDispatch();
   const [description, setDescription] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Retrieve user ID from localStorage
-    const ID = localStorage.getItem('userID');
+    const ID = localStorage.getItem('userId');
     const role = localStorage.getItem('role');
-    console.log(role);
+
     if (!ID || !role) {
-      alert('User is not logged in.');
+      dispatch(
+        setSnackBar({
+          message:"User is not logged in",
+          variant:"warning"
+        })
+      );
       return;
     }
 
@@ -24,14 +33,29 @@ const ComplaintForm = () => {
       });
 
       if (response.status === 200) {
-        alert('Complaint submitted successfully!');
-        setDescription(''); // Clear the form after submission
+        dispatch(
+          setSnackBar({
+            message:"Complainte registered successfully",
+            variant:"success"
+          })
+        )
+        setDescription(''); 
       } else {
-        alert('Failed to submit complaint. Please try again.');
+        dispatch(
+          setSnackBar({
+            message:"Failed to register the Complaint",
+            variant:"error"
+          })
+        )
       }
     } catch (error) {
       console.error('Error submitting complaint:', error);
-      alert('An error occurred while submitting your complaint.');
+      dispatch(
+        setSnackBar({
+          message:"An error occured",
+          variant:"error"
+        })
+      )
     }
   };
 

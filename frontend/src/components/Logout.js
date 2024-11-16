@@ -7,6 +7,7 @@ const Logout = () => {
 
   useEffect(() => {
     // Clear user data from local storage or any other storage mechanism
+    localStorage.removeItem("sessionStartTime");
     localStorage.removeItem("userId");
     localStorage.removeItem("role");
 

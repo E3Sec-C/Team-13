@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { useFormik } from "formik";
@@ -9,7 +9,22 @@ import { setSnackBar } from "../../store/features/snackbar/snackbar";
 import { useDispatch } from "react-redux";
 
 function SignIn() {
+  localStorage.clear();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    const role = localStorage.getItem("role");
+
+    if (userId && role) {
+      // Redirect to home page if logged in
+      // navigate("/signin", { replace: true });
+      localStorage.removeItem('userId');
+      localStorage.removeItem('role');
+      localStorage.removeItem('sessionStartTime');
+    }
+  }, [navigate])
+
   const dispatch = useDispatch();
 
   const [role, setRole] = useState("");
@@ -36,10 +51,20 @@ function SignIn() {
 
         if (response && response.data.success) {
           // Save user ID in localStorage
+          const sessionStartTime = new Date().toISOString(); // Current timestamp
+          localStorage.setItem("sessionStartTime", sessionStartTime); // Save session star
+          dispatch(
+            setSnackBar({
+              message: "Login Successful",
+              variant: "success",
+            })
+          )
+          // Save user ID && role in localStorage
           localStorage.setItem("userId", response.data.userId); // Adjust based on actual response structure
           localStorage.setItem("role", response.data.role);
+          
           if(role==='student'){
-            navigate('/student'); 
+            navigate('/student/profile'); 
           }else if(role==='hod'){
             navigate('/hod');
           }else if(role==='faculty'){
@@ -118,7 +143,6 @@ function SignIn() {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="role"
                   required
                   className="mt-1 block w-full px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
                 />
@@ -128,7 +152,7 @@ function SignIn() {
 
           <button
             type="submit"
-            className="w-full bg-black text-white py-2 rounded-lg font-semibold hover:bg-gray-800"
+            className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-gray-800"
           >
             Sign in
           </button>
