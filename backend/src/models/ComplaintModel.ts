@@ -16,7 +16,7 @@ const ComplaintSchema = new Schema<complaint>({
     },
     date:{
         type:Date,
-        default: Date.now()
+        default: Date.now(),
     },
     status:{
         type:String,
@@ -24,4 +24,4 @@ const ComplaintSchema = new Schema<complaint>({
     }
 });
 
-export default model<complaint>("complaints",ComplaintSchema);
+export default model <complaint> ("complaints",ComplaintSchema);

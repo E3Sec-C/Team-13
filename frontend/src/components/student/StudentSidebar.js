@@ -1,11 +1,10 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import GroupIcon from '@mui/icons-material/Group';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import LogoutIcon from '@mui/icons-material/Logout';
 import "../../styles/dashboard.css";
-import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+import FeedbackIcon from '@mui/icons-material/Feedback';
 
 const Sidebar = ({ isCollapsed }) => {
 
@@ -18,11 +17,6 @@ const Sidebar = ({ isCollapsed }) => {
       segment: 'profile',
       title: 'Profile',
       icon: <DashboardIcon />,
-    },
-    {
-      segment: 'attendance',
-      title: 'Attendance',
-      icon: <AppRegistrationIcon />,
     },
     {
         segment: 'results',
@@ -39,7 +33,7 @@ const Sidebar = ({ isCollapsed }) => {
     {
       segment: 'complaint',
       title: 'Complaint',
-      icon: <GroupIcon />,
+      icon: <FeedbackIcon />,
     },
     {
       segment: 'logout',
