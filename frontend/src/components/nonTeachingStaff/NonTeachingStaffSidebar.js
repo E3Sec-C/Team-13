@@ -7,6 +7,11 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PasswordIcon from '@mui/icons-material/Password';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import FeedbackIcon from '@mui/icons-material/Feedback';
+import ChecklistIcon from '@mui/icons-material/Checklist';
+
+
+
+
 import "../../styles/dashboard.css";
 
 const Sidebar = ({ isCollapsed }) => {
@@ -22,9 +27,9 @@ const Sidebar = ({ isCollapsed }) => {
       icon: <AccountCircleIcon />,
     },
     {
-      segment: 'generateUser',
-      title: 'Generate User',
-      icon: <PasswordIcon />,
+      segment: 'infrastructure',
+      title: 'Infrastructure Details',
+      icon: <ChecklistIcon />,
     },
     {
         segment: 'registrations',

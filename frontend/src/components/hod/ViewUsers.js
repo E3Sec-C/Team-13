@@ -141,7 +141,7 @@ const ViewUsers = () => {
                 <p className="text-lg">{selectedUser.mobile}</p>
               </div>
             )}
-            {roleFilter=='student' && (
+            {roleFilter==='student' && (
               <>
               <div className="mb-4 flex items-center space-x-2">
                 <p className="text-sm font-medium text-gray-700">Studying:</p>

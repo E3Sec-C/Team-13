@@ -6,6 +6,7 @@ const NonTeachingStaffProfile = () => {
     ID: '',
     name: '',
     email: '',
+    mobile: '',
     image: null,
   });
   const [loading, setLoading] = useState(true);
@@ -108,6 +109,10 @@ const NonTeachingStaffProfile = () => {
                 <label className="block font-semibold mb-1 w-1/3">Name:</label>
                 <p className="text-gray-700 w-2/3">{profileData.name}</p>
             </div>
+            <div className="mb-4 flex items-center justify-between">
+                <label className="block font-semibold mb-1 w-1/3">Mobile:</label>
+                <p className="text-gray-700 w-2/3">{profileData.mobile}</p>
+            </div>
           <button
             onClick={() => setIsEditing(true)}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-200"
@@ -137,6 +142,16 @@ const NonTeachingStaffProfile = () => {
                 type="text"
                 name="name"
                 value={editedData.name}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block font-semibold mb-1">Mobile:</label>
+              <input
+                type="text"
+                name="mobile"
+                value={editedData.mobile}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded"
               />

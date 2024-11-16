@@ -20,6 +20,7 @@ import ComplaintList from "./components/hod/ComplaintList";
 import ViewUsers from "./components/hod/ViewUsers";
 import NonTeachingStaffDashboard from "./components/nonTeachingStaff/NonTeachingStaffDashboard";
 import NonTeachingStaffProfile from "./components/nonTeachingStaff/NonTeachingStaffProfile";
+import NonTeachingStaffInfrastructure from "./components/nonTeachingStaff/Infrastructure";
 import ViewResults from "./components/student/ViewResults";
 const App = () => {
   return (
@@ -56,10 +57,15 @@ const App = () => {
         </Route>
 
         <Route path="/nonTeachingStaff" element={<NonTeachingStaffDashboard />}>
+        <Route index element={<NonTeachingStaffProfile />} />
+
           <Route path="profile" element={<NonTeachingStaffProfile />} />
+          <Route path="infrastructure" element={<NonTeachingStaffInfrastructure />}/>
           {/* <Route path='registrations' element={<RegistrationForm/>} />
           <Route path='generateUser' element={<GenerateCredentials/>} /> */}
           <Route path="complaint" element={<ComplaintForm />} />
+          <Route path="logout" element={<Logout />} />
+
         </Route>
       </Routes>
     </>

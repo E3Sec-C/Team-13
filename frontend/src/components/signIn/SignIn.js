@@ -71,7 +71,7 @@ function SignIn() {
             navigate('/faculty');
           }
           else if(role==='nonTeachingStaff'){
-            navigate('/nonTeachingStaff');
+            navigate('/nonTeachingStaff/profile');
           }else{
             navigate('/admin'); 
           }
