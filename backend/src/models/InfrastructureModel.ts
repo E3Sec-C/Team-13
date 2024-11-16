@@ -3,6 +3,7 @@ import { infrastructure } from "../types/infrastructure";
 
 const InfrastructureModelSchema:Schema<infrastructure> = new mongoose.Schema({
     assetName:{type: String,unique:true},
+    lastUpdatedBy:{type:String},
     count:{type:Number},
 })
 
