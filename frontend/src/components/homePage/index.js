@@ -7,6 +7,7 @@ import Timeline from './Timeline';
 // import Highlights from '../Highlights';
 
 function HomePage() {
+  localStorage.clear();
   return (
     <div>
       <div id="navbar">

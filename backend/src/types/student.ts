@@ -11,19 +11,22 @@ export interface semRecord{
     cgpa:number;
     subjects:subject[];
 }
+export interface yearRecord{
+    year:number;
+    semester:semRecord[];
+}
 
 export interface student extends Document{
     ID: string;
     name:string;
     section:string;
-    year:string;
+    year:number;
     sem:number;
     email:string;
     mobile:string;
     bloodGroup:string;
     address:string;
-    image:Buffer;
     courses:ObjectId[];
-    marks:semRecord[];
+    marks:yearRecord[];
     attendance:number;
 }
