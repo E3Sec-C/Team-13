@@ -3,7 +3,7 @@ import Navbar from './Navbar'
 import Carousel from './Carousel';
 import Footer from './Footer';
 import AboutUs from './AboutUs';
-// import TimeLine from './TimeLine';
+import Timeline from './Timeline';
 // import Highlights from '../Highlights';
 
 function HomePage() {
@@ -19,9 +19,7 @@ function HomePage() {
         <AboutUs/>
       </div>
       {/* <Highlights/> */}
-      {/* <div id="timeline">
-        <TimeLine/>
-      </div> */}
+      <Timeline/>
       <div id="contactus">
         <Footer/>
       </div>
