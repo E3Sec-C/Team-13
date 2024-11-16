@@ -32,8 +32,9 @@ const ViewUsers = () => {
     const confirmDelete = window.confirm("Are you sure you want to delete this user?");
     if (confirmDelete) {
       try {
-        await axios.delete(`/api/users/${userId}`);
-        setUsers(users.filter((user) => user.id !== userId));
+        const roleEndpoint = roleFilter.toLowerCase();
+        await axios.delete(`http://localhost:5000/api/v1/${roleEndpoint}/delete/${userId}`);
+        setUsers(users.filter((user) => user.ID !== userId));
       } catch (error) {
         console.error("Error deleting user:", error);
       }
@@ -90,7 +91,7 @@ const ViewUsers = () => {
                     View
                   </button>
                   <button
-                    onClick={() => handleDelete(user.id)}
+                    onClick={() => handleDelete(user.ID)}
                     className="px-4 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
                   >
                     Delete
