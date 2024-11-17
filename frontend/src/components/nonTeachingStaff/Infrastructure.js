@@ -18,6 +18,9 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import axios from 'axios';
 
+import {useDispatch} from "react-redux";
+import {setSnackBar} from '../../store/features/snackbar/snackbar'
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -40,48 +43,97 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const rows = [
-  { item: 'Chairs', count: 120, lastUpdatedBy: 'Alice' },
-  { item: 'Desks', count: 75, lastUpdatedBy: 'Bob' },
-  { item: 'Projectors', count: 10, lastUpdatedBy: 'Charlie' },
-  { item: 'Batteries', count: 50, lastUpdatedBy: 'Diana' },
-  { item: 'Whiteboards', count: 5, lastUpdatedBy: 'Edward' },
-];
 
 export default function Infrastructure() {
-  const [sortedRows, setSortedRows] = useState(
-    rows.sort((a, b) => a.item.localeCompare(b.item))
-  );
+
+  const dispatch = useDispatch();
+
+  const [infraData, setInfraData] = useState(null);
+  const [userName, setUserName] = useState(null);
+
+
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openAdd, setOpenAdd] = useState(false);
-  const [currentItem, setCurrentItem] = useState(null);
+  const [currentAssetName, setCurrentAssetName] = useState(null);
   const [newCount, setNewCount] = useState('');
-  const [newItemName, setNewItemName] = useState('');
-  const [newItemCount, setNewItemCount] = useState('');
+  const [newAssetName, setNewAssetName] = useState('');
+  const [newAssetCount, setNewAssetCount] = useState('');
 
-  const handleClickOpenUpdate = (item) => {
-    setCurrentItem(item);
-    setNewCount(item.count);
+  useEffect(()=>{
+    const fetchInfraData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/v1/infrastructure/getall`
+        );
+        setInfraData(response.data);
+
+        const userResponse = await axios.get(
+          `http://localhost:5000/api/v1/nonTeachingStaff/${localStorage.getItem("userId")}`
+        )
+        setUserName(userResponse.data.name);
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      }
+    };
+    fetchInfraData();
+  },[])
+
+  const handleClickOpenUpdate = (assetName) => {
+    setCurrentAssetName(assetName);
+    setNewCount(assetName.count);
     setOpenUpdate(true);
   };
 
   const handleCloseUpdate = () => {
     setOpenUpdate(false);
-    setCurrentItem(null);
+    setCurrentAssetName(null);
   };
 
-  const handleSaveUpdate = () => {
-    setSortedRows((prevRows) =>
-      prevRows.map((row) =>
-        row.item === currentItem.item ? { ...row, count: newCount } : row
-      )
-    );
+  const handleSaveUpdate = async() => {
+    const data = {
+      "assetName":currentAssetName.assetName,
+      "lastUpdatedBy":userName,
+      "count":newCount,
+    }
+    try{
+      const saveUrl = `http://localhost:5000/api/v1/infrastructure/update/${data.assetName}`
+      const response = await axios.put(saveUrl,data);
+      if(response){
+        dispatch(
+          setSnackBar({
+            message:"Updated Successfully",
+            variant:"success"
+          })
+        )
+        setInfraData((prevRows) =>
+          prevRows.map((row) =>
+            row.assetName === response.data.assetName ? { ...row, count: response.data.count, lastUpdatedBy:response.data.lastUpdatedBy } : row
+          )
+        );
+      }else{
+        dispatch(
+          setSnackBar({
+            message:"Failed to Update",
+            variant:"error"
+          })
+        )
+      }
+    }catch(error){
+      dispatch(
+        setSnackBar({
+          message:"Error saving the details",
+          variant:"error"
+        })
+      );
+      console.log(error)
+    }
+  
     handleCloseUpdate();
   };
 
-  const handleAddItem = () => {
-    setNewItemName('');
-    setNewItemCount('');
+  const handleAddassetName = () => {
+    setNewAssetName('');
+    setNewAssetCount('');
     setOpenAdd(true);
   };
 
@@ -89,20 +141,56 @@ export default function Infrastructure() {
     setOpenAdd(false);
   };
 
-  const handleSaveAdd = () => {
-    const newItem = {
-      item: newItemName,
-      count: Number(newItemCount),
-      lastUpdatedBy: 'Admin',
-    };
-    setSortedRows((prevRows) => [...prevRows, newItem]);
+  const handleSaveAdd = async() => {
+    const data = {
+      "assetName":newAssetName,
+      "lastUpdatedBy":userName,
+      "count":newAssetCount,
+    }
+    console.log(data);
+    try{
+      const saveUrl = `http://localhost:5000/api/v1/infrastructure/`
+      const response = await axios.post(saveUrl,data);
+      if(response){
+        dispatch(
+          setSnackBar({
+            message:"Asset added Successfully",
+            variant:"success"
+          })
+        )
+        setInfraData(prevData => [
+          ...prevData, 
+          {
+            "assetName": response.data.assetName,
+            "lastUpdatedBy": userName,
+            "count": response.data.count
+          }
+        ]);
+      }else{
+        dispatch(
+          setSnackBar({
+            message:"Failed to add",
+            variant:"error"
+          })
+        )
+      }
+    }catch(error){
+      dispatch(
+        setSnackBar({
+          message:"Error adding the asset",
+          variant:"error"
+        })
+      );
+      console.log(error)
+    }
+
     handleCloseAdd();
   };
 
   return (
     <div className="pt-16 p-4 transition-all duration-300">
       {/* Header Section */}
-      <div className="flex items-center gap-3 mb-6">
+      <div className="flex assetNames-center gap-3 mb-6">
         <InventoryIcon fontSize="large" className="text-gray-700" />
         <h1 className="text-2xl font-semibold">Infrastructure Details</h1>
       </div>
@@ -112,25 +200,25 @@ export default function Infrastructure() {
         <Table sx={{ minWidth: 700 }} aria-label="infrastructure table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>Item</StyledTableCell>
+              <StyledTableCell>Asset Name</StyledTableCell>
               <StyledTableCell>Last Updated By</StyledTableCell>
               <StyledTableCell align="right">Count</StyledTableCell>
               <StyledTableCell align="center">Action</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {sortedRows.map((row, index) => (
+            {infraData && infraData.map((each, index) => (
               <StyledTableRow key={index}>
                 <StyledTableCell component="th" scope="row">
-                  {row.item}
+                  {each.assetName}
                 </StyledTableCell>
-                <StyledTableCell>{row.lastUpdatedBy}</StyledTableCell>
-                <StyledTableCell align="right">{row.count}</StyledTableCell>
+                <StyledTableCell>{each.lastUpdatedBy}</StyledTableCell>
+                <StyledTableCell align="right">{each.count}</StyledTableCell>
                 <StyledTableCell align="center">
                   <Button
                     variant="contained"
                     style={{ backgroundColor: '#007BFF', color: 'white' }}
-                    onClick={() => handleClickOpenUpdate(row)}
+                    onClick={() => handleClickOpenUpdate(each)}
                   >
                     Update
                   </Button>
@@ -144,17 +232,17 @@ export default function Infrastructure() {
       {/* Buttons Section */}
       <div className="flex justify-between mt-4">
         <Button
-          onClick={handleAddItem}
+          onClick={handleAddassetName}
           variant="contained"
           style={{ backgroundColor: 'green', color: 'white' }}
         >
-          Add Item
+          Add Asset
         </Button>
       </div>
 
       {/* Update Dialog Section */}
       <Dialog open={openUpdate} onClose={handleCloseUpdate} maxWidth="sm" fullWidth>
-        <DialogTitle>{currentItem?.item}</DialogTitle>
+        <DialogTitle>{currentAssetName?.assetName}</DialogTitle>
         <DialogContent>
           <div className="flex items-center justify-center gap-4 my-4">
             <IconButton onClick={() => setNewCount((prev) => Math.max(prev - 1, 0))}>
@@ -188,21 +276,21 @@ export default function Infrastructure() {
 
       {/* Add Dialog Section */}
       <Dialog open={openAdd} onClose={handleCloseAdd} maxWidth="sm" fullWidth>
-        <DialogTitle>Add New Item</DialogTitle>
+        <DialogTitle>Add New Asset</DialogTitle>
         <DialogContent>
           <div className="flex flex-col gap-4 my-4">
             <input
               type="text"
-              placeholder="Item Name"
-              value={newItemName}
-              onChange={(e) => setNewItemName(e.target.value)}
+              placeholder="Asset Name"
+              value={newAssetName}
+              onChange={(e) => setNewAssetName(e.target.value)}
               className="border rounded px-3 py-2 w-full"
             />
             <input
               type="number"
               placeholder="Count"
-              value={newItemCount}
-              onChange={(e) => setNewItemCount(e.target.value)}
+              value={newAssetCount}
+              onChange={(e) => setNewAssetCount(e.target.value)}
               className="border rounded px-3 py-2 w-full"
               min="0"
             />
