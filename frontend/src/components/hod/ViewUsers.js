@@ -1,11 +1,43 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Typography,
+  IconButton,
+  Box,
+  Avatar,
+  Grid,
+  Container,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import {useDispatch} from "react-redux";
+import {setSnackBar} from "../../store/features/snackbar/snackbar";
 
 const ViewUsers = () => {
+  const dispatch = useDispatch();
   const [users, setUsers] = useState([]);
-  const [roleFilter, setRoleFilter] = useState("student"); // Default to "Student"
+  const [roleFilter, setRoleFilter] = useState("student");
   const [isViewModalOpen, setViewModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
 
   // Fetch users from the backend based on the selected role
   useEffect(() => {
@@ -28,16 +60,23 @@ const ViewUsers = () => {
     setViewModalOpen(true);
   };
 
-  const handleDelete = async (userId) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this user?");
-    if (confirmDelete) {
-      try {
-        const roleEndpoint = roleFilter.toLowerCase();
-        await axios.delete(`http://localhost:5000/api/v1/${roleEndpoint}/delete/${userId}`);
-        setUsers(users.filter((user) => user.ID !== userId));
-      } catch (error) {
-        console.error("Error deleting user:", error);
-      }
+  const openDeleteConfirm = (userId) => {
+    setUserToDelete(userId);
+    setDeleteConfirmOpen(true);
+  };
+
+  const handleDelete = async () => {
+    try {
+      const roleEndpoint = roleFilter.toLowerCase();
+      await axios.delete(`http://localhost:5000/api/v1/${roleEndpoint}/delete/${userToDelete}`);
+      setUsers(users.filter((user) => user.ID !== userToDelete));
+      dispatch(setSnackBar({ message: 'User deleted successfully',variant:"success" }));
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      dispatch(setSnackBar({ message: 'Failed to delete user',variant:"error" }));
+    } finally {
+      setDeleteConfirmOpen(false);
+      setUserToDelete(null);
     }
   };
 
@@ -47,140 +86,207 @@ const ViewUsers = () => {
   };
 
   return (
-    <div className="flex flex-col items-center p-4 min-h-screen bg-gray-100 mt-16">
-    <h2 className="text-3xl font-semibold text-center text-indigo-700 mb-6">View Users</h2>
+    <Container maxWidth="lg" sx={{ mt: 10, mb: 4 }}>
+      <Typography variant="h4" component="h2" gutterBottom color="primary" align="center" sx={{ mb: 4 }}>
+        View Users
+      </Typography>
 
       {/* Role Filter */}
-      <div className="mb-4 w-full max-w-md">
-        <label className="block text-sm font-medium text-gray-700">Filter by Role</label>
-        <select
-          className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-          value={roleFilter}
-          onChange={(e) => setRoleFilter(e.target.value)}
-        >
-          <option value="student">Student</option>
-          <option value="admin">Admin</option>
-          <option value="faculty">Faculty</option>
-          <option value="nonTeachingStaff">Non-Teaching Staff</option>
-          <option value="hod">HOD</option>
-        </select>
-      </div>
+      <Box sx={{ maxWidth: 400, mx: "auto", mb: 4 }}>
+        <FormControl fullWidth>
+          <InputLabel id="role-filter-label">Filter by Role</InputLabel>
+          <Select
+            labelId="role-filter-label"
+            value={roleFilter}
+            label="Filter by Role"
+            onChange={(e) => setRoleFilter(e.target.value)}
+          >
+            <MenuItem value="student">Student</MenuItem>
+            <MenuItem value="admin">Admin</MenuItem>
+            <MenuItem value="faculty">Faculty</MenuItem>
+            <MenuItem value="nonTeachingStaff">Non-Teaching Staff</MenuItem>
+            <MenuItem value="hod">HOD</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
 
       {/* Users Table */}
-      <table className="w-full max-w-4xl bg-white rounded-xl shadow-lg overflow-hidden">
-        <thead className="bg-indigo-500 text-white">
-          <tr>
-            <th className="py-2 px-4">Id</th>
-            <th className="py-2 px-4">Name</th>
-            <th className="py-2 px-4">Email</th>
-            <th className="py-2 px-4">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.id} className="border-t text-center">
-              <td className="py-2 px-4">{user.ID}</td>
-              <td className="py-2 px-4">{user.name}</td>
-              <td className="py-2 px-4">{user.email}</td>
-              <td className="py-2 px-4 text-center">
-                <div className="flex justify-center space-x-2">
-                  <button
-                    onClick={() => handleView(user)}
-                    className="px-4 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
-                  >
-                    View
-                  </button>
-                  <button
-                    onClick={() => handleDelete(user.ID)}
-                    className="px-4 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </td>
-
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <TableContainer component={Paper} elevation={3}>
+        <Table>
+          <TableHead>
+            <TableRow sx={{ backgroundColor: "primary.main" }}>
+              <TableCell sx={{ color: "white" }}>Id</TableCell>
+              <TableCell sx={{ color: "white" }}>Name</TableCell>
+              <TableCell sx={{ color: "white" }}>Email</TableCell>
+              <TableCell sx={{ color: "white" }} align="center">Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {users && users.map((user) => (
+              <TableRow key={user.id} hover>
+                <TableCell>{user.ID}</TableCell>
+                <TableCell>{user.name}</TableCell>
+                <TableCell>{user.email}</TableCell>
+                <TableCell align="center">
+                  <Box sx={{ display: "flex", justifyContent: "center", gap: 1 }}>
+                    <Button
+                      variant="contained"
+                      color="info"
+                      startIcon={<VisibilityIcon />}
+                      onClick={() => handleView(user)}
+                      size="small"
+                    >
+                      View
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      startIcon={<DeleteIcon />}
+                      onClick={() => openDeleteConfirm(user.ID)}
+                      size="small"
+                    >
+                      Delete
+                    </Button>
+                  </Box>
+                </TableCell>
+              </TableRow>
+            ))}
+            {users.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={4} align="center">
+                  No users found.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
       {/* View Modal */}
-      {isViewModalOpen && selectedUser && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="w-full max-w-lg bg-white rounded-xl p-6 shadow-lg relative bg-gradient-to-l from-gray-200 to-gray-400">
-            <button
-              onClick={handleModalClose}
-              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
-            >
-              &times;
-            </button>
-            <h3 className="text-xl font-semibold mb-4">{selectedUser.ID}</h3>
-
-            {/* Profile Image */}
-            <div className="flex items-center justify-center mb-4">
-              <img
-                src={`http://localhost:5000/api/v1/${roleFilter}/image/${selectedUser.ID}/${roleFilter}` ||
-            "http://via.placeholder.com/250x250"}
-                alt="Profile"
-                className="w-24 h-24 rounded-full border border-gray-300"
+      <Dialog
+        open={isViewModalOpen}
+        onClose={handleModalClose}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle>
+          User Details
+          <IconButton
+            aria-label="close"
+            onClick={handleModalClose}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        {selectedUser && (
+          <DialogContent>
+            <Box sx={{ textAlign: "center", mb: 3 }}>
+              <Avatar
+                src={`http://localhost:5000/api/v1/${roleFilter}/image/${selectedUser.ID}/${roleFilter}`}
+                sx={{ width: 100, height: 100, mx: "auto", mb: 2 }}
               />
-            </div>
-
-            {/* User Details */}
-            <div className="mb-4 flex items-center space-x-2">
-              <p className="text-sm font-medium text-gray-700">Name:</p>
-              <p className="text-lg">{selectedUser.name}</p>
-            </div>
-            <div className="mb-4 flex items-center space-x-2">
-              <p className="text-sm font-medium text-gray-700">Email:</p>
-              <p className="text-lg">{selectedUser.email}</p>
-            </div>
-            {(roleFilter === "faculty" || roleFilter === 'nonTeachingStaff' || roleFilter==='student') && (
-              <div className="mb-4 flex items-center space-x-2">
-                <p className="text-sm font-medium text-gray-700">Mobile:</p>
-                <p className="text-lg">{selectedUser.mobile}</p>
-              </div>
-            )}
-            {roleFilter==='student' && (
-              <>
-              <div className="mb-4 flex items-center space-x-2">
-                <p className="text-sm font-medium text-gray-700">Studying:</p>
-                <p className="text-lg">{selectedUser.year} SEM{selectedUser.sem}</p>
-              </div>
-              <div className="mb-4 flex items-center space-x-2">
-                <p className="text-sm font-medium text-gray-700">Attendance:</p>
-                <p className="text-lg">{selectedUser.attendance}</p>
-              </div>
-              <div className="mb-4 flex items-center space-x-2">
-                <p className="text-sm font-medium text-gray-700">BloodGroup:</p>
-                <p className="text-lg">{selectedUser.bloodGroup}</p>
-              </div>
-              </>
-            )}
-            {(roleFilter === "faculty" || roleFilter === 'hod') && (
-              <div className="mb-4 flex items-center space-x-2">
-                <p className="text-sm font-medium text-gray-700">Education:</p>
-                <p className="text-lg">{selectedUser.education }</p>
-              </div>
-            )}
-            {roleFilter === "faculty" && (
-              <div className="mb-4 flex items-center space-x-2">
-              <p className="text-sm font-medium text-gray-700">Assigned Classes:</p>
-              <p className="text-lg">{selectedUser.assignedClasses }</p>
-            </div>
-            )}
+              <Typography variant="h6">{selectedUser.ID}</Typography>
+            </Box>
             
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Typography variant="subtitle1" color="text.secondary">
+                  Name: <Box component="span" sx={{ color: "text.primary" }}>{selectedUser.name}</Box>
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="subtitle1" color="text.secondary">
+                  Email: <Box component="span" sx={{ color: "text.primary" }}>{selectedUser.email}</Box>
+                </Typography>
+              </Grid>
+              {(roleFilter === "faculty" || roleFilter === 'nonTeachingStaff' || roleFilter==='student') && (
+                <Grid item xs={12}>
+                  <Typography variant="subtitle1" color="text.secondary">
+                    Mobile: <Box component="span" sx={{ color: "text.primary" }}>{selectedUser.mobile}</Box>
+                  </Typography>
+                </Grid>
+              )}
+              {roleFilter==='student' && (
+                <>
+                  <Grid item xs={12}>
+                    <Typography variant="subtitle1" color="text.secondary">
+                      Studying: <Box component="span" sx={{ color: "text.primary" }}>{selectedUser.year} SEM{selectedUser.sem}</Box>
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="subtitle1" color="text.secondary">
+                      Attendance: <Box component="span" sx={{ color: "text.primary" }}>{selectedUser.attendance}</Box>
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="subtitle1" color="text.secondary">
+                      BloodGroup: <Box component="span" sx={{ color: "text.primary" }}>{selectedUser.bloodGroup}</Box>
+                    </Typography>
+                  </Grid>
+                </>
+              )}
+              {(roleFilter === "faculty" || roleFilter === 'hod') && (
+                <Grid item xs={12}>
+                  <Typography variant="subtitle1" color="text.secondary">
+                    Education: <Box component="span" sx={{ color: "text.primary" }}>{selectedUser.education }</Box>
+                  </Typography>
+                </Grid>
+              )}
+              {roleFilter === "faculty" && (
+                <Grid item xs={12}>
+                  <Typography variant="subtitle1" color="text.secondary">
+                    Assigned Classes: <Box component="span" sx={{ color: "text.primary" }}>{selectedUser.assignedClasses }</Box>
+                  </Typography>
+                </Grid>
+              )}
+            </Grid>
+          </DialogContent>
+        )}
+        <DialogActions>
+          <Button onClick={handleModalClose} variant="contained" fullWidth>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
 
-            <button
-              onClick={handleModalClose}
-              className="w-full py-2 mt-4 font-semibold text-white bg-indigo-500 rounded-md hover:bg-indigo-600 focus:outline-none"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
+      {/* Delete Confirmation Dialog */}
+      <Dialog
+        open={deleteConfirmOpen}
+        onClose={() => setDeleteConfirmOpen(false)}
+        aria-labelledby="delete-dialog-title"
+        aria-describedby="delete-dialog-description"
+      >
+        <DialogTitle id="delete-dialog-title">
+          Confirm Delete
+        </DialogTitle>
+        <DialogContent>
+          <Typography id="delete-dialog-description">
+            Are you sure you want to delete this user? This action cannot be undone.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button 
+            onClick={() => setDeleteConfirmOpen(false)}
+            color="primary"
+          >
+            Cancel
+          </Button>
+          <Button 
+            onClick={handleDelete}
+            color="error"
+            variant="contained"
+            autoFocus
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Container>
   );
 };
 
