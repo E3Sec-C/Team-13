@@ -4,6 +4,7 @@ import Carousel from './Carousel';
 import Footer from './Footer';
 import AboutUs from './AboutUs';
 import Timeline from './Timeline';
+import Testimonials from './Testimonials';
 // import Highlights from '../Highlights';
 
 function HomePage() {
@@ -20,8 +21,11 @@ function HomePage() {
         <AboutUs/>
       </div>
       {/* <Highlights/> */}
-      <Timeline/>
-      <div id="contactus">
+      <div id="about">
+        <Timeline/>
+      </div>
+      <Testimonials />
+      <div id="contact">
         <Footer/>
       </div>
     </div>

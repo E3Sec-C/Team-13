@@ -1,99 +1,75 @@
-import React, { useEffect, useRef } from 'react';
-import './timeline.css';
+import React from 'react';
 
 const Timeline = () => {
-    const timelineRef = useRef(null);
-    const lineRef = useRef(null);
+  const timelineItems = [
+    {
+      title: 'HOD',
+      description: 'Head of the Computer Science Department, responsible for academic leadership and departmental administration.',
+      icon: '👨‍💼',
+      position: 'left'
+    },
+    {
+      title: 'Professors and Asst. Professors',
+      description: 'Experienced faculty members dedicated to teaching, research, and mentoring students in computer science.',
+      icon: '👨‍🏫',
+      position: 'right'
+    },
+    {
+      title: 'Non Teaching Staff',
+      description: 'Essential support staff ensuring smooth operation of laboratories, administrative tasks, and technical infrastructure.',
+      icon: '👥',
+      position: 'left'
+    },
+    {
+      title: 'Students',
+      description: 'Aspiring computer science professionals pursuing their academic goals and practical skills development.',
+      icon: '👨‍🎓',
+      position: 'right'
+    }
+  ];
 
-    useEffect(() => {
-        const options = {
-            threshold: 0.1 // Trigger when 10% of the element is visible
-        };
+  return (
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto">
+        <h2 className="text-3xl font-bold text-center text-gray-900 mb-16">
+          Structure Of <span className="text-gray-700">CSE</span>
+        </h2>
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    // Add class to trigger animation for member cards
-                    entry.target.classList.add('animate');
+        <div className="relative">
+          {/* Vertical Line */}
+          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gray-200"></div>
 
-                    // Trigger the line animation
-                    lineRef.current.classList.add('animate-line');
-                } else {
-                    // Remove the class if element is not in view
-                    entry.target.classList.remove('animate');
-
-                    // Reset the line animation when out of view
-                    lineRef.current.classList.remove('animate-line');
-                }
-            });
-        }, options);
-
-        const items = timelineRef.current.querySelectorAll('.member-card');
-        items.forEach(item => {
-            observer.observe(item);
-        });
-
-        return () => {
-            items.forEach(item => observer.unobserve(item));
-        };
-    }, []);
-
-    return (
-        <div className='main'>
-            <div className="background">
-                <h2 className='text-4xl font-bold text-center mt-5'> Structure Of <span className='text-indigo-500'> CSE </span> </h2>
-                <div className='timeline' ref={timelineRef}>
-                    {/* The line element */}
-                    <div ref={lineRef} className="timeline-line"></div>
-
-                    <div className='member-card left-container'>
-                        {/* <img src="logo192.png" alt='Core' /> */}
-                        <i className="fa-solid fa-c" style={{color: "white"}}></i>
-                        <div className='text-box corecard'>
-                            <h2 className='coretext'> HOD </h2>
-                            <p>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, accusantium deleniti, impedit tempora minus, harum sit quibusdam voluptatibus dicta corrupti ratione esse odio architecto neque animi tempore mollitia! Error, illo.
-                            </p>
-                            <span className='left-container-arrow corearrow'></span>
-                        </div>
-                    </div>
-                    <div className='member-card right-container'>
-                       {/* <img src="https://img.freepik.com/premium-vector/creative-c-letter-vector-icon-cartoon-illustration_1316704-4699.jpg?ga=GA1.1.979507765.1726655807&semt=ais_hybrid" alt=""/> */}
-                       <i className="fa-solid fa-a" style={{color: "white"}}></i>
-                        <div className='text-box accountcard'>
-                            <h2 className='accounttext'> Proffessors and Asst. Proffessors </h2>
-                            <p>
-                                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sed commodi, itaque enim tempore voluptatum est aliquam quas, sint eligendi, culpa odio? Eligendi harum expedita quibusdam reiciendis in ipsum cumque illo!
-                            </p>
-                            <span className='right-container-arrow accountarrow'></span>
-                        </div>
-                    </div>
-                    <div className='member-card left-container'>
-                        {/* <img src="logo192.png" alt='Executive' /> */}
-                        <i className="fa-solid fa-e" style={{color: "white"}}></i>
-                        <div className='text-box executivecard'>
-                            <h2 className='executivetext'> Non Teaching Staff </h2>
-                            <p>
-                               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima expedita officiis aut facere delectus dignissimos praesentium dicta quam vero quidem explicabo molestiae tempora non eveniet accusamus, quas ratione error fuga.
-                            </p>
-                            <span className='left-container-arrow executivearrow'></span>
-                        </div>
-                    </div>
-                    <div className='member-card right-container'>
-                        {/* <img src="logo192.png" alt='HR' /> */}
-                        <i className="fa-solid fa-h" style={{color: "white"}}></i>
-                        <div className='text-box hrcard'>
-                            <h2 className='hrtext'> Students </h2>
-                            <p>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. At ipsam autem facere sunt earum officiis, nulla voluptas iure, adipisci ipsum necessitatibus numquam. Incidunt accusantium harum ratione, earum ex ut nobis.
-                            </p>
-                            <span className='right-container-arrow hrarrow'></span>
-                        </div>
-                    </div>
+          {/* Timeline Items */}
+          {timelineItems.map((item, index) => (
+            <div
+              key={index}
+              className={`mb-12 flex ${
+                item.position === 'left' ? 'flex-row' : 'flex-row-reverse'
+              } items-center justify-between`}
+            >
+              {/* Content */}
+              <div className={`w-5/12 ${item.position === 'right' && 'text-right'}`}>
+                <div
+                  className={`p-6 bg-white rounded-lg shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg`}
+                >
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{item.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">{item.description}</p>
                 </div>
+              </div>
+
+              {/* Icon */}
+              <div className="z-10 flex items-center justify-center w-12 h-12 bg-white rounded-full border-4 border-gray-200 text-xl">
+                {item.icon}
+              </div>
+
+              {/* Empty space for opposite side */}
+              <div className="w-5/12"></div>
             </div>
+          ))}
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default Timeline;
