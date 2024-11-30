@@ -13,13 +13,13 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
+import Checkbox from '@mui/material/Checkbox';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import axios from 'axios';
-
-import {useDispatch} from "react-redux";
-import {setSnackBar} from '../../store/features/snackbar/snackbar'
+import { useDispatch } from 'react-redux';
+import { setSnackBar } from '../../store/features/snackbar/snackbar';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -43,14 +43,11 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-
 export default function Infrastructure() {
-
   const dispatch = useDispatch();
 
   const [infraData, setInfraData] = useState(null);
   const [userName, setUserName] = useState(null);
-
 
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openAdd, setOpenAdd] = useState(false);
@@ -58,25 +55,34 @@ export default function Infrastructure() {
   const [newCount, setNewCount] = useState('');
   const [newAssetName, setNewAssetName] = useState('');
   const [newAssetCount, setNewAssetCount] = useState('');
+  const [deleteMode, setDeleteMode] = useState(false);
+  const [selectedItems, setSelectedItems] = useState([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     const fetchInfraData = async () => {
       try {
         const response = await axios.get(
           `http://localhost:5000/api/v1/infrastructure/getall`
         );
-        setInfraData(response.data);
-
+    
+        // Sort the data alphabetically by assetName
+        const sortedData = response.data.sort((a, b) =>
+          a.assetName.localeCompare(b.assetName)
+        );
+        setInfraData(sortedData);
+    
         const userResponse = await axios.get(
-          `http://localhost:5000/api/v1/nonTeachingStaff/${localStorage.getItem("userId")}`
-        )
+          `http://localhost:5000/api/v1/nonTeachingStaff/${localStorage.getItem('userId')}`
+        );
         setUserName(userResponse.data.name);
       } catch (error) {
-        console.error("Error fetching profile data:", error);
+        console.error('Error fetching profile data:', error);
       }
     };
+    
     fetchInfraData();
-  },[])
+    
+  }, []);
 
   const handleClickOpenUpdate = (assetName) => {
     setCurrentAssetName(assetName);
@@ -89,49 +95,51 @@ export default function Infrastructure() {
     setCurrentAssetName(null);
   };
 
-  const handleSaveUpdate = async() => {
+  const handleSaveUpdate = async () => {
     const data = {
-      "assetName":currentAssetName.assetName,
-      "lastUpdatedBy":userName,
-      "count":newCount,
-    }
-    try{
-      const saveUrl = `http://localhost:5000/api/v1/infrastructure/update/${data.assetName}`
-      const response = await axios.put(saveUrl,data);
-      if(response){
+      assetName: currentAssetName.assetName,
+      lastUpdatedBy: userName,
+      count: newCount,
+    };
+    try {
+      const saveUrl = `http://localhost:5000/api/v1/infrastructure/update/${data.assetName}`;
+      const response = await axios.put(saveUrl, data);
+      if (response) {
         dispatch(
           setSnackBar({
-            message:"Updated Successfully",
-            variant:"success"
+            message: 'Updated Successfully',
+            variant: 'success',
           })
-        )
+        );
         setInfraData((prevRows) =>
           prevRows.map((row) =>
-            row.assetName === response.data.assetName ? { ...row, count: response.data.count, lastUpdatedBy:response.data.lastUpdatedBy } : row
+            row.assetName === response.data.assetName
+              ? { ...row, count: response.data.count, lastUpdatedBy: response.data.lastUpdatedBy }
+              : row
           )
         );
-      }else{
+      } else {
         dispatch(
           setSnackBar({
-            message:"Failed to Update",
-            variant:"error"
+            message: 'Failed to Update',
+            variant: 'error',
           })
-        )
+        );
       }
-    }catch(error){
+    } catch (error) {
       dispatch(
         setSnackBar({
-          message:"Error saving the details",
-          variant:"error"
+          message: 'Error saving the details',
+          variant: 'error',
         })
       );
-      console.log(error)
+      console.log(error);
     }
-  
+
     handleCloseUpdate();
   };
 
-  const handleAddassetName = () => {
+  const handleAddAsset = () => {
     setNewAssetName('');
     setNewAssetCount('');
     setOpenAdd(true);
@@ -141,140 +149,171 @@ export default function Infrastructure() {
     setOpenAdd(false);
   };
 
-  const handleSaveAdd = async() => {
+  const handleSaveAdd = async () => {
     const data = {
-      "assetName":newAssetName,
-      "lastUpdatedBy":userName,
-      "count":newAssetCount,
-    }
-    console.log(data);
-    try{
-      const saveUrl = `http://localhost:5000/api/v1/infrastructure/`
-      const response = await axios.post(saveUrl,data);
-      if(response){
+      assetName: newAssetName,
+      lastUpdatedBy: userName,
+      count: newAssetCount,
+    };
+    try {
+      const saveUrl = `http://localhost:5000/api/v1/infrastructure/`;
+      const response = await axios.post(saveUrl, data);
+      if (response) {
         dispatch(
           setSnackBar({
-            message:"Asset added Successfully",
-            variant:"success"
+            message: 'Asset Added Successfully',
+            variant: 'success',
           })
-        )
-        setInfraData(prevData => [
-          ...prevData, 
+        );
+        setInfraData((prevData) => [
+          ...prevData,
           {
-            "assetName": response.data.assetName,
-            "lastUpdatedBy": userName,
-            "count": response.data.count
-          }
+            assetName: response.data.assetName,
+            lastUpdatedBy: userName,
+            count: response.data.count,
+          },
         ]);
-      }else{
+      } else {
         dispatch(
           setSnackBar({
-            message:"Failed to add",
-            variant:"error"
+            message: 'Failed to add',
+            variant: 'error',
           })
-        )
+        );
       }
-    }catch(error){
+    } catch (error) {
       dispatch(
         setSnackBar({
-          message:"Error adding the asset",
-          variant:"error"
+          message: 'Error adding the asset',
+          variant: 'error',
         })
       );
-      console.log(error)
+      console.log(error);
     }
 
     handleCloseAdd();
   };
 
+  const toggleDeleteMode = () => {
+    setDeleteMode((prev) => !prev);
+    setSelectedItems([]);
+  };
+
+  const handleDelete = async () => {
+    try {
+      await Promise.all(
+        selectedItems.map(async (item) => {
+          await axios.delete(`http://localhost:5000/api/v1/infrastructure/delete/${item}`);
+        })
+      );
+      setInfraData((prevData) =>
+        prevData.filter((row) => !selectedItems.includes(row.assetName))
+      );
+      dispatch(
+        setSnackBar({
+          message: 'Assets Deleted Successfully',
+          variant: 'success',
+        })
+      );
+    } catch (error) {
+      dispatch(
+        setSnackBar({
+          message: 'Error deleting items',
+          variant: 'error',
+        })
+      );
+    }
+    toggleDeleteMode();
+  };
+
+  const toggleItemSelection = (assetName) => {
+    setSelectedItems((prev) =>
+      prev.includes(assetName)
+        ? prev.filter((item) => item !== assetName)
+        : [...prev, assetName]
+    );
+  };
+
   return (
     <div className="pt-16 p-4 transition-all duration-300">
-      {/* Header Section */}
-      <div className="flex assetNames-center gap-3 mb-6">
+      <div className="flex items-center gap-3 mb-6">
         <InventoryIcon fontSize="large" className="text-gray-700" />
         <h1 className="text-2xl font-semibold">Infrastructure Details</h1>
       </div>
 
-      {/* Table Section */}
       <TableContainer component={Paper} className="shadow-lg rounded-lg">
         <Table sx={{ minWidth: 700 }} aria-label="infrastructure table">
           <TableHead>
             <TableRow>
+              {deleteMode && <StyledTableCell />}
               <StyledTableCell>Asset Name</StyledTableCell>
               <StyledTableCell>Last Updated By</StyledTableCell>
               <StyledTableCell align="right">Count</StyledTableCell>
-              <StyledTableCell align="center">Action</StyledTableCell>
+              {!deleteMode && <StyledTableCell align="center">Action</StyledTableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
-            {infraData && infraData.map((each, index) => (
-              <StyledTableRow key={index}>
-                <StyledTableCell component="th" scope="row">
-                  {each.assetName}
-                </StyledTableCell>
-                <StyledTableCell>{each.lastUpdatedBy}</StyledTableCell>
-                <StyledTableCell align="right">{each.count}</StyledTableCell>
-                <StyledTableCell align="center">
-                  <Button
-                    variant="contained"
-                    style={{ backgroundColor: '#007BFF', color: 'white' }}
-                    onClick={() => handleClickOpenUpdate(each)}
-                  >
-                    Update
-                  </Button>
-                </StyledTableCell>
-              </StyledTableRow>
-            ))}
+            {infraData &&
+              infraData.map((each, index) => (
+                <StyledTableRow key={index}>
+                  {deleteMode && (
+                    <StyledTableCell>
+                      <Checkbox
+                        checked={selectedItems.includes(each.assetName)}
+                        onChange={() => toggleItemSelection(each.assetName)}
+                      />
+                    </StyledTableCell>
+                  )}
+                  <StyledTableCell>{each.assetName}</StyledTableCell>
+                  <StyledTableCell>{each.lastUpdatedBy}</StyledTableCell>
+                  <StyledTableCell align="right">{each.count}</StyledTableCell>
+                  {!deleteMode && (
+                    <StyledTableCell align="center">
+                      <Button
+                        variant="contained"
+                        style={{ backgroundColor: '#007BFF', color: 'white' }}
+                        onClick={() => handleClickOpenUpdate(each)}
+                      >
+                        Update
+                      </Button>
+                    </StyledTableCell>
+                  )}
+                </StyledTableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
 
-      {/* Buttons Section */}
       <div className="flex justify-between mt-4">
         <Button
-          onClick={handleAddassetName}
+          onClick={handleAddAsset}
           variant="contained"
           style={{ backgroundColor: 'green', color: 'white' }}
         >
           Add Asset
         </Button>
+        <Button
+          onClick={toggleDeleteMode}
+          variant="contained"
+          style={{
+            backgroundColor: deleteMode ? 'gray' : 'red',
+            color: 'white',
+          }}
+        >
+          {deleteMode ? 'Cancel Delete' : 'Delete Asset'}
+        </Button>
+        {deleteMode && (
+          <Button
+            onClick={handleDelete}
+            variant="contained"
+            style={{ backgroundColor: 'red', color: 'white' }}
+          >
+            Confirm Delete
+          </Button>
+        )}
       </div>
 
-      {/* Update Dialog Section */}
-      <Dialog open={openUpdate} onClose={handleCloseUpdate} maxWidth="sm" fullWidth>
-        <DialogTitle>{currentAssetName?.assetName}</DialogTitle>
-        <DialogContent>
-          <div className="flex items-center justify-center gap-4 my-4">
-            <IconButton onClick={() => setNewCount((prev) => Math.max(prev - 1, 0))}>
-              <RemoveIcon />
-            </IconButton>
-            <input
-              type="number"
-              value={newCount}
-              onChange={(e) => setNewCount(Number(e.target.value))}
-              className="text-center w-20 border rounded px-2 py-1"
-              min="0"
-            />
-            <IconButton onClick={() => setNewCount((prev) => prev + 1)}>
-              <AddIcon />
-            </IconButton>
-          </div>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseUpdate} color="primary">
-            Cancel
-          </Button>
-          <Button
-            onClick={handleSaveUpdate}
-            variant="contained"
-            style={{ backgroundColor: '#007BFF', color: 'white' }}
-          >
-            Save
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Add Dialog Section */}
+      {/* Add Dialog */}
       <Dialog open={openAdd} onClose={handleCloseAdd} maxWidth="sm" fullWidth>
         <DialogTitle>Add New Asset</DialogTitle>
         <DialogContent>
@@ -306,6 +345,40 @@ export default function Infrastructure() {
             style={{ backgroundColor: 'green', color: 'white' }}
           >
             Add
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Update Dialog */}
+      <Dialog open={openUpdate} onClose={handleCloseUpdate} maxWidth="sm" fullWidth>
+        <DialogTitle>{currentAssetName?.assetName}</DialogTitle>
+        <DialogContent>
+          <div className="flex items-center justify-center gap-4 my-4">
+            <IconButton onClick={() => setNewCount((prev) => Math.max(prev - 1, 0))}>
+              <RemoveIcon />
+            </IconButton>
+            <input
+              type="number"
+              value={newCount}
+              onChange={(e) => setNewCount(Number(e.target.value))}
+              className="text-center w-20 border rounded px-2 py-1"
+              min="0"
+            />
+            <IconButton onClick={() => setNewCount((prev) => prev + 1)}>
+              <AddIcon />
+            </IconButton>
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseUpdate} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSaveUpdate}
+            variant="contained"
+            style={{ backgroundColor: '#007BFF', color: 'white' }}
+          >
+            Save
           </Button>
         </DialogActions>
       </Dialog>
