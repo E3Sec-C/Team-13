@@ -17,17 +17,6 @@ const Footer = () => {
           </p>
         </div>
         
-        {/* Departments Section */}
-        <div>
-          <h3 className="text-xl font-semibold mb-4">Departments</h3>
-          <ul>
-            <li><a href="/science" className="text-gray-400 hover:text-white">Science</a></li>
-            <li><a href="/engineering" className="text-gray-400 hover:text-white">Engineering</a></li>
-            <li><a href="/arts" className="text-gray-400 hover:text-white">Arts</a></li>
-            <li><a href="/medicine" className="text-gray-400 hover:text-white">Medicine</a></li>
-          </ul>
-        </div>
-        
         {/* Resources Section */}
         <div>
           <h3 className="text-xl font-semibold mb-4">Resources</h3>
@@ -58,6 +47,22 @@ const Footer = () => {
             </a>
           </div>
         </div>
+
+        {/* Map Section */}
+        <div>
+          <h3 className="text-xl font-semibold mb-4">Campus Map</h3>
+          <div className="relative" style={{ height: '240px', width: '100%' }}>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3865.587454063622!2d78.5373096737276!3d14.335379686120072!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bb3a3138e2593b9%3A0x98992fa5d3002a97!2sDEPARTMENT%20OF%20COMPUTER%20SCIENCE%20AND%20ENGINEERING%2C%20RGUKT%20RK%20VALLEY!5e0!3m2!1sen!2sin!4v1732985023829!5m2!1sen!2sin"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen=""
+              loading="lazy"
+            ></iframe>
+          </div>
+        </div>
+
       </div>
       
       <div className="text-center mt-8 text-sm text-gray-500">
