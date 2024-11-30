@@ -18,15 +18,15 @@ const CarouselComponent = () => {
       interval={5000}
     >
       <div>
-        <img src="/carousel1.jpg" />
+        <img src="/carousel1.jpg" alt="Carousel"/>
         <p className="legend">Legend 1</p>
       </div>
       <div>
-        <img src="/carousel2.jpg" />
+        <img src="/carousel2.jpg" alt="Carousel"/>
         <p className="legend">Legend 2</p>
       </div>
       <div>
-        <img src="/carousel3.jpg" />
+        <img src="/carousel3.jpg" alt="Carousel"/>
         <p className="legend">Legend 3</p>
       </div>
     </Carousel>

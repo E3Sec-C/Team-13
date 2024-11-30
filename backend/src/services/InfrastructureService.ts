@@ -27,7 +27,7 @@ class InfrastructureService{
 
     async updateByAssetName(assetName: string, infrastructureData: Partial<infrastructure>): Promise<infrastructure|null>{
         
-        const response = await InfrastructureRepository.updateById(assetName,infrastructureData);
+        const response = await InfrastructureRepository.updateByAssetName(assetName,infrastructureData);
         if(!response){
             throw new NotFoundError("Infrastructure with given assetName not found");
         }
@@ -36,7 +36,7 @@ class InfrastructureService{
 
     async deleteByAssetName(assetName: string): Promise<infrastructure>{
         
-        const response = await InfrastructureRepository.deleteById(assetName);
+        const response = await InfrastructureRepository.deleteByAssetName(assetName);
         if(!response){
             throw new NotFoundError("Infrastructure with given assetName not found");
         }
