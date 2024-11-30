@@ -82,7 +82,7 @@ const Testimonials = () => {
         gutterBottom
         sx={{
           mb: 6,
-          color: 'text.primary',
+          color: 'text.blue',
           fontWeight: 'bold',
         }}
       >

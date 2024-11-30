@@ -12,30 +12,22 @@ import Testimonials from './Testimonials';
 function HomePage() {
   localStorage.clear();
   return (
-    <div>
+    <>
       <div id="navbar">
         <Navbar/>
       </div>
-      {/* <div id="carousel">
-        <Carousel />
-      </div> */}
-      <Timeline/>
+      <Timeline />
       <div id="aboutus">
         <AboutUs/>
       </div>
       <div id="stats">
         <StatsSection />
       </div>
-      <div id="contactus">
-      {/* <Highlights/> */}
-      <div id="about">
-        <Timeline/>
-      </div>
       <Testimonials />
       <div id="contact">
         <Footer/>
       </div>
-    </div>
+    </>
   )
 }
 

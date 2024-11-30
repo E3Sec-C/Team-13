@@ -30,9 +30,9 @@ const Timeline = () => {
   ];
 
   return (
-    <div className="py-10 bg-gray-100">
-      <h2 className="text-4xl font-bold text-center text-indigo-600 mb-10">
-        Structure Of <span className="text-indigo-500">CSE</span>
+    <div className="py-10 bg-gray-100 mt-16">
+      <h2 className="text-4xl font-bold text-center text-black-600 mb-10">
+        Structure Of <span className="text-black-500">CSE</span>
       </h2>
 
       {/* Timeline Content */}

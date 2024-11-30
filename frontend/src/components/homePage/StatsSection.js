@@ -80,10 +80,10 @@ const StatsSection = () => {
 
 
   return (
-    <section className="bg-indigo-200 py-10">
+    <section className="bg-gradient-to-b from-indigo-200 via-gray-300 to-white-200 py-10">
       <div className="container mx-auto px-4">
-      <h2 className="text-4xl font-bold text-center text-indigo-600 mb-10">
-        Department <span className="text-indigo-500">Statistics</span>
+      <h2 className="text-4xl font-bold text-center text-black-600 mb-10">
+        Department <span className="text-black-500">Statistics</span>
       </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
