@@ -16,31 +16,45 @@ import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
 const testimonials = [
   {
     id: 1,
-    name: "Dr. Sarah Johnson",
+    name: "Tharun Yetti",
     role: "Professor of Computer Science",
-    image: "https://randomuser.me/api/portraits/women/1.jpg",
+    image: "",
     quote: "Our department's commitment to excellence in teaching and research has consistently produced outstanding graduates who excel in the tech industry.",
   },
   {
     id: 2,
-    name: "James Wilson",
+    name: "M Hemanth Kumar",
     role: "Alumni, Software Engineer at Google",
-    image: "https://randomuser.me/api/portraits/men/2.jpg",
+    image: "",
     quote: "The practical experience and strong theoretical foundation I gained during my time at the CSE department were instrumental in launching my career.",
   },
   {
     id: 3,
-    name: "Emily Chen",
+    name: "GSS Mannar",
     role: "Current Student",
-    image: "https://randomuser.me/api/portraits/women/3.jpg",
+    image: "",
     quote: "The supportive environment and cutting-edge curriculum have helped me develop both technical skills and professional confidence.",
   },
   {
     id: 4,
-    name: "Dr. Michael Brown",
+    name: "T. Shalini",
     role: "Department Research Lead",
-    image: "https://randomuser.me/api/portraits/men/4.jpg",
+    image: "",
     quote: "Our research initiatives and industry collaborations provide students with unique opportunities to work on real-world problems.",
+  },
+  {
+    id: 5,
+    name: "C. Yashmitha",
+    role: "Alumni, Java Developer at Amazon",
+    image: "",
+    quote: "The practical experience and strong theoretical foundation I gained during my time at the CSE department were instrumental in launching my career.",
+  },
+  {
+    id: 6,
+    name: "G. Nandini",
+    role: "Current Student",
+    image: "",
+    quote: "The supportive environment and cutting-edge curriculum have helped me develop both technical skills and professional confidence.",
   },
 ];
 

@@ -1,6 +1,27 @@
-import React from 'react';
+import React,{useState} from 'react';
 
 const AboutUs = () => {
+  const [styles, setStyles] = useState({ transform: 'rotateX(0deg) rotateY(0deg)' });
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const xPercent = ((x / rect.width) - 0.5) * 2;
+    const yPercent = ((y / rect.height) - 0.5) * 2;
+
+    const rotationX = -yPercent * 15;
+    const rotationY = xPercent * 15;
+
+    setStyles({
+      transform: `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setStyles({ transform: 'rotateX(0deg) rotateY(0deg)' });
+  };
   return (
     <section className="bg-gradient-to-b from-gray-100 to-indigo-200 py-16 px-6 md:px-12">
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between space-y-8 md:space-y-0">
@@ -32,11 +53,24 @@ const AboutUs = () => {
 
         {/* Image */}
         <div className="w-full md:w-1/2 flex justify-center">
-          <img 
-            src="/hero4.jpg" // Ensure this image is in the public folder or adjust the path as needed
-            alt="Computer Science and Engineering Department"
-            className="max-w-xs md:max-w-lg w-full h-auto rounded-2xl shadow-xl transition-transform duration-300 transform hover:scale-105"
-          />
+          <div
+              className="w-102 h-102 rounded-lg overflow-hidden animate-float"
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              style={{
+                perspective: '1000px',
+              }}
+            >
+            <img 
+              src="/hero4-bg.png" // Ensure this image is in the public folder or adjust the path as needed
+              alt="Computer Science and Engineering Department"
+              className="w-full h-full object-cover rounded-lg"
+              style={{
+                transform: styles.transform,
+                transition: 'transform 0.1s ease-out',
+              }}
+            />
+          </div>
         </div>
         
       </div>

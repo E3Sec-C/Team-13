@@ -54,15 +54,13 @@ const Hero = () => {
 
         {/* Info Section */}
         <div className="md:w-1/2">
-          <h1 className="text-5xl font-extrabold leading-tight mb-6 text-transparent bg-clip-text bg-indigo-600">
-            Welcome to the <br /> 
-            <span className="text-indigo-600">CSE Department</span>
+          <h1 className="text-4xl font-extrabold leading-tight mb-6 text-transparent bg-clip-text bg-indigo-600">
+            Welcome to the <br/> 
+            <span className="text-indigo-600 text-6xl">CSE Department</span><br/>
+            <span className='text-indigo-800 text-6xl'>RGUKT-IIT, RKV</span>
           </h1>
           <p className="text-xl text-gray-700 mb-4">
             Empowering students with a passion for <span className="font-semibold text-purple-600">technology</span>, <span className="font-semibold text-purple-600">innovation</span>, and <span className="font-semibold text-purple-600">critical thinking</span>. Our department is dedicated to creating future leaders in the tech industry.
-          </p>
-          <p className="text-lg text-gray-600">
-            Join us to explore a journey of knowledge, hands-on learning, and growth in the ever-evolving world of <span className="font-bold text-purple-500">Computer Science</span>.
           </p>
         </div>
         

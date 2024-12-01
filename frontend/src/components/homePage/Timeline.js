@@ -6,33 +6,33 @@ const Timeline = () => {
     {
       icon: 'fa-c',
       title: 'HOD',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      description: 'Head of the Department oversees departmental activities and operations, Acts as a liaison between the administration and the department, Reviews and resolves student and staff complaints.',
       bgColor: 'bg-indigo-600',
     },
     {
       icon: 'fa-a',
       title: 'Professors and Asst. Professors',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      description: 'Deliver lectures and facilitate student learning, Develop and update course materials, Conduct tutorials and lab sessions and Participate in departmental research and conferences.',
       bgColor: 'bg-gray-400',
     },
     {
       icon: 'fa-e',
       title: 'Non Teaching Staff',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      description: 'Support administrative and operational tasks, Maintain infrastructure and ensure campus facilities are functional, Manage inventory, such as laboratory equipment and office supplies.',
       bgColor: 'bg-green-600',
     },
     {
       icon: 'fa-h',
       title: 'Students',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      description: 'Empowered with actively participating in academic and extracurricular activities, achieved greater position and do open source contributions.',
       bgColor: 'bg-yellow-500',
     },
   ];
 
   return (
     <div className="py-10 bg-gradient-to-b from-white to-gray-100 mt-16">
-      <h2 className="text-4xl font-bold text-center text-black-600 mb-10">
-        Structure Of <span className="text-black-500">CSE</span>
+      <h2 className="text-4xl font-bold text-center text-black-200 mb-10">
+        Body Of <span className="text-black-900">CSE Dept</span>
       </h2>
 
       {/* Timeline Content */}
