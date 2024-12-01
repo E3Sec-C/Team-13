@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Suspense} from "react";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 
@@ -35,9 +35,10 @@ const App = () => {
   return (
     <>
       <SnackbarListener />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/signin" element={<SignIn />} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/signin" element={<SignIn />} />
 
         <Route path="/student" element={<StudentDashboard />}>
           <Route index element={<StudentProfile />} />
@@ -57,14 +58,14 @@ const App = () => {
           <Route path="logout" element={<Logout />} />
         </Route>
 
-        <Route path="/admin" element={<AdminDashboard />}>
-          <Route index element={<AdminProfile />} />
-          <Route path="profile" element={<AdminProfile />} />
-          <Route path="registrations" element={<RegistrationForm />} />
-          <Route path="generateUser" element={<GenerateCredentials />} />
-          <Route path="complaint" element={<ComplaintForm />} />
-          <Route path="logout" element={<Logout />} />
-        </Route>
+          <Route path="/admin" element={<AdminDashboard />}>
+            <Route index element={<AdminProfile />} />
+            <Route path="profile" element={<AdminProfile />} />
+            <Route path="registrations" element={<RegistrationForm />} />
+            <Route path="generateUser" element={<GenerateCredentials />} />
+            <Route path="complaint" element={<ComplaintForm />} />
+            <Route path="logout" element={<Logout />} />
+          </Route>
 
         <Route path="/hod" element={<HodDashboard />}>
           <Route index element={<HodProfile />} />
@@ -74,14 +75,19 @@ const App = () => {
           <Route path="logout" element={<Logout />} />
         </Route>
 
-        <Route path="/nonTeachingStaff" element={<NonTeachingStaffDashboard />}>
+          <Route path="/nonTeachingStaff" element={<NonTeachingStaffDashboard />}>
           <Route index element={<NonTeachingStaffProfile />} />
-          <Route path="profile" element={<NonTeachingStaffProfile />} />
-          <Route path="infrastructure" element={<NonTeachingStaffInfrastructure />}/>
-          <Route path="complaint" element={<ComplaintForm />} />
-          <Route path="logout" element={<Logout />} />
-        </Route>
-      </Routes>
+
+            <Route path="profile" element={<NonTeachingStaffProfile />} />
+            <Route path="infrastructure" element={<NonTeachingStaffInfrastructure />}/>
+            {/* <Route path='registrations' element={<RegistrationForm/>} />
+            <Route path='generateUser' element={<GenerateCredentials/>} /> */}
+            <Route path="complaint" element={<ComplaintForm />} />
+            <Route path="logout" element={<Logout />} />
+
+          </Route>
+        </Routes>
+      </Suspense>
     </>
   );
 };
