@@ -4,15 +4,6 @@ const AboutUs = () => {
   return (
     <section className="bg-gradient-to-b from-gray-100 to-indigo-200 py-16 px-6 md:px-12">
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between space-y-8 md:space-y-0">
-        
-        {/* Image */}
-        <div className="w-full md:w-1/2 flex justify-center">
-          <img 
-            src="/aboutus.jpeg" // Ensure this image is in the public folder or adjust the path as needed
-            alt="Computer Science and Engineering Department"
-            className="max-w-xs md:max-w-lg w-full h-auto rounded-2xl shadow-xl transition-transform duration-300 transform hover:scale-105"
-          />
-        </div>
 
         {/* Brief Description */}
         <div className="w-full md:w-1/2 md:pl-10 space-y-6">
@@ -37,6 +28,15 @@ const AboutUs = () => {
               Learn More
             </button>
           </div>
+        </div>
+
+        {/* Image */}
+        <div className="w-full md:w-1/2 flex justify-center">
+          <img 
+            src="/hero4.jpg" // Ensure this image is in the public folder or adjust the path as needed
+            alt="Computer Science and Engineering Department"
+            className="max-w-xs md:max-w-lg w-full h-auto rounded-2xl shadow-xl transition-transform duration-300 transform hover:scale-105"
+          />
         </div>
         
       </div>

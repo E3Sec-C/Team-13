@@ -30,7 +30,7 @@ const Timeline = () => {
   ];
 
   return (
-    <div className="py-10 bg-gray-100 mt-16">
+    <div className="py-10 bg-gradient-to-b from-white to-gray-100 mt-16">
       <h2 className="text-4xl font-bold text-center text-black-600 mb-10">
         Structure Of <span className="text-black-500">CSE</span>
       </h2>
