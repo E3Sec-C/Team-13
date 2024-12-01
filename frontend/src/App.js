@@ -26,6 +26,7 @@ import ViewResults from "./components/student/ViewResults";
 import ProtectedRoute from "./ProtectedRoute";
 
 const App = () => {
+  const role = localStorage.getItem("role");
   return (
     <>
       <SnackbarListener />
