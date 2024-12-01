@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { setSnackBar } from '../../store/features/snackbar/snackbar';
 
 const HodProfile = () => {
+  const dispatch = useDispatch();
   const [profileData, setProfileData] = useState({
     ID: '',
     name: '',
@@ -46,14 +49,20 @@ const HodProfile = () => {
 
     // Validate file type (must be JPG or JPEG)
     if (!selectedFile.type.includes("jpeg")) {
-      alert("Please select a JPG file.");
+      dispatch(setSnackBar({
+        message: "Please select a JPG file.",
+        variant: "error"
+      }));
       event.target.value = ""; // Reset the file input
       return;
     }
 
     // Validate file size (10MB = 10 * 1024 * 1024 bytes)
     if (selectedFile.size > 10 * 1024 * 1024) {
-      alert("File size must be less than 10MB.");
+      dispatch(setSnackBar({
+        message: "File size must be less than 10MB.",
+        variant: "error"
+      }));
       event.target.value = ""; // Reset the file input
       return;
     }
@@ -93,11 +102,17 @@ const HodProfile = () => {
       }
 
       setProfileData((prevData) => ({ ...prevData, ...response.data }));
-      alert('Profile updated successfully!');
+      dispatch(setSnackBar({
+        message: "Profile updated successfully!",
+        variant: "success"
+      }));
       setIsEditing(false);
     } catch (error) {
       console.error("Error updating profile data:", error);
-      alert('Failed to update profile.');
+      dispatch(setSnackBar({
+        message: "Failed to update profile.",
+        variant: "error"
+      }));
     }
   };
 

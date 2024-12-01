@@ -1,0 +1,143 @@
+.carousel-wrapper {
+  padding: 2rem 0;
+}
+
+.carousel-container {
+  background: linear-gradient(135deg, #f6f8fb 0%, #e9f0f7 100%);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-slide {
+  padding: 2rem;
+  background: transparent;
+}
+
+.slide-content {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideIn 0.5s forwards;
+}
+
+.active-slide .slide-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.feature-item {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.feature-item.animate-feature {
+  animation: featureSlide 0.5s forwards;
+}
+
+.icon-wrapper {
+  transition: transform 0.3s ease;
+}
+
+.icon-wrapper:hover {
+  transform: scale(1.1);
+}
+
+.slide-title {
+  position: relative;
+  overflow: hidden;
+}
+
+.slide-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.5);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s ease;
+}
+
+.active-slide .slide-title::after {
+  transform: scaleX(1);
+}
+
+.slide-description {
+  line-height: 1.6;
+  max-height: 4.8em;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes featureSlide {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Carousel Controls */
+.carousel .control-arrow {
+  background: rgba(0, 0, 0, 0.3) !important;
+  padding: 1.5rem !important;
+  transition: all 0.3s ease !important;
+}
+
+.carousel .control-arrow:hover {
+  background: rgba(0, 0, 0, 0.5) !important;
+}
+
+.carousel .control-dots .dot {
+  box-shadow: none !important;
+  background: #000 !important;
+  opacity: 0.3 !important;
+  transition: all 0.3s ease !important;
+}
+
+.carousel .control-dots .dot.selected {
+  opacity: 1 !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .slide-content {
+    padding: 1rem;
+  }
+  
+  .carousel-slide {
+    padding: 1rem;
+  }
+}

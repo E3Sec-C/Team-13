@@ -1,11 +1,28 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { setSnackBar } from '../../store/features/snackbar/snackbar';
+import {
+  TextField,
+  Button,
+  Container,
+  Box,
+  Typography,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Paper,
+  Grid,
+  Input
+} from '@mui/material';
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({});
-  const [role, setRole] = useState(''); // State to manage selected role
-  const [file,setFile] = useState(null);
-  // Handle changes in form fields
+  const [role, setRole] = useState('');
+  const [file, setFile] = useState(null);
+  const dispatch = useDispatch();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -21,17 +38,21 @@ const RegistrationForm = () => {
       return;
     }
 
-    // Validate file type (must be JPG or JPEG)
     if (!selectedFile.type.includes("jpeg")) {
-      alert("Please select a JPG file.");
-      event.target.value = ""; // Reset the file input
+      dispatch(setSnackBar({
+        message: "Please select a JPG file.",
+        variant: "error"
+      }));
+      event.target.value = "";
       return;
     }
 
-    // Validate file size (10MB = 10 * 1024 * 1024 bytes)
     if (selectedFile.size > 10 * 1024 * 1024) {
-      alert("File size must be less than 10MB.");
-      event.target.value = ""; // Reset the file input
+      dispatch(setSnackBar({
+        message: "File size must be less than 10MB.",
+        variant: "error"
+      }));
+      event.target.value = "";
       return;
     }
 
@@ -40,13 +61,12 @@ const RegistrationForm = () => {
 
   const handleRoleChange = (e) => {
     setRole(e.target.value);
-    setFormData({}); // Reset formData when role changes
+    setFormData({});
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Determine the endpoint based on the role
     let url = '';
     switch (role) {
       case 'admin':
@@ -65,11 +85,14 @@ const RegistrationForm = () => {
         url = 'http://localhost:5000/api/v1/hod';
         break;
       default:
-        alert('Please select a valid role');
+        dispatch(setSnackBar({
+          message: "Please select a valid role",
+          variant: "warning"
+        }));
         return;
     }
+
     try {
-      // Send the POST request with axios
       console.log("started registration");
       const response = await axios.post(url, formData);
 
@@ -97,308 +120,173 @@ const RegistrationForm = () => {
   
       if (response.status === 200) {
         console.log('Registration successful!', formData);
-        alert(`Registration successful for ${role}!`);
-        // Reload the page to clear form data and reset state
+        dispatch(setSnackBar({
+          message: `Registration successful for ${role}!`,
+          variant: "success"
+        }));
         window.location.reload();
       } else {
         console.error('Error registering user:', response.data);
-        alert('Failed to register. Please try again.');
+        dispatch(setSnackBar({
+          message: "Failed to register. Please try again.",
+          variant: "error"
+        }));
       }
     } catch (error) {
       console.error('An error occurred:', error);
-      alert('An error occurred. Please try again.');
+      dispatch(setSnackBar({
+        message: "An error occurred. Please try again.",
+        variant: "error"
+      }));
     }
   };
-  
+
+  const renderFormFields = () => {
+    const commonFields = {
+      ID: { label: 'ID', type: 'text' },
+      name: { label: 'Name', type: 'text' },
+      email: { label: 'Email', type: 'email' },
+      mobile: { label: 'Mobile', type: 'tel' },
+      education: { label: 'Education', type: 'text' },
+      bloodGroup: { label: 'Blood Group', type: 'text' },
+      address: { label: 'Address', type: 'text' }
+    };
+
+    const roleFields = {
+      admin: ['ID', 'name', 'email', 'mobile', 'education'],
+      faculty: ['ID', 'name', 'email', 'mobile', 'education'],
+      student: ['ID', 'name', 'email', 'mobile', 'bloodGroup', 'address'],
+      nonTeachingStaff: ['ID', 'mobile', 'email'],
+      hod: ['ID', 'name', 'email', 'education']
+    };
+
+    if (!role || !roleFields[role]) return null;
+
+    return roleFields[role].map((fieldName) => (
+      <Grid item xs={12} sm={6} key={fieldName}>
+        <TextField
+          fullWidth
+          label={commonFields[fieldName].label}
+          name={fieldName}
+          type={commonFields[fieldName].type}
+          value={formData[fieldName] || ''}
+          onChange={handleChange}
+          variant="outlined"
+          required
+        />
+      </Grid>
+    ));
+  };
 
   return (
-    <div className="w-4/5 max-w-4xl mx-auto p-6 mt-16 sm:mt-24 lg:mt-32 border border-gray-300 rounded-lg bg-gray-50 bg-gradient-to-r from-gray-200 to-blue-300">
-      <h2 className="text-center text-2xl font-semibold text-gray-700 mb-6">User Registration</h2>
-
-      <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {/* Role Selection */}
-          <div className="w-full">
-            <label className="block font-semibold mb-2">Select Role:</label>
-            <select
-              value={role}
-              onChange={handleRoleChange}
-              required
-              className="w-full p-3 border border-gray-300 rounded-md"
-            >
-              <option value="">Select Role</option>
-              <option value="admin">Admin</option>
-              <option value="faculty">Faculty</option>
-              <option value="student">Student</option>
-              <option value="nonTeachingStaff">Non-Teaching Staff</option>
-              <option value="hod">HOD</option>
-            </select>
-          </div>
-
-          {/* Conditionally Render Fields Based on Role */}
-          {role && (
-            <div className="w-full">
-              <label className="block font-semibold mb-2">Upload Image:</label>
-              <input
-                type="file"
-                onChange={handleFileChange}
-                className="w-full text-sm text-gray-500 file:border file:border-gray-300 file:px-4 file:py-2 file:rounded-lg"
-                accept=".jpg"
-              />
-              <p className="text-xs pl-1">
-                only .jpg files less than 10MB allowed
-              </p>
-            </div>
-          )}
-
-          {/* Fields based on role */}
-          {role === "admin" && (
-            <>
-              <div className="w-full">
-                <label className="block font-semibold mb-2">ID:</label>
-                <input
-                  type="text"
-                  name="ID"
-                  value={formData.ID || ""}
-                  onChange={handleChange}
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                />
-              </div>
-              <div className="w-full">
-                <label className="block font-semibold mb-2">Name:</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name || ""}
-                  onChange={handleChange}
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                />
-              </div>
-              <div className="w-full">
-                <label className="block font-semibold mb-2">Email:</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email || ""}
-                  onChange={handleChange}
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                />
-              </div>
-            </>
-          )}
-
-          {role === "faculty" && (
-            <>
-              <div className="w-full">
-                <label className="block font-semibold mb-2">ID:</label>
-                <input
-                  type="text"
-                  name="ID"
-                  value={formData.ID || ""}
-                  onChange={handleChange}
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                />
-              </div>
-              <div className="w-full">
-                <label className="block font-semibold mb-2">Name:</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name || ""}
-                  onChange={handleChange}
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                />
-              </div>
-              <div className="w-full">
-                <label className="block font-semibold mb-2">Email:</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email || ""}
-                  onChange={handleChange}
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                />
-              </div>
-              <div className="w-full">
-                <label className="block font-semibold mb-2">Mobile:</label>
-                <input
-                  type="tel"
-                  name="mobile"
-                  value={formData.mobile || ""}
-                  onChange={handleChange}
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                />
-              </div>
-              <div className="w-full">
-                <label className="block font-semibold mb-2">Education:</label>
-                <input
-                  type="text"
-                  name="education"
-                  value={formData.education || ""}
-                  onChange={handleChange}
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                />
-              </div>
-            </>
-          )}
-
-          {role === "hod" && (
-            <>
-              <div className="w-full">
-                <label className="block font-semibold mb-2">ID:</label>
-                <input
-                  type="text"
-                  name="ID"
-                  value={formData.ID || ""}
-                  onChange={handleChange}
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                />
-              </div>
-              <div className="w-full">
-                <label className="block font-semibold mb-2">Name:</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name || ""}
-                  onChange={handleChange}
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                />
-              </div>
-              <div className="w-full">
-                <label className="block font-semibold mb-2">Email:</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email || ""}
-                  onChange={handleChange}
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                />
-              </div>
-              <div className="w-full">
-                <label className="block font-semibold mb-2">Education:</label>
-                <input
-                  type="text"
-                  name="education"
-                  value={formData.education || ""}
-                  onChange={handleChange}
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                />
-              </div>
-            </>
-          )}
-
-          {role === "nonTeachingStaff" && (
-            <>
-              <div className="w-full">
-                <label className="block font-semibold mb-2">ID:</label>
-                <input
-                  type="text"
-                  name="ID"
-                  value={formData.ID || ""}
-                  onChange={handleChange}
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                />
-              </div>
-              <div className="w-full">
-                <label className="block font-semibold mb-2">Mobile:</label>
-                <input
-                  type="tel"
-                  name="mobile"
-                  value={formData.mobile || ""}
-                  onChange={handleChange}
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                />
-              </div>
-              <div className="w-full">
-                <label className="block font-semibold mb-2">Email:</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email || ""}
-                  onChange={handleChange}
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                />
-              </div>
-            </>
-          )}
-
-          {role === "student" && (
-            <>
-              <div className="w-full">
-                <label className="block font-semibold mb-2">ID:</label>
-                <input
-                  type="text"
-                  name="ID"
-                  value={formData.ID || ""}
-                  onChange={handleChange}
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                />
-              </div>
-              <div className="w-full">
-                <label className="block font-semibold mb-2">Name:</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name || ""}
-                  onChange={handleChange}
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                />
-              </div>
-              <div className="w-full">
-                <label className="block font-semibold mb-2">Email:</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email || ""}
-                  onChange={handleChange}
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                />
-              </div>
-              <div className="w-full">
-                <label className="block font-semibold mb-2">Mobile:</label>
-                <input
-                  type="text"
-                  name="mobile"
-                  value={formData.mobile || ""}
-                  onChange={handleChange}
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                />
-              </div>
-              <div className="w-full">
-                <label className="block font-semibold mb-2">BloodGroup:</label>
-                <input
-                  type="text"
-                  name="bloodGroup"
-                  value={formData.bloodGroup || ""}
-                  onChange={handleChange}
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                />
-              </div>
-              <div className="w-full">
-                <label className="block font-semibold mb-2">Address:</label>
-                <input
-                  type="text"
-                  name="address"
-                  value={formData.address || ""}
-                  onChange={handleChange}
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                />
-              </div>
-            </>
-          )}
-        </div>
-
-        {/* Submit Button */}
-        <div className="w-full text-center">
-          <button
-            type="submit"
-            className="mt-6 px-8 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none"
+    <Box
+      sx={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        backgroundColor: '#f5f5f5',
+        py: 4
+      }}
+    >
+      <Container maxWidth="md">
+        <Paper
+          elevation={6}
+          sx={{
+            p: { xs: 2, sm: 4 },
+            background: 'linear-gradient(to right, #f3f4f6, #e0f2fe)',
+            borderRadius: 2,
+            mt: { xs: 2, sm: 4 }
+          }}
+        >
+          <Typography
+            variant="h4"
+            component="h2"
+            align="center"
+            sx={{
+              mb: 4,
+              color: '#1976d2',
+              fontWeight: 600
+            }}
           >
-            Submit
-          </button>
-        </div>
-      </form>
-    </div>
+            User Registration
+          </Typography>
+
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth required>
+                  <InputLabel id="role-label">Select Role</InputLabel>
+                  <Select
+                    labelId="role-label"
+                    value={role}
+                    label="Select Role"
+                    onChange={handleRoleChange}
+                  >
+                    <MenuItem value="">Select Role</MenuItem>
+                    <MenuItem value="admin">Admin</MenuItem>
+                    <MenuItem value="faculty">Faculty</MenuItem>
+                    <MenuItem value="student">Student</MenuItem>
+                    <MenuItem value="nonTeachingStaff">Non-Teaching Staff</MenuItem>
+                    <MenuItem value="hod">HOD</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              {role && (
+                <Grid item xs={12} sm={6}>
+                  <Box>
+                    <Typography variant="subtitle2" sx={{ mb: 1 }}>
+                      Upload Image (JPG only, max 10MB)
+                    </Typography>
+                    <Input
+                      type="file"
+                      onChange={handleFileChange}
+                      fullWidth
+                      accept=".jpg"
+                      sx={{
+                        '&::file-selector-button': {
+                          border: '1px solid #1976d2',
+                          padding: '0.5rem 1rem',
+                          borderRadius: '4px',
+                          backgroundColor: '#fff',
+                          color: '#1976d2',
+                          cursor: 'pointer',
+                          '&:hover': {
+                            backgroundColor: '#f5f5f5'
+                          }
+                        }
+                      }}
+                    />
+                  </Box>
+                </Grid>
+              )}
+
+              {renderFormFields()}
+            </Grid>
+
+            <Box sx={{ mt: 4, textAlign: 'center' }}>
+              <Button
+                type="submit"
+                variant="contained"
+                size="large"
+                sx={{
+                  px: 6,
+                  py: 1.5,
+                  background: 'linear-gradient(to right, #1976d2, #1565c0)',
+                  '&:hover': {
+                    background: 'linear-gradient(to right, #1565c0, #0d47a1)',
+                  },
+                  fontWeight: 600
+                }}
+              >
+                Submit
+              </Button>
+            </Box>
+          </Box>
+        </Paper>
+      </Container>
+    </Box>
   );
 };
 

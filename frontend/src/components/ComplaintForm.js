@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
-import {useDispatch} from 'react-redux';
-import {setSnackBar} from '../store/features/snackbar/snackbar';
+import { useDispatch } from 'react-redux';
+import { setSnackBar } from '../store/features/snackbar/snackbar';
+import { 
+  TextField, 
+  Button, 
+  Container, 
+  Paper, 
+  Typography,
+} from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
 
 const ComplaintForm = () => {
   const dispatch = useDispatch();
@@ -11,89 +18,94 @@ const ComplaintForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Retrieve user ID from localStorage
     const ID = localStorage.getItem('userId');
     const role = localStorage.getItem('role');
 
     if (!ID || !role) {
       dispatch(
         setSnackBar({
-          message:"User is not logged in",
-          variant:"warning"
+          message: "User is not logged in",
+          variant: "warning"
         })
       );
       return;
     }
 
     try {
-      // Sending complaint data to the backend
       const response = await axios.post('http://localhost:5000/api/v1/complaint', {
-        "ID":ID,"role":role,
-        "description":description,
+        ID,
+        role,
+        description,
       });
 
       if (response.status === 200) {
         dispatch(
           setSnackBar({
-            message:"Complainte registered successfully",
-            variant:"success"
+            message: "Complaint registered successfully",
+            variant: "success"
           })
-        )
-        setDescription(''); 
+        );
+        setDescription('');
       } else {
         dispatch(
           setSnackBar({
-            message:"Failed to register the Complaint",
-            variant:"error"
+            message: "Failed to register the Complaint",
+            variant: "error"
           })
-        )
+        );
       }
     } catch (error) {
       console.error('Error submitting complaint:', error);
       dispatch(
         setSnackBar({
-          message:"An error occured",
-          variant:"error"
+          message: "An error occurred",
+          variant: "error"
         })
-      )
+      );
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-xl bg-white rounded-xl shadow-lg shadow-indigo-500/40 p-8 md:p-10 lg:p-12 bg-gradient-to-r from-gray-200 to-blue-300">
-        <h2 className="text-3xl font-semibold text-center text-indigo-700 mb-6">Submit a Complaint</h2>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          
-          {/* Complaint Description Field */}
-          <div className="space-y-1">
-            <label htmlFor="description" className="text-sm font-medium text-gray-600">
-              <b>Description</b>
-            </label>
-            <textarea
-              id="description"
-              name="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-              rows="5"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
-              placeholder="Describe your complaint here..."
-            />
-          </div>
-  
-          {/* Submit Button */}
-          <button
+    <Container maxWidth="md" sx={{ py: 4, mt: 12 }}>
+      <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
+        <Typography variant="h4" component="h1" gutterBottom align="center" color="primary" sx={{ mb: 4 }}>
+          Submit a Complaint
+        </Typography>
+
+        <form onSubmit={handleSubmit}>
+          <TextField
+            fullWidth
+            multiline
+            rows={6}
+            name="description"
+            label="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+            placeholder="Please provide detailed description of your complaint..."
+            sx={{ mb: 3 }}
+          />
+
+          <Button
             type="submit"
-            className="w-full py-2 font-semibold text-white bg-gradient-to-r from-indigo-500 to-blue-600 rounded-md shadow hover:from-indigo-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-300 ease-in-out"
+            variant="contained"
+            size="large"
+            fullWidth
+            endIcon={<SendIcon />}
+            sx={{
+              py: 1.5,
+              backgroundColor: 'primary.main',
+              '&:hover': {
+                backgroundColor: 'primary.dark',
+              },
+            }}
           >
-            Raise Complaint
-          </button>
+            Submit Complaint
+          </Button>
         </form>
-      </div>
-    </div>
+      </Paper>
+    </Container>
   );
-    
 };
 
 export default ComplaintForm;

@@ -22,6 +22,15 @@ import NonTeachingStaffDashboard from "./components/nonTeachingStaff/NonTeaching
 import NonTeachingStaffProfile from "./components/nonTeachingStaff/NonTeachingStaffProfile";
 import NonTeachingStaffInfrastructure from "./components/nonTeachingStaff/Infrastructure";
 import ViewResults from "./components/student/ViewResults";
+
+// Faculty Components
+import FacultyDashboard from "./components/faculty/FacultyDashboard";
+import FacultyProfile from "./components/faculty/FacultyProfile";
+import StudentsData from "./components/faculty/StudentsData";
+import UploadMarks from "./components/faculty/UploadMarks";
+import UploadAttendance from "./components/faculty/UploadAttendance";
+
+
 const App = () => {
   return (
     <>
@@ -38,6 +47,16 @@ const App = () => {
           <Route path="logout" element={<Logout />} />
         </Route>
 
+        <Route path="/faculty" element={<FacultyDashboard />}>
+          <Route index element={<FacultyProfile />} />
+          <Route path="profile" element={<FacultyProfile />} />
+          <Route path="uploadMarks" element={<UploadMarks />} />
+          <Route path="uploadAttendance" element={<UploadAttendance />} />
+          <Route path="students" element={<StudentsData />} />
+          <Route path="complaint" element={<ComplaintForm />} />
+          <Route path="logout" element={<Logout />} />
+        </Route>
+
         <Route path="/admin" element={<AdminDashboard />}>
           <Route index element={<AdminProfile />} />
           <Route path="profile" element={<AdminProfile />} />
@@ -49,7 +68,6 @@ const App = () => {
 
         <Route path="/hod" element={<HodDashboard />}>
           <Route index element={<HodProfile />} />
-          {/* Default to HOD Profile */}
           <Route path="profile" element={<HodProfile />} />
           <Route path="viewUsers" element={<ViewUsers />} />
           <Route path="viewComplaints" element={<ComplaintList />} />
@@ -57,15 +75,11 @@ const App = () => {
         </Route>
 
         <Route path="/nonTeachingStaff" element={<NonTeachingStaffDashboard />}>
-        <Route index element={<NonTeachingStaffProfile />} />
-
+          <Route index element={<NonTeachingStaffProfile />} />
           <Route path="profile" element={<NonTeachingStaffProfile />} />
           <Route path="infrastructure" element={<NonTeachingStaffInfrastructure />}/>
-          {/* <Route path='registrations' element={<RegistrationForm/>} />
-          <Route path='generateUser' element={<GenerateCredentials/>} /> */}
           <Route path="complaint" element={<ComplaintForm />} />
           <Route path="logout" element={<Logout />} />
-
         </Route>
       </Routes>
     </>
