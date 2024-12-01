@@ -54,6 +54,7 @@ const Footer = () => {
           <div className="relative" style={{ height: '240px', width: '100%' }}>
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3865.587454063622!2d78.5373096737276!3d14.335379686120072!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bb3a3138e2593b9%3A0x98992fa5d3002a97!2sDEPARTMENT%20OF%20COMPUTER%20SCIENCE%20AND%20ENGINEERING%2C%20RGUKT%20RK%20VALLEY!5e0!3m2!1sen!2sin!4v1732985023829!5m2!1sen!2sin"
+              title="campus map" 
               width="100%"
               height="100%"
               style={{ border: 0 }}
