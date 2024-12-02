@@ -20,7 +20,7 @@ const HodProfile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/v1/hod/${localStorage.getItem('userId')}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_HOD_GET_BY_ID}/${localStorage.getItem('userId')}`);
         setProfileData(response.data);
         setEditedData(response.data);
       } catch (error) {
@@ -79,7 +79,7 @@ const HodProfile = () => {
     }, {});
 
     try {
-      const response = await axios.put(`http://localhost:5000/api/v1/hod/update/${localStorage.getItem('userId')}`, modifiedData);
+      const response = await axios.put(`${process.env.REACT_APP_API_HOD_UPDATE}/${localStorage.getItem('userId')}`, modifiedData);
 
       if (file) {
         const formData = new FormData();
@@ -90,7 +90,7 @@ const HodProfile = () => {
           role: "hod",
         };
         await axios.post(
-          `http://localhost:5000/api/v1/hod/upload/image`,
+          process.env.REACT_APP_API_HOD_UPLOAD_IMAGE,
           formData,
           {
             headers: {
@@ -126,7 +126,7 @@ const HodProfile = () => {
       <div className="flex flex-wrap gap-8">
         <img
           src={
-            `http://localhost:5000/api/v1/hod/image/${localStorage.getItem(
+            `${process.env.REACT_APP_API_HOD_GET_IMAGE}/${localStorage.getItem(
               "userId"
             )}/${localStorage.getItem("role")}` ||
             "http://via.placeholder.com/250x250"

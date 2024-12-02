@@ -114,8 +114,7 @@ const UploadMarks = () => {
     formData.append('marks', file);
 
     try {
-      // Dummy API call - Replace with actual endpoint
-      const response = await axios.post('http://localhost:5000/api/v1/faculty/upload/marks', formData, {
+      const response = await axios.post(process.env.REACT_APP_API_FACULTY_UPLOAD_MARKS, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

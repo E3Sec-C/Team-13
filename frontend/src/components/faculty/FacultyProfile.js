@@ -20,7 +20,7 @@ const FacultyProfile = () => {
     const fetchProfile = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/v1/faculty/${localStorage.getItem("userId")}`
+          `${process.env.REACT_APP_API_FACULTY_GET_BY_ID}/${localStorage.getItem("userId")}`
         );
         setProfileData(response.data);
         setEditedData(response.data);
@@ -71,7 +71,7 @@ const FacultyProfile = () => {
   const handleSave = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/v1/faculty/update/${localStorage.getItem("userId")}`,
+        `${process.env.REACT_APP_API_FACULTY_UPDATE}/${localStorage.getItem("userId")}`,
         editedData
       );
 
@@ -83,7 +83,7 @@ const FacultyProfile = () => {
           role: "faculty",
         };
         await axios.post(
-          `http://localhost:5000/api/v1/faculty/upload/image`,
+          process.env.REACT_APP_API_FACULTY_UPLOAD_IMAGE,
           formData,
           {
             headers: {
@@ -119,7 +119,7 @@ const FacultyProfile = () => {
       </h2>
       <div className="flex flex-wrap gap-8">
         <img
-          src={`http://localhost:5000/api/v1/faculty/image/${localStorage.getItem("userId")}/${localStorage.getItem("role")}`}
+          src={`${process.env.REACT_APP_API_FACULTY_GET_IMAGE}/${localStorage.getItem("userId")}/${localStorage.getItem("role")}`}
           alt="Profile"
           className="w-32 h-32 rounded object-cover mr-6"
         />
@@ -163,7 +163,7 @@ const FacultyProfile = () => {
                 {/* Profile Image */}
                 <div className="mb-4 flex justify-center">
                   <img
-                    src={file ? URL.createObjectURL(file) : `http://localhost:5000/api/v1/faculty/image/${localStorage.getItem("userId")}/${localStorage.getItem("role")}`}
+                    src={file ? URL.createObjectURL(file) : `${process.env.REACT_APP_API_FACULTY_GET_IMAGE}/${localStorage.getItem("userId")}/${localStorage.getItem("role")}`}
                     alt="Profile"
                     className="w-32 h-32 rounded object-cover"
                   />

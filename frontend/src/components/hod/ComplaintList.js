@@ -11,7 +11,7 @@ const ComplaintList = () => {
     // Fetch complaints from the backend
     const fetchComplaints = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/v1/complaint/getall');
+        const response = await axios.get(process.env.REACT_APP_API_COMPLAINT_GET_ALL);
         setComplaints(response.data);
         setFilteredComplaints(response.data); // Initialize with all complaints
       } catch (error) {
@@ -42,7 +42,7 @@ const ComplaintList = () => {
     }
 
     try {
-      await axios.put(`http://localhost:5000/api/v1/complaint/update/${id}`, { status: updatedStatus });
+      await axios.put(`${process.env.REACT_APP_API_COMPLAINT_UPDATE}/${id}`, { status: updatedStatus });
       // Update the complaint list after successful update
       setComplaints(prevComplaints =>
         prevComplaints.map(complaint =>

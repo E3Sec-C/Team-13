@@ -40,7 +40,7 @@ const StudentsData = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/v1/student/getall');
+        const response = await axios.get(process.env.REACT_APP_API_STUDENT_GET_ALL);
         setStudents(response.data);
         setFilteredStudents(response.data);
       } catch (error) {

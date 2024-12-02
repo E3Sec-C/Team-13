@@ -70,19 +70,19 @@ const RegistrationForm = () => {
     let url = '';
     switch (role) {
       case 'admin':
-        url = 'http://localhost:5000/api/v1/admin';
+        url = process.env.REACT_APP_API_ADMIN_BASE;
         break;
       case 'faculty':
-        url = 'http://localhost:5000/api/v1/faculty';
+        url = process.env.REACT_APP_API_FACULTY_BASE;
         break;
       case 'student':
-        url = 'http://localhost:5000/api/v1/student';
+        url = process.env.REACT_APP_API_STUDENT_BASE;
         break;
       case 'nonTeachingStaff':
-        url = 'http://localhost:5000/api/v1/nonTeachingStaff';
+        url = process.env.REACT_APP_API_NTS_BASE;
         break;
       case 'hod':
-        url = 'http://localhost:5000/api/v1/hod';
+        url = process.env.REACT_APP_API_HOD_BASE;
         break;
       default:
         dispatch(setSnackBar({
@@ -106,8 +106,26 @@ const RegistrationForm = () => {
           ID: formData.ID,
           role: role,
         };
+        let imageUploadUrl = '';
+        switch (role) {
+          case 'admin':
+            imageUploadUrl = process.env.REACT_APP_API_ADMIN_UPLOAD_IMAGE;
+            break;
+          case 'faculty':
+            imageUploadUrl = process.env.REACT_APP_API_FACULTY_UPLOAD_IMAGE;
+            break;
+          case 'student':
+            imageUploadUrl = process.env.REACT_APP_API_STUDENT_UPLOAD_IMAGE;
+            break;
+          case 'nonTeachingStaff':
+            imageUploadUrl = process.env.REACT_APP_API_NTS_UPLOAD_IMAGE;
+            break;
+          case 'hod':
+            imageUploadUrl = process.env.REACT_APP_API_HOD_UPLOAD_IMAGE;
+            break;
+        }
         await axios.post(
-          `${url}/upload/image`,
+          imageUploadUrl,
           imageFormData,
           {
             headers: {

@@ -34,10 +34,8 @@ const GenerateCredentials = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const url = 'http://localhost:5000/api/v1/user/signup';
-
     try {
-      const response = await axios.post(url, formData);
+      const response = await axios.post(process.env.REACT_APP_API_AUTH_SIGNUP, formData);
 
       if (response.status === 200) {
         dispatch(setSnackBar({

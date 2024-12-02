@@ -20,7 +20,7 @@ const AdminProfile = () => {
     const fetchProfile = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/v1/admin/${localStorage.getItem("userId")}`
+          `${process.env.REACT_APP_API_ADMIN_GET_BY_ID}/${localStorage.getItem("userId")}`
         );
         setProfileData(response.data);
         setEditedData(response.data);
@@ -85,9 +85,7 @@ const AdminProfile = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/v1/admin/update/${localStorage.getItem(
-          "userId"
-        )}`,
+        `${process.env.REACT_APP_API_ADMIN_UPDATE}/${localStorage.getItem("userId")}`,
         modifiedData
       );
       if (file) {
@@ -99,7 +97,7 @@ const AdminProfile = () => {
           role: "admin",
         };
         await axios.post(
-          `http://localhost:5000/api/v1/admin/upload/image`,
+          process.env.REACT_APP_API_ADMIN_UPLOAD_IMAGE,
           formData,
           {
             headers: {
@@ -137,7 +135,7 @@ const AdminProfile = () => {
       <div className="flex flex-wrap gap-8">
         <img
           src={
-            `http://localhost:5000/api/v1/admin/image/${localStorage.getItem(
+            `${process.env.REACT_APP_API_ADMIN_GET_IMAGE}/${localStorage.getItem(
               "userId"
             )}/${localStorage.getItem("role")}` ||
             "http://via.placeholder.com/250x250"
