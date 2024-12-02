@@ -9,6 +9,7 @@ import NonTeachingStaffService from "./NonTeachingStaffService";
 import ResearchPublicationsService from "./ResearchPublicationsService";
 import UserService from "./UserService";
 import ImageServices from "./ImageServices";
+import ExcelUploadService from "./ExcelUploadService";
 
 export{
     AdminService,
@@ -22,4 +23,5 @@ export{
     ResearchPublicationsService,
     UserService,
     ImageServices,
+    ExcelUploadService,
 }

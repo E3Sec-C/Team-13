@@ -23,7 +23,7 @@ const Profile = () => {
     const fetchProfile = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/v1/student/${localStorage.getItem(
+          `${process.env.REACT_APP_API_STUDENT_GET_BY_ID}/${localStorage.getItem(
             "userId"
           )}`
         );
@@ -94,7 +94,7 @@ const Profile = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/v1/student/update/${localStorage.getItem(
+        `${process.env.REACT_APP_API_STUDENT_UPDATE}/${localStorage.getItem(
           "userId"
         )}`,
         modifiedData
@@ -109,7 +109,7 @@ const Profile = () => {
           role: "student",
         };
         await axios.post(
-          `http://localhost:5000/api/v1/student/upload/image`,
+          process.env.REACT_APP_API_STUDENT_UPLOAD_IMAGE,
           formData,
           {
             headers: {
@@ -150,7 +150,7 @@ const Profile = () => {
       <div className="flex flex-wrap gap-8">
         <img
           src={
-            `http://localhost:5000/api/v1/student/image/${localStorage.getItem(
+            `${process.env.REACT_APP_API_STUDENT_GET_IMAGE}/${localStorage.getItem(
               "userId"
             )}/${localStorage.getItem("role")}` ||
             "http://via.placeholder.com/250x250"
@@ -211,7 +211,7 @@ const Profile = () => {
             </div>) : (<div className="mb-4 justify-center ml-10">
               <img
                 src={
-                  `http://localhost:5000/api/v1/student/image/${localStorage.getItem(
+                  `${process.env.REACT_APP_API_STUDENT_GET_IMAGE}/${localStorage.getItem(
                     "userId"
                   )}/${localStorage.getItem("role")}` ||
                   "http://via.placeholder.com/250x250"

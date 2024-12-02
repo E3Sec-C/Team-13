@@ -23,6 +23,15 @@ import NonTeachingStaffProfile from "./components/nonTeachingStaff/NonTeachingSt
 import NonTeachingStaffInfrastructure from "./components/nonTeachingStaff/Infrastructure";
 import ViewResults from "./components/student/ViewResults";
 
+// Faculty Components
+import FacultyDashboard from "./components/faculty/FacultyDashboard";
+import FacultyProfile from "./components/faculty/FacultyProfile";
+import StudentsData from "./components/faculty/StudentsData";
+import UploadMarks from "./components/faculty/UploadMarks";
+import UploadAttendance from "./components/faculty/UploadAttendance";
+
+
+
 import ProtectedRoute from "./ProtectedRoute";
 
 const App = () => {
@@ -49,6 +58,15 @@ const App = () => {
             <Route path="results" element={<ViewResults />} />
             <Route path="logout" element={<Logout />} />
           </Route>
+          <Route path="/faculty" element={<FacultyDashboard />}>
+          <Route index element={<FacultyProfile />} />
+          <Route path="profile" element={<FacultyProfile />} />
+          <Route path="uploadMarks" element={<UploadMarks />} />
+          <Route path="uploadAttendance" element={<UploadAttendance />} />
+          <Route path="students" element={<StudentsData />} />
+          <Route path="complaint" element={<ComplaintForm />} />
+          <Route path="logout" element={<Logout />} />
+        </Route>
 
           <Route path="/admin" element={
               <ProtectedRoute access={"admin"}>

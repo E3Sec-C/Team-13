@@ -46,8 +46,7 @@ function SignIn() {
           role: role, // Directly use the state value
         };
 
-        const url = `http://localhost:5000/api/v1/user/signin`;
-        const response = await axios.post(url, data);
+        const response = await axios.post(process.env.REACT_APP_API_AUTH_SIGNIN, data);
 
         if (response && response.data.success) {
           // Save user ID in localStorage

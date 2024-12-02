@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useDispatch } from 'react-redux';
+import { setSnackBar } from '../../store/features/snackbar/snackbar';
 
 const AdminProfile = () => {
+  const dispatch = useDispatch();
   const [profileData, setProfileData] = useState({
     ID: "",
     name: "",
@@ -17,7 +20,7 @@ const AdminProfile = () => {
     const fetchProfile = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/v1/admin/${localStorage.getItem("userId")}`
+          `${process.env.REACT_APP_API_ADMIN_GET_BY_ID}/${localStorage.getItem("userId")}`
         );
         setProfileData(response.data);
         setEditedData(response.data);
@@ -48,14 +51,20 @@ const AdminProfile = () => {
 
     // Validate file type (must be JPG or JPEG)
     if (!selectedFile.type.includes("jpeg")) {
-      alert("Please select a JPG file.");
+      dispatch(setSnackBar({
+        message: "Please select a JPG file.",
+        variant: "error"
+      }));
       event.target.value = ""; // Reset the file input
       return;
     }
 
     // Validate file size (10MB = 10 * 1024 * 1024 bytes)
     if (selectedFile.size > 10 * 1024 * 1024) {
-      alert("File size must be less than 10MB.");
+      dispatch(setSnackBar({
+        message: "File size must be less than 10MB.",
+        variant: "error"
+      }));
       event.target.value = ""; // Reset the file input
       return;
     }
@@ -76,9 +85,7 @@ const AdminProfile = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/v1/admin/update/${localStorage.getItem(
-          "userId"
-        )}`,
+        `${process.env.REACT_APP_API_ADMIN_UPDATE}/${localStorage.getItem("userId")}`,
         modifiedData
       );
       if (file) {
@@ -90,7 +97,7 @@ const AdminProfile = () => {
           role: "admin",
         };
         await axios.post(
-          `http://localhost:5000/api/v1/admin/upload/image`,
+          process.env.REACT_APP_API_ADMIN_UPLOAD_IMAGE,
           formData,
           {
             headers: {
@@ -102,11 +109,17 @@ const AdminProfile = () => {
       }
 
       setProfileData((prevData) => ({ ...prevData, ...response.data }));
-      alert("Profile updated successfully!");
+      dispatch(setSnackBar({
+        message: "Profile updated successfully!",
+        variant: "success"
+      }));
       setIsEditing(false);
     } catch (error) {
       console.error("Error updating profile data:", error);
-      alert("Failed to update profile.");
+      dispatch(setSnackBar({
+        message: "Failed to update profile.",
+        variant: "error"
+      }));
     }
   };
 
@@ -122,7 +135,7 @@ const AdminProfile = () => {
       <div className="flex flex-wrap gap-8">
         <img
           src={
-            `http://localhost:5000/api/v1/admin/image/${localStorage.getItem(
+            `${process.env.REACT_APP_API_ADMIN_GET_IMAGE}/${localStorage.getItem(
               "userId"
             )}/${localStorage.getItem("role")}` ||
             "http://via.placeholder.com/250x250"

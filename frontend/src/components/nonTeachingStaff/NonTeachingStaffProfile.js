@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { setSnackBar } from '../../store/features/snackbar/snackbar';
 
 const NonTeachingStaffProfile = () => {
+  const dispatch = useDispatch();
   const [profileData, setProfileData] = useState({
     ID: '',
     name: '',
@@ -52,18 +55,27 @@ const NonTeachingStaffProfile = () => {
     }, {});
 
     if (Object.keys(modifiedData).length === 0) {
-      alert("No changes made to update.");
+      dispatch(setSnackBar({
+        message: "No changes made to update.",
+        variant: "info"
+      }));
       return;
     }
 
     try {
       const response = await axios.put(`http://localhost:5000/api/v1/nonTeachingStaff/update/${localStorage.getItem('userId')}`, modifiedData);
       setProfileData((prevData) => ({ ...prevData, ...response.data }));
-      alert('Profile updated successfully!');
+      dispatch(setSnackBar({
+        message: "Profile updated successfully!",
+        variant: "success"
+      }));
       setIsEditing(false);
     } catch (error) {
       console.error("Error updating profile data:", error);
-      alert('Failed to update profile.');
+      dispatch(setSnackBar({
+        message: "Failed to update profile.",
+        variant: "error"
+      }));
     }
   };
 
