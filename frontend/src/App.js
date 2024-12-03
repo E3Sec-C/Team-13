@@ -21,7 +21,9 @@ import ViewUsers from "./components/hod/ViewUsers";
 import NonTeachingStaffDashboard from "./components/nonTeachingStaff/NonTeachingStaffDashboard";
 import NonTeachingStaffProfile from "./components/nonTeachingStaff/NonTeachingStaffProfile";
 import NonTeachingStaffInfrastructure from "./components/nonTeachingStaff/Infrastructure";
+// import NonTeachingStaffResearchPublications from "./components/nonTeachingStaff/ResearchPublications";
 import ViewResults from "./components/student/ViewResults";
+import ResearchPublications from "./components/nonTeachingStaff/researchPublications";
 
 // Faculty Components
 import FacultyDashboard from "./components/faculty/FacultyDashboard";
@@ -104,6 +106,8 @@ const App = () => {
 
             <Route path="profile" element={<NonTeachingStaffProfile />} />
             <Route path="infrastructure" element={<NonTeachingStaffInfrastructure />}/>
+            <Route path="researchPublications" element={<ResearchPublications />}/>
+
             {/* <Route path='registrations' element={<RegistrationForm/>} />
             <Route path='generateUser' element={<GenerateCredentials/>} /> */}
             <Route path="complaint" element={<ComplaintForm />} />

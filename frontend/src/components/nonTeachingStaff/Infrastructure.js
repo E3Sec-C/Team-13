@@ -21,6 +21,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setSnackBar } from '../../store/features/snackbar/snackbar';
 
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -64,17 +65,19 @@ export default function Infrastructure() {
         const response = await axios.get(
           `http://localhost:5000/api/v1/infrastructure/getall`
         );
-    
+        console.log(response.data)
         // Sort the data alphabetically by assetName
         const sortedData = response.data.sort((a, b) =>
           a.assetName.localeCompare(b.assetName)
         );
+        
         setInfraData(sortedData);
     
         const userResponse = await axios.get(
           `http://localhost:5000/api/v1/nonTeachingStaff/${localStorage.getItem('userId')}`
         );
         setUserName(userResponse.data.name);
+        console.log(userResponse.data)
       } catch (error) {
         console.error('Error fetching profile data:', error);
       }
