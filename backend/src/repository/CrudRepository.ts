@@ -65,15 +65,7 @@ class CrudRepository<T extends Document>{
             throw new Error("Failed in updating the document with given id");
         }
     }
-    // async updateByData(data:Partial<T>):Promise<T | null>{
-    //     const {id,...updatedData}=data;
-    //     try{
-    //         const response = await this.model.findOneAndUpdate(id, data, {new:true});
-    //         return response;
-    //     }catch(error){
-    //         throw error;
-    //     }
-    // }   
+    
 }
 
 export default CrudRepository;

@@ -44,7 +44,29 @@ const ViewUsers = () => {
     const fetchUsers = async () => {
       try {
         const roleEndpoint = roleFilter.toLowerCase();
-        const response = await axios.get(`http://localhost:5000/api/v1/${roleEndpoint}/getall`);
+        let apiEndpoint = '';
+        
+        switch(roleEndpoint) {
+          case 'student':
+            apiEndpoint = process.env.REACT_APP_API_STUDENT_GET_ALL;
+            break;
+          case 'faculty':
+            apiEndpoint = process.env.REACT_APP_API_FACULTY_GET_ALL;
+            break;
+          case 'nonteachingstaff':
+            apiEndpoint = process.env.REACT_APP_API_NONTEACHING_GET_ALL;
+            break;
+          case 'admin':
+            apiEndpoint = process.env.REACT_APP_API_ADMIN_GET_ALL;
+            break;
+          case 'hod':
+            apiEndpoint = process.env.REACT_APP_API_HOD_GET_ALL;
+            break;
+          default:
+            apiEndpoint = process.env.REACT_APP_API_STUDENT_GET_ALL;
+        }
+        
+        const response = await axios.get(apiEndpoint);
         setUsers(response.data);
         console.log(response.data);
       } catch (error) {
@@ -68,7 +90,29 @@ const ViewUsers = () => {
   const handleDelete = async () => {
     try {
       const roleEndpoint = roleFilter.toLowerCase();
-      await axios.delete(`http://localhost:5000/api/v1/${roleEndpoint}/delete/${userToDelete}`);
+      let deleteEndpoint = '';
+      
+      switch(roleEndpoint) {
+        case 'student':
+          deleteEndpoint = `${process.env.REACT_APP_API_STUDENT_DELETE}/${userToDelete}`;
+          break;
+        case 'faculty':
+          deleteEndpoint = `${process.env.REACT_APP_API_FACULTY_DELETE}/${userToDelete}`;
+          break;
+        case 'nonteachingstaff':
+          deleteEndpoint = `${process.env.REACT_APP_API_NONTEACHING_DELETE}/${userToDelete}`;
+          break;
+        case 'admin':
+          deleteEndpoint = `${process.env.REACT_APP_API_ADMIN_DELETE}/${userToDelete}`;
+          break;
+        case 'hod':
+          deleteEndpoint = `${process.env.REACT_APP_API_HOD_DELETE}/${userToDelete}`;
+          break;
+        default:
+          deleteEndpoint = `${process.env.REACT_APP_API_STUDENT_DELETE}/${userToDelete}`;
+      }
+      
+      await axios.delete(deleteEndpoint);
       setUsers(users.filter((user) => user.ID !== userToDelete));
       dispatch(setSnackBar({ message: 'User deleted successfully',variant:"success" }));
     } catch (error) {
@@ -104,7 +148,7 @@ const ViewUsers = () => {
             <MenuItem value="student">Student</MenuItem>
             <MenuItem value="admin">Admin</MenuItem>
             <MenuItem value="faculty">Faculty</MenuItem>
-            <MenuItem value="nonTeachingStaff">Non-Teaching Staff</MenuItem>
+            <MenuItem value="nonteachingstaff">Non-Teaching Staff</MenuItem>
             <MenuItem value="hod">HOD</MenuItem>
           </Select>
         </FormControl>
@@ -204,7 +248,7 @@ const ViewUsers = () => {
                   Email: <Box component="span" sx={{ color: "text.primary" }}>{selectedUser.email}</Box>
                 </Typography>
               </Grid>
-              {(roleFilter === "faculty" || roleFilter === 'nonTeachingStaff' || roleFilter==='student') && (
+              {(roleFilter === "faculty" || roleFilter === 'nonteachingstaff' || roleFilter==='student') && (
                 <Grid item xs={12}>
                   <Typography variant="subtitle1" color="text.secondary">
                     Mobile: <Box component="span" sx={{ color: "text.primary" }}>{selectedUser.mobile}</Box>

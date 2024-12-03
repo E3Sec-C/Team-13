@@ -1,6 +1,7 @@
 import express from "express";
 import { FacultyController, ImageController } from "../../controllers";
 import upload from "../../multer";
+import ExcelUploadController from "../../controllers/ExcelUploadController";
 
 const router = express.Router()
 
@@ -25,6 +26,8 @@ router.post("/upload/image",upload.single("faculty"), (req:any, res:any) => {
       imagePath: `/backend/images/${req.file.filename}`,  // Path where the image is stored
     });
   });
+router.post('/upload/attendance', upload.single('attendance'),ExcelUploadController.uploadAttendance);
+router.post('/upload/marks', upload.single('marks'),ExcelUploadController.uploadMarks);
 router.get("/getall",FacultyController.getAll);
 router.post("/",FacultyController.createFaculty);
 router.get("/:ID",FacultyController.getFacultyById);

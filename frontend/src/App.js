@@ -24,7 +24,20 @@ import NonTeachingStaffInfrastructure from "./components/nonTeachingStaff/Infras
 // import NonTeachingStaffResearchPublications from "./components/nonTeachingStaff/ResearchPublications";
 import ViewResults from "./components/student/ViewResults";
 import ResearchPublications from "./components/nonTeachingStaff/researchPublications";
+
+// Faculty Components
+import FacultyDashboard from "./components/faculty/FacultyDashboard";
+import FacultyProfile from "./components/faculty/FacultyProfile";
+import StudentsData from "./components/faculty/StudentsData";
+import UploadMarks from "./components/faculty/UploadMarks";
+import UploadAttendance from "./components/faculty/UploadAttendance";
+
+
+
+import ProtectedRoute from "./ProtectedRoute";
+
 const App = () => {
+  const role = localStorage.getItem("role");
   return (
     <>
       <SnackbarListener />
@@ -33,15 +46,36 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/signin" element={<SignIn />} />
 
-          <Route path="/student" element={<StudentDashboard />}>
+          <Route path="/student" 
+            element={
+              <ProtectedRoute access={"student"}>
+                <StudentDashboard />
+              </ProtectedRoute>
+              }
+          >
+          
             <Route index element={<StudentProfile />} />
             <Route path="profile" element={<StudentProfile />} />
             <Route path="complaint" element={<ComplaintForm />} />
             <Route path="results" element={<ViewResults />} />
             <Route path="logout" element={<Logout />} />
           </Route>
+          <Route path="/faculty" element={<FacultyDashboard />}>
+          <Route index element={<FacultyProfile />} />
+          <Route path="profile" element={<FacultyProfile />} />
+          <Route path="uploadMarks" element={<UploadMarks />} />
+          <Route path="uploadAttendance" element={<UploadAttendance />} />
+          <Route path="students" element={<StudentsData />} />
+          <Route path="complaint" element={<ComplaintForm />} />
+          <Route path="logout" element={<Logout />} />
+        </Route>
 
-          <Route path="/admin" element={<AdminDashboard />}>
+          <Route path="/admin" element={
+              <ProtectedRoute access={"admin"}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+            >
             <Route index element={<AdminProfile />} />
             <Route path="profile" element={<AdminProfile />} />
             <Route path="registrations" element={<RegistrationForm />} />
@@ -50,7 +84,11 @@ const App = () => {
             <Route path="logout" element={<Logout />} />
           </Route>
 
-          <Route path="/hod" element={<HodDashboard />}>
+          <Route path="/hod" element={
+            <ProtectedRoute access={"hod"}>
+            <HodDashboard />
+          </ProtectedRoute>
+          }>
             <Route index element={<HodProfile />} />
             {/* Default to HOD Profile */}
             <Route path="profile" element={<HodProfile />} />
@@ -59,7 +97,11 @@ const App = () => {
             <Route path="logout" element={<Logout />} />
           </Route>
 
-          <Route path="/nonTeachingStaff" element={<NonTeachingStaffDashboard />}>
+          <Route path="/nonTeachingStaff" element={
+            <ProtectedRoute access={"nonTeachingStaff"}>
+            <NonTeachingStaffDashboard />
+          </ProtectedRoute>
+          }>
           <Route index element={<NonTeachingStaffProfile />} />
 
             <Route path="profile" element={<NonTeachingStaffProfile />} />

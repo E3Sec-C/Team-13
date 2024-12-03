@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import './Timeline.css';
+import { AdminPanelSettings, School, Person, SupervisorAccount, Support } from '@mui/icons-material';
 
 const Timeline = () => {
   // Timeline data for each card

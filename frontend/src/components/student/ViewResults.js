@@ -64,8 +64,7 @@ const ViewResults = () => {
       return;
     }
     try {
-      const url = `http://localhost:5000/api/v1/student/${localStorage.getItem("userId")}`;
-      const response = await axios.get(url);
+      const response = await axios.get(`${process.env.REACT_APP_API_STUDENT_GET_BY_ID}/${localStorage.getItem("userId")}`);
       if (!response) {
         dispatch(
           setSnackBar({
