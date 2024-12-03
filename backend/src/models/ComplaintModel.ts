@@ -20,7 +20,7 @@ const ComplaintSchema = new Schema<complaint>({
     },
     status:{
         type:String,
-        dedault:"filed",
+        default:"filed",
     }
 });
 
