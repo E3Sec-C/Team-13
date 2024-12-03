@@ -58,7 +58,7 @@ const ComplaintForm = () => {
       console.error('Error submitting complaint:', error);
       dispatch(
         setSnackBar({
-          message: "An error occurred",
+          message: "You already submitted the complaint",
           variant: "error"
         })
       );

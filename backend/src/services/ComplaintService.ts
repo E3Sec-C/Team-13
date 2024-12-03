@@ -4,6 +4,11 @@ import { ConflictError,NotFoundError } from "../exceptions/CustomExceptions";
 
 class ComplaintService{
     async create(complaintData: Partial<complaint>):Promise<complaint|null>{
+        const {ID} = complaintData;
+        const res = await ComplaintRepository.getByData({ID:ID});
+        if(res){
+            throw new ConflictError("Already Exist");
+        }
         const response = await ComplaintRepository.create(complaintData);
         return response;
     }
