@@ -1,11 +1,10 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import HowToRegIcon from '@mui/icons-material/HowToReg';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import FeedbackIcon from '@mui/icons-material/Feedback';
 import ChecklistIcon from '@mui/icons-material/Checklist';
-
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 
 
 
@@ -29,9 +28,9 @@ const Sidebar = ({ isCollapsed }) => {
       icon: <ChecklistIcon />,
     },
     {
-        segment: 'registrations',
-        title: 'User Registrations',
-        icon: <HowToRegIcon />,
+        segment: 'researchPublications',
+        title: 'Research Publications',
+        icon: <LibraryBooksIcon />,
     },
     {
       kind: 'divider',

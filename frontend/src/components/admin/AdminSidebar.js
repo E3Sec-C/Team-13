@@ -6,7 +6,7 @@ import PasswordIcon from '@mui/icons-material/Password';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import FeedbackIcon from '@mui/icons-material/Feedback';
 import "../../styles/dashboard.css";
-
+   
 const Sidebar = ({ isCollapsed }) => {
   const location = useLocation();
 

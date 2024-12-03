@@ -8,20 +8,13 @@ class ResearchPublicationscontroller{
         res.status(200).json(newResearchPublications);
     });
 
-    getResearchPublicationsById = asyncHandler(async (req: Request, res: Response, next: NextFunction)=>{
-        const researchPublications = await ResearchPublicationsService.getById(req.params.ID);
+    getResearchPublicationsByTitle = asyncHandler(async (req: Request, res: Response, next: NextFunction)=>{
+        const researchPublications = await ResearchPublicationsService.getByTitle(req.params.title);
         res.status(200).json(researchPublications);
     });
 
-    
-    updateResearchPublicationsById = asyncHandler(async (req: Request, res: Response, next: NextFunction)=>{
-        const updatedResearchPublications = await ResearchPublicationsService.updateById(req.params.ID,req.body);
-        res.status(200).json(updatedResearchPublications);
-    });
-
-
-    deleteResearchPublicationsById = asyncHandler(async (req: Request, res: Response, next: NextFunction)=>{
-        const response = await ResearchPublicationsService.deleteById(req.params.ID);
+    deleteResearchPublicationsByTitle = asyncHandler(async (req: Request, res: Response, next: NextFunction)=>{
+        const response = await ResearchPublicationsService.deleteByTitle(req.params.title);
         res.status(200).json(response);
     });
 
